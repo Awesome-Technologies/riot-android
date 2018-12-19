@@ -126,6 +126,16 @@ android {
             buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"F\""
             buildConfigField "String", "FLAVOR_DESCRIPTION", "\"FDroid\""
         }
+
+        caritas {
+            applicationId "care.amp.messenger.caritas"
+            // use the version name
+            versionCode rootProject.ext.versionCodeProp
+            versionName rootProject.ext.versionNameProp
+            buildConfigField "boolean", "ALLOW_FCM_USE", "true"
+            buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"C\""
+            buildConfigField "String", "FLAVOR_DESCRIPTION", "\"Caritas\""
+        }
     }
 
     lintOptions {
@@ -279,6 +289,10 @@ dependencies {
     appImplementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     // fdroid flavor only
+
+    // caritas flavor only
+    caritasImplementation 'com.google.firebase:firebase-core:16.0.4'
+    caritasImplementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     // Test
     testImplementation 'junit:junit:4.12'
