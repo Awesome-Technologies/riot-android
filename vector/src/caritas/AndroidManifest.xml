@@ -7,7 +7,8 @@
         android:label="Caritas Messenger"
         android:logo="@mipmap/ic_caritas"
         android:roundIcon="@mipmap/ic_caritas_round"
-        tools:replace="icon,label,logo">
+        android:theme="@style/CaritasTheme.Light"
+        tools:replace="icon,label,logo,theme">
 
         <!-- Firebase components -->
         <meta-data

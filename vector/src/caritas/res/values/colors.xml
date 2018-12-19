@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- main app colors -->
+    <color name="caritas_pink_color">#FF0064</color>
+    <color name="caritas_red_color">#CC1E1C</color>
+    <color name="caritas_silver_color">#C7C7CC</color>
+    <color name="caritas_grey_color">#BFBFBF</color>
+
+    <!-- home activity tab bar color -->
+    <color name="tab_favourites">@color/caritas_red_color</color>
+    <color name="tab_favourites_secondary">@color/caritas_red_color</color>
+    <color name="tab_people">@color/caritas_red_color</color>
+    <color name="tab_people_secondary">@color/caritas_red_color</color>
+    <color name="tab_rooms">@color/caritas_red_color</color>
+    <color name="tab_rooms_secondary">@color/caritas_red_color</color>
+    <color name="tab_groups">@color/caritas_red_color</color>
+    <color name="tab_groups_secondary">@color/caritas_red_color</color>
+
+    <!-- color of the direct chat avatar ring -->
+    <color name="direct_chat_ring_color_light">#8076cfa6</color>
+    <color name="direct_chat_ring_color_dark">#8076cfa6</color>
+    <color name="direct_chat_ring_color_black">#8076cfa6</color>
+    <color name="direct_chat_ring_color_status">#80586C7B</color>
+
+    <!-- theses colours are requested a background cannot be set by an ?att on android < 5 -->
+    <!-- dedicated drawables are created for each theme -->
+    <color name="riot_primary_background_color_light">@android:color/white</color>
+    <color name="riot_primary_background_color_dark">#2d2d2d</color>
+    <color name="riot_primary_background_color_black">#000000</color>
+    <color name="riot_primary_background_color_status">#eef2f5</color>
+
+    <color name="primary_color_light">@color/caritas_red_color</color>
+    <color name="primary_color_light_dark">@color/caritas_red_color</color>
+
+    <color name="primary_color_dark">#353535</color>
+
+    <color name="primary_color_status">#FF586C7B</color>
+    <color name="primary_color_status_dark">#FF465561</color>
+
+    <color name="list_divider_color_light">#339D9D9D</color>
+    <color name="list_divider_color_dark">#A5A5A5A5</color>
+
+    <color name="tab_bar_selected_background_color_light">@color/primary_color_light</color>
+    <color name="tab_bar_selected_background_color_dark">@color/primary_color_dark</color>
+    <color name="tab_bar_selected_background_color_status">@color/primary_color_status</color>
+
+    <color name="tab_bar_unselected_background_color_light">@color/primary_color_light</color>
+    <color name="tab_bar_unselected_background_color_dark">@color/primary_color_dark</color>
+    <color name="tab_bar_unselected_background_color_status">@color/primary_color_status</color>
+
+    <!-- Text Colors -->
+    <color name="primary_hint_text_color_light">#FFFFFF</color>
+    <color name="primary_hint_text_color_dark">#FFFFFF</color>
+
+    <color name="riot_primary_text_color_light">#FF3C3C3C</color>
+    <color name="default_text_hint_color_light">#903C3C3C</color>
+    <color name="default_text_light_color_light">#8E000000</color>
+    <color name="default_button_light_text_light">#FF747474</color>
+    <color name="riot_primary_text_color_dark">#dddddd</color>
+    <color name="default_text_hint_color_dark">#CCDDDDDD</color>
+    <color name="default_text_light_color_dark">#A4A4A4</color>
+    <color name="default_button_light_text_dark">#FF747474</color>
+    <color name="riot_primary_text_color_status">#70808D</color>
+
+    <!-- Quote Colors -->
+    <color name="quote_strip_color">#FFDDDDDD</color>
+    <color name="quote_background_color">@android:color/transparent</color>
+    <color name="default_text_dark_color_dark">#DEDEDE</color>
+
+    <!-- Transparent status bar and toolbar colors -->
+    <color name="transparent_dark">#80000000</color>
+
+    <!-- Notification view colors -->
+    <color name="soft_resource_limit_exceeded">#2f9edb</color>
+    <color name="hard_resource_limit_exceeded">@color/caritas_pink_color</color>
+
+</resources>
