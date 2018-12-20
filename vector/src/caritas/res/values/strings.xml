@@ -3,4 +3,9 @@
 
     <string name="auth_user_id_placeholder">User name</string>
 
+    <!-- Bottom navigation buttons -->
+    <string name="bottom_action_people">People</string>
+    <string name="bottom_action_rooms">Groups</string>
+    <string name="bottom_action_settings">Settings</string>
+
 </resources>

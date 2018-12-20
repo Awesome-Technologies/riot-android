@@ -180,11 +180,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
     public static final String BROADCAST_ACTION_STOP_WAITING_VIEW = "im.vector.activity.ACTION_STOP_WAITING_VIEW";
 
-    private static final String TAG_FRAGMENT_HOME = "TAG_FRAGMENT_HOME";
-    private static final String TAG_FRAGMENT_FAVOURITES = "TAG_FRAGMENT_FAVOURITES";
     private static final String TAG_FRAGMENT_PEOPLE = "TAG_FRAGMENT_PEOPLE";
     private static final String TAG_FRAGMENT_ROOMS = "TAG_FRAGMENT_ROOMS";
-    private static final String TAG_FRAGMENT_GROUPS = "TAG_FRAGMENT_GROUPS";
 
     // Key used to restore the proper fragment after orientation change
     private static final String CURRENT_MENU_ID = "CURRENT_MENU_ID";
@@ -490,9 +487,9 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
         final View selectedMenu;
         if (isFirstCreation()) {
-            selectedMenu = mBottomNavigationView.findViewById(R.id.bottom_action_home);
+            selectedMenu = mBottomNavigationView.findViewById(R.id.bottom_action_people);
         } else {
-            selectedMenu = mBottomNavigationView.findViewById(getSavedInstanceState().getInt(CURRENT_MENU_ID, R.id.bottom_action_home));
+            selectedMenu = mBottomNavigationView.findViewById(getSavedInstanceState().getInt(CURRENT_MENU_ID, R.id.bottom_action_people));
         }
         if (selectedMenu != null) {
             selectedMenu.performClick();
@@ -509,7 +506,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
      * Display the Floating Action Menu if it is required
      */
     private void showFloatingActionMenuIfRequired() {
-        if ((mCurrentMenuId == R.id.bottom_action_favourites) || (mCurrentMenuId == R.id.bottom_action_groups)) {
+        if (mCurrentMenuId == R.id.bottom_action_settings) {
             concealFloatingActionMenu();
         } else {
             revealFloatingActionMenu();
@@ -611,6 +608,10 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         addBadgeEventsListener();
 
         checkNotificationPrivacySetting();
+
+        if (mCurrentMenuId != 0) {
+            mBottomNavigationView.findViewById(mCurrentMenuId).performClick();
+        }
     }
 
     @Override
@@ -772,7 +773,9 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(CURRENT_MENU_ID, mCurrentMenuId);
+        if (mCurrentMenuId != R.id.bottom_action_settings) {
+            outState.putInt(CURRENT_MENU_ID, mCurrentMenuId);
+        }
     }
 
     @Override
@@ -871,7 +874,11 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                updateSelectedFragment(item);
+                if (item.getItemId() ==  R.id.bottom_action_settings) {
+                    startActivity(VectorSettingsActivity.getIntent(VectorHomeActivity.this, mSession.getMyUserId()));
+                } else {
+                    updateSelectedFragment(item);
+                }
                 return true;
             }
         });
@@ -890,24 +897,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         Fragment fragment = null;
 
         switch (item.getItemId()) {
-            case R.id.bottom_action_home:
-                Log.d(LOG_TAG, "onNavigationItemSelected HOME");
-                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_HOME);
-                if (fragment == null) {
-                    fragment = HomeFragment.newInstance();
-                }
-                mCurrentFragmentTag = TAG_FRAGMENT_HOME;
-                mSearchView.setQueryHint(getString(R.string.home_filter_placeholder_home));
-                break;
-            case R.id.bottom_action_favourites:
-                Log.d(LOG_TAG, "onNavigationItemSelected FAVOURITES");
-                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_FAVOURITES);
-                if (fragment == null) {
-                    fragment = FavouritesFragment.newInstance();
-                }
-                mCurrentFragmentTag = TAG_FRAGMENT_FAVOURITES;
-                mSearchView.setQueryHint(getString(R.string.home_filter_placeholder_favorites));
-                break;
             case R.id.bottom_action_people:
                 Log.d(LOG_TAG, "onNavigationItemSelected PEOPLE");
                 fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_PEOPLE);
@@ -925,15 +914,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                 }
                 mCurrentFragmentTag = TAG_FRAGMENT_ROOMS;
                 mSearchView.setQueryHint(getString(R.string.home_filter_placeholder_rooms));
-                break;
-            case R.id.bottom_action_groups:
-                Log.d(LOG_TAG, "onNavigationItemSelected GROUPS");
-                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_GROUPS);
-                if (fragment == null) {
-                    fragment = GroupsFragment.newInstance();
-                }
-                mCurrentFragmentTag = TAG_FRAGMENT_GROUPS;
-                mSearchView.setQueryHint(getString(R.string.home_filter_placeholder_groups));
                 break;
         }
 
@@ -1175,22 +1155,12 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     private Fragment getSelectedFragment() {
         Fragment fragment = null;
         switch (mCurrentMenuId) {
-            case R.id.bottom_action_home:
-                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_HOME);
-                break;
-            case R.id.bottom_action_favourites:
-                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_FAVOURITES);
-                break;
             case R.id.bottom_action_people:
                 fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_PEOPLE);
                 break;
             case R.id.bottom_action_rooms:
                 fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_ROOMS);
                 break;
-            case R.id.bottom_action_groups:
-                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_GROUPS);
-                break;
-
         }
 
         return fragment;
@@ -2183,20 +2153,11 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
         Set<Integer> menuIndexes = new HashSet<>(mBadgeViewByIndex.keySet());
 
-        // the badges are not anymore displayed on the home tab
-        menuIndexes.remove(R.id.bottom_action_home);
-
         for (Integer id : menuIndexes) {
             // use a map because contains is faster
             Set<String> filteredRoomIdsSet = new HashSet<>();
 
-            if (id == R.id.bottom_action_favourites) {
-                List<Room> favRooms = mSession.roomsWithTag(RoomTag.ROOM_TAG_FAVOURITE);
-
-                for (Room room : favRooms) {
-                    filteredRoomIdsSet.add(room.getRoomId());
-                }
-            } else if (id == R.id.bottom_action_people) {
+            if (id == R.id.bottom_action_people) {
                 filteredRoomIdsSet.addAll(mSession.getDataHandler().getDirectChatRoomIdsList());
                 // Add direct chat invitations
                 for (Room room : roomSummaryByRoom.keySet()) {
@@ -2254,11 +2215,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             int status = (0 != highlightCount) ? UnreadCounterBadgeView.HIGHLIGHTED :
                     ((0 != roomCount) ? UnreadCounterBadgeView.NOTIFIED : UnreadCounterBadgeView.DEFAULT);
 
-            if (id == R.id.bottom_action_favourites) {
-                mBadgeViewByIndex.get(id).updateText((roomCount > 0) ? "\u2022" : "", status);
-            } else {
-                mBadgeViewByIndex.get(id).updateCounter(roomCount, status);
-            }
+            mBadgeViewByIndex.get(id).updateCounter(roomCount, status);
         }
     }
 
