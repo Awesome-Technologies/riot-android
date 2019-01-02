@@ -69,8 +69,8 @@ public final class PushManager {
     private static final String PREFS_SYNC_TIMEOUT = "GcmRegistrationManager.PREFS_SYNC_TIMEOUT";
     private static final String PREFS_SYNC_DELAY = "GcmRegistrationManager.PREFS_SYNC_DELAY";
 
-    private static final String DEFAULT_PUSHER_APP_ID = "im.vector.app.android";
-    private static final String DEFAULT_PUSHER_URL = "https://matrix.org/_matrix/push/v1/notify";
+    private static final String DEFAULT_PUSHER_APP_ID = "care.amp.messenger.caritas.android";
+    private static final String DEFAULT_PUSHER_URL = "https://caritas.amp.care/_matrix/push/v1/notify";
     private static final String DEFAULT_PUSHER_FILE_TAG = "mobile";
 
     private String mPusherAppName = null;
@@ -137,7 +137,7 @@ public final class PushManager {
 
         try {
             PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-            mPusherAppName = pInfo.packageName;
+            mPusherAppName = "Caritas Messenger (Android)";
             mPusherLang = mContext.getResources().getConfiguration().locale.getLanguage();
         } catch (Exception e) {
             mPusherAppName = "VectorApp";
