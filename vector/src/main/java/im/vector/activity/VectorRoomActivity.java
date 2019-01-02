@@ -1243,8 +1243,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             mActiveWidgetsBanner.onActivityResume();
         }
 
-        displayE2eRoomAlert();
-
         // init the auto-completion list from the room members
         mEditText.initAutoCompletions(mSession, mRoom);
 
@@ -1334,18 +1332,39 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
     @Override
     public void onUnknownDevices(Event event, MXCryptoError error) {
-        refreshNotificationsArea();
-        CommonActivityUtils.displayUnknownDevicesDialog(mSession,
-                this,
-                (MXUsersDevicesMap<MXDeviceInfo>) error.mExceptionData,
-                false,
-                new VectorUnknownDevicesFragment.IUnknownDevicesSendAnywayListener() {
-                    @Override
-                    public void onSendAnyway() {
-                        mVectorMessageListFragment.resendUnsentMessages();
-                        refreshNotificationsArea();
-                    }
-                });
+        // Make all devices known automatically
+        MXUsersDevicesMap<MXDeviceInfo> unknownDevicesMap = (MXUsersDevicesMap<MXDeviceInfo>) error.mExceptionData;
+        if (null != unknownDevicesMap) {
+            List<MXDeviceInfo> dis = new ArrayList<>();
+            final List<String> userIds = unknownDevicesMap.getUserIds();
+
+            for (String userId : userIds) {
+                List<String> deviceIds = unknownDevicesMap.getUserDeviceIds(userId);
+                for (String deviceId : deviceIds) {
+                    dis.add(unknownDevicesMap.getObject(deviceId, userId));
+                }
+            }
+
+            mSession.getCrypto().setDevicesKnown(dis, new ApiCallback<Void>() {
+                @Override
+                public void onSuccess(Void info) {
+                    mVectorMessageListFragment.resendUnsentMessages();
+                    refreshNotificationsArea();
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                }
+
+                @Override
+                public void onMatrixError(MatrixError e) {
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                }
+            });
+        }
     }
 
     @Override
@@ -3875,30 +3894,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     @OnClick(R.id.action_bar_header_room_members_invite_view)
     void onRoomMemberInviteClick() {
         launchInvitePeople();
-    }
-
-    private static final String E2E_WARNINGS_PREFERENCES = "E2E_WARNINGS_PREFERENCES";
-
-    /**
-     * Display an e2e alert for the first opened room.
-     */
-    private void displayE2eRoomAlert() {
-        if (!isFinishing()) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-            if (!preferences.contains(E2E_WARNINGS_PREFERENCES) && (null != mRoom) && mRoom.isEncrypted()) {
-                preferences
-                        .edit()
-                        .putBoolean(E2E_WARNINGS_PREFERENCES, false)
-                        .apply();
-
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.room_e2e_alert_title)
-                        .setMessage(R.string.room_e2e_alert_message)
-                        .setPositiveButton(R.string.ok, null)
-                        .show();
-            }
-        }
     }
 
 

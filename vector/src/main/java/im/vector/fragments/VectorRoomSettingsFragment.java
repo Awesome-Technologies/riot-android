@@ -1816,51 +1816,35 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
                         boolean newValue = (boolean) newValueAsVoid;
 
                         if (newValue != mRoom.isEncrypted()) {
-                            new AlertDialog.Builder(getActivity())
-                                    .setTitle(R.string.room_settings_addresses_e2e_prompt_title)
-                                    .setMessage(R.string.room_settings_addresses_e2e_prompt_message)
-                                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            displayLoadingView();
+                            displayLoadingView();
 
-                                            mRoom.enableEncryptionWithAlgorithm(CryptoConstantsKt.MXCRYPTO_ALGORITHM_MEGOLM, new ApiCallback<Void>() {
+                            mRoom.enableEncryptionWithAlgorithm(CryptoConstantsKt.MXCRYPTO_ALGORITHM_MEGOLM, new ApiCallback<Void>() {
 
-                                                private void onDone() {
-                                                    hideLoadingView(false);
-                                                    refreshEndToEnd();
-                                                }
+                                private void onDone() {
+                                    hideLoadingView(false);
+                                    refreshEndToEnd();
+                                }
 
-                                                @Override
-                                                public void onSuccess(Void info) {
-                                                    onDone();
-                                                }
+                                @Override
+                                public void onSuccess(Void info) {
+                                    onDone();
+                                }
 
-                                                @Override
-                                                public void onNetworkError(Exception e) {
-                                                    onDone();
-                                                }
+                                @Override
+                                public void onNetworkError(Exception e) {
+                                    onDone();
+                                }
 
-                                                @Override
-                                                public void onMatrixError(MatrixError e) {
-                                                    onDone();
-                                                }
+                                @Override
+                                public void onMatrixError(MatrixError e) {
+                                    onDone();
+                                }
 
-                                                @Override
-                                                public void onUnexpectedError(Exception e) {
-                                                    onDone();
-                                                }
-                                            });
-
-                                        }
-                                    })
-                                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            encryptSwitchPreference.setChecked(false);
-                                        }
-                                    })
-                                    .show();
+                                @Override
+                                public void onUnexpectedError(Exception e) {
+                                    onDone();
+                                }
+                            });
                         }
                         return true;
                     }
