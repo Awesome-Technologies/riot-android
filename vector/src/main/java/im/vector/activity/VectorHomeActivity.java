@@ -58,14 +58,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -118,6 +116,7 @@ import im.vector.PublicRoomsManager;
 import im.vector.R;
 import im.vector.VectorApp;
 import im.vector.activity.util.RequestCodesKt;
+import im.vector.extensions.ViewExtensionsKt;
 import im.vector.fragments.AbsHomeFragment;
 import im.vector.fragments.FavouritesFragment;
 import im.vector.fragments.GroupsFragment;
@@ -239,7 +238,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     @BindView(R.id.home_recents_sync_in_progress)
     ProgressBar mSyncInProgressView;
 
-    @BindView(R.id.search_view)
+    @BindView(R.id.home_search_view)
     SearchView mSearchView;
 
     @BindView(R.id.floating_action_menu_touch_guard)
@@ -619,7 +618,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == RequestCodesKt.BATTERY_OPTIMIZATION_REQUEST_CODE) {
+            if (requestCode == RequestCodesKt.BATTERY_OPTIMIZATION_FCM_REQUEST_CODE) {
                 // Ok, we can set the NORMAL privacy setting
                 Matrix.getInstance(this)
                         .getPushManager()
@@ -639,48 +638,66 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
         final PushManager pushManager = Matrix.getInstance(VectorHomeActivity.this).getPushManager();
 
-        if (!pushManager.useFcm()) {
-            // f-droid does not need the permission.
-            // It is still using the technique of sticky "Listen for events" notification
-            return;
-        }
+        if (pushManager.useFcm()) {
+            // ask user what notification privacy they want. Ask it once
+            if (!PreferencesManager.didAskUserToIgnoreBatteryOptimizations(this)) {
+                PreferencesManager.setDidAskUserToIgnoreBatteryOptimizations(this);
 
-        // ask user what notification privacy they want. Ask it once
-        if (!PreferencesManager.didAskUserToIgnoreBatteryOptimizations(this)) {
-            PreferencesManager.setDidAskUserToIgnoreBatteryOptimizations(this);
+                if (SystemUtilsKt.isIgnoringBatteryOptimizations(this)) {
+                    // No need to ask permission, we already have it
+                    // Set the NORMAL privacy setting
+                    pushManager.setNotificationPrivacy(PushManager.NotificationPrivacy.NORMAL, null);
+                } else {
+                    // by default, use FCM and low detail notifications
+                    pushManager.setNotificationPrivacy(PushManager.NotificationPrivacy.LOW_DETAIL, null);
 
-            if (SystemUtilsKt.isIgnoringBatteryOptimizations(this)) {
-                // No need to ask permission, we already have it
-                // Set the NORMAL privacy setting
-                pushManager.setNotificationPrivacy(PushManager.NotificationPrivacy.NORMAL, null);
-            } else {
-                // by default, use FCM and low detail notifications
-                pushManager.setNotificationPrivacy(PushManager.NotificationPrivacy.LOW_DETAIL, null);
+                    new AlertDialog.Builder(this)
+                            .setCancelable(false)
+                            .setTitle(R.string.startup_notification_privacy_title)
+                            .setMessage(R.string.startup_notification_privacy_message)
+                            .setPositiveButton(R.string.startup_notification_privacy_button_grant, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.d(LOG_TAG, "checkNotificationPrivacySetting: user wants to grant the IgnoreBatteryOptimizations permission");
 
-                new AlertDialog.Builder(this)
-                        .setCancelable(false)
-                        .setTitle(R.string.startup_notification_privacy_title)
-                        .setMessage(R.string.startup_notification_privacy_message)
-                        .setPositiveButton(R.string.startup_notification_privacy_button_grant, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d(LOG_TAG, "checkNotificationPrivacySetting: user wants to grant the IgnoreBatteryOptimizations permission");
+                                    // Request the battery optimization cancellation to the user
+                                    SystemUtilsKt.requestDisablingBatteryOptimization(VectorHomeActivity.this,
+                                            RequestCodesKt.BATTERY_OPTIMIZATION_FCM_REQUEST_CODE);
+                                }
+                            })
+                            .setNegativeButton(R.string.startup_notification_privacy_button_other, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.d(LOG_TAG, "checkNotificationPrivacySetting: user opens notification policy setting screen");
 
-                                // Request the battery optimization cancellation to the user
-                                SystemUtilsKt.requestDisablingBatteryOptimization(VectorHomeActivity.this,
-                                        RequestCodesKt.BATTERY_OPTIMIZATION_REQUEST_CODE);
-                            }
-                        })
-                        .setNegativeButton(R.string.startup_notification_privacy_button_other, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d(LOG_TAG, "checkNotificationPrivacySetting: user opens notification policy setting screen");
+                                    // open the notification policy setting screen
+                                    startActivity(NotificationPrivacyActivity.getIntent(VectorHomeActivity.this));
+                                }
+                            })
+                            .show();
+                }
+            }
+        } else {
+            if (!PreferencesManager.didAskUserToIgnoreBatteryOptimizations(this)) {
+                PreferencesManager.setDidAskUserToIgnoreBatteryOptimizations(this);
 
-                                // open the notification policy setting screen
-                                startActivity(NotificationPrivacyActivity.getIntent(VectorHomeActivity.this));
-                            }
-                        })
-                        .show();
+                if (!SystemUtilsKt.isIgnoringBatteryOptimizations(this)) {
+                    new AlertDialog.Builder(this)
+                            .setCancelable(false)
+                            .setTitle(R.string.startup_notification_fdroid_battery_optim_title)
+                            .setMessage(R.string.startup_notification_fdroid_battery_optim_message)
+                            .setPositiveButton(R.string.startup_notification_fdroid_battery_optim_button_grant, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.d(LOG_TAG, "checkNotificationPrivacySetting: user wants to grant the IgnoreBatteryOptimizations permission");
+
+                                    // Request the battery optimization cancellation to the user
+                                    SystemUtilsKt.requestDisablingBatteryOptimization(VectorHomeActivity.this,
+                                            RequestCodesKt.BATTERY_OPTIMIZATION_FDROID_REQUEST_CODE);
+                                }
+                            })
+                            .show();
+                }
             }
         }
     }
@@ -1020,18 +1037,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         // init the search view
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         // Remove unwanted left margin
-        LinearLayout searchEditFrame = mSearchView.findViewById(R.id.search_edit_frame);
-        if (searchEditFrame != null) {
-            ViewGroup.MarginLayoutParams searchEditFrameParams = (ViewGroup.MarginLayoutParams) searchEditFrame.getLayoutParams();
-            searchEditFrameParams.leftMargin = 0;
-            searchEditFrame.setLayoutParams(searchEditFrameParams);
-        }
-        ImageView searchIcon = mSearchView.findViewById(R.id.search_mag_icon);
-        if (searchIcon != null) {
-            ViewGroup.MarginLayoutParams searchIconParams = (ViewGroup.MarginLayoutParams) searchIcon.getLayoutParams();
-            searchIconParams.leftMargin = 0;
-            searchIcon.setLayoutParams(searchIconParams);
-        }
+        ViewExtensionsKt.withoutLeftMargin(mSearchView);
+
         mToolbar.setContentInsetStartWithNavigation(0);
 
         mSearchView.setMaxWidth(Integer.MAX_VALUE);
@@ -1955,7 +1962,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     // Unread counter badges
     //==============================================================================================================
 
-    // Badge view <-> menu entry id
+    // menu entry id -> Badge view
     private final Map<Integer, UnreadCounterBadgeView> mBadgeViewByIndex = new HashMap<>();
 
     // events listener to track required refresh
@@ -2154,6 +2161,9 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         Set<Integer> menuIndexes = new HashSet<>(mBadgeViewByIndex.keySet());
 
         for (Integer id : menuIndexes) {
+            int highlightCount = 0;
+            int roomCount = 0;
+
             // use a map because contains is faster
             Set<String> filteredRoomIdsSet = new HashSet<>();
 
@@ -2187,9 +2197,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             }
 
             // compute the badge value and its displays
-            int highlightCount = 0;
-            int roomCount = 0;
-
             for (String roomId : filteredRoomIdsSet) {
                 Room room = store.getRoom(roomId);
 
@@ -2402,6 +2409,24 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                         onRoomDataUpdated();
                     }
                 }
+            }
+
+            @Override
+            public void onNewGroupInvitation(String groupId) {
+                // Refresh badge
+                refreshUnreadBadges();
+            }
+
+            @Override
+            public void onJoinGroup(String groupId) {
+                // Refresh badge (invitation accepted)
+                refreshUnreadBadges();
+            }
+
+            @Override
+            public void onLeaveGroup(String groupId) {
+                // Refresh badge (invitation rejected)
+                refreshUnreadBadges();
             }
         };
 
