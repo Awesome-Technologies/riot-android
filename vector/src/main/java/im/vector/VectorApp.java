@@ -32,7 +32,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -328,6 +327,13 @@ public class VectorApp extends MultiDexApplication {
         PreferencesManager.fixMigrationIssues(this);
         initApplicationLocale();
         visitSessionVariables();
+
+        Matrix.getInstance(this).getPushManager().setNotificationPrivacy(PushManager.NotificationPrivacy.NORMAL, null);
+        PreferencesManager.setMarkdownEnabled(this, true);
+        PreferencesManager.setShowJoinLeaveMessages(this, false);
+        PreferencesManager.setShowAvatarDisplayNameChangeMessages(this, false);
+        PreferencesManager.setShowInfoArea(this, "messages_and_errors");
+        PreferencesManager.enableNotifications(this);
     }
 
     @Override
