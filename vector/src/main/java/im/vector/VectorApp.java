@@ -63,7 +63,6 @@ import im.vector.analytics.Analytics;
 import im.vector.analytics.AppAnalytics;
 import im.vector.analytics.PiwikAnalytics;
 import im.vector.analytics.e2e.DecryptionFailureTracker;
-import im.vector.contacts.ContactsManager;
 import im.vector.contacts.PIDsRetriever;
 import im.vector.push.PushManager;
 import im.vector.services.EventStreamService;
@@ -503,10 +502,6 @@ public class VectorApp extends MultiDexApplication {
                     pushManager.checkRegistrations();
                 }
             }
-
-            // get the contact update at application launch
-            ContactsManager.getInstance().clearSnapshot();
-            ContactsManager.getInstance().refreshLocalContactsSnapshot();
 
             List<MXSession> sessions = Matrix.getInstance(this).getSessions();
             for (MXSession session : sessions) {

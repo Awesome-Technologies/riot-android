@@ -58,9 +58,6 @@ import java.util.Set;
 import im.vector.Matrix;
 import im.vector.R;
 import im.vector.activity.CommonActivityUtils;
-import im.vector.contacts.Contact;
-import im.vector.contacts.ContactsManager;
-import im.vector.contacts.PIDsRetriever;
 import im.vector.settings.VectorLocale;
 import im.vector.util.VectorUtils;
 
@@ -71,7 +68,6 @@ import im.vector.util.VectorUtils;
 public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
     private static final String LOG_TAG = VectorParticipantsAdapter.class.getSimpleName();
 
-    private static final String KEY_EXPAND_STATE_SEARCH_LOCAL_CONTACTS_GROUP = "KEY_EXPAND_STATE_SEARCH_LOCAL_CONTACTS_GROUP";
     private static final String KEY_EXPAND_STATE_SEARCH_MATRIX_CONTACTS_GROUP = "KEY_EXPAND_STATE_SEARCH_MATRIX_CONTACTS_GROUP";
     private static final String KEY_FILTER_MATRIX_USERS_ONLY = "KEY_FILTER_MATRIX_USERS_ONLY";
 
@@ -120,7 +116,6 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
     // the participants can be split in sections
     private final List<List<ParticipantAdapterItem>> mParticipantsListsList = new ArrayList<>();
     private int mFirstEntryPosition = -1;
-    private int mLocalContactsSectionPosition = -1;
     private int mKnownContactsSectionPosition = -1;
 
     // flag specifying if we show all peoples or only ones having a matrix user id
@@ -172,7 +167,6 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
     public void reset() {
         mParticipantsListsList.clear();
         mFirstEntryPosition = -1;
-        mLocalContactsSectionPosition = -1;
         mKnownContactsSectionPosition = -1;
         mPattern = null;
 
@@ -211,58 +205,6 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
             }
 
             searchListener.onSearchEnd(displayedItemsCount);
-        }
-    }
-
-    /**
-     * Add the contacts participants
-     *
-     * @param list the participantItem indexed by their matrix Id
-     */
-    private void addContacts(List<ParticipantAdapterItem> list) {
-        Collection<Contact> contacts = ContactsManager.getInstance().getLocalContactsSnapshot();
-
-        if (null != contacts) {
-            for (Contact contact : contacts) {
-                for (String email : contact.getEmails()) {
-                    if (!TextUtils.isEmpty(email) && !ParticipantAdapterItem.isBlackedListed(email)) {
-                        Contact dummyContact = new Contact(email);
-                        dummyContact.setDisplayName(contact.getDisplayName());
-                        dummyContact.addEmailAdress(email);
-                        dummyContact.setThumbnailUri(contact.getThumbnailUri());
-
-                        ParticipantAdapterItem participant = new ParticipantAdapterItem(dummyContact);
-
-                        Contact.MXID mxid = PIDsRetriever.getInstance().getMXID(email);
-
-                        if (null != mxid) {
-                            participant.mUserId = mxid.mMatrixId;
-                        } else {
-                            participant.mUserId = email;
-                        }
-
-                        if (mUsedMemberUserIds != null && !mUsedMemberUserIds.contains(participant.mUserId)) {
-                            list.add(participant);
-                        }
-                    }
-                }
-
-                for (Contact.PhoneNumber pn : contact.getPhonenumbers()) {
-                    Contact.MXID mxid = PIDsRetriever.getInstance().getMXID(pn.mMsisdnPhoneNumber);
-
-                    if (null != mxid) {
-                        Contact dummyContact = new Contact(pn.mMsisdnPhoneNumber);
-                        dummyContact.setDisplayName(contact.getDisplayName());
-                        dummyContact.addPhoneNumber(pn.mRawPhoneNumber, pn.mE164PhoneNumber);
-                        dummyContact.setThumbnailUri(contact.getThumbnailUri());
-                        ParticipantAdapterItem participant = new ParticipantAdapterItem(dummyContact);
-                        participant.mUserId = mxid.mMatrixId;
-                        if (mUsedMemberUserIds != null && !mUsedMemberUserIds.contains(participant.mUserId)) {
-                            list.add(participant);
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -317,8 +259,6 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
                 List<ParticipantAdapterItem> participants = new ArrayList<>();
                 // Add all known matrix users
                 participants.addAll(VectorUtils.listKnownParticipants(mSession).values());
-                // Add phone contacts which have an email address
-                addContacts(participants);
 
                 // List of display names
                 List<String> displayNamesList = new ArrayList<>();
@@ -382,7 +322,7 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
 
             if (null != mContactsParticipants) {
                 List<ParticipantAdapterItem> newContactList = new ArrayList<>();
-                addContacts(newContactList);
+
                 if (!mContactsParticipants.containsAll(newContactList)) {
                     // Force update
                     gotUpdates = true;
@@ -427,17 +367,6 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
         if (!mSession.isAlive()) {
             Log.e(LOG_TAG, "refresh : the session is not anymore active");
             return;
-        }
-
-        // test if the local contacts list has been cleared (while putting the application in background)
-        if (mLocalContactsSnapshotSession != ContactsManager.getInstance().getLocalContactsSnapshotSession()) {
-            synchronized (LOG_TAG) {
-                mUnusedParticipants = null;
-                mContactsParticipants = null;
-                mUsedMemberUserIds = null;
-                mDisplayNamesList = null;
-            }
-            mLocalContactsSnapshotSession = ContactsManager.getInstance().getLocalContactsSnapshotSession();
         }
 
         if (!TextUtils.isEmpty(mPattern)) {
@@ -559,7 +488,6 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void onSuccess(Void info) {
                                 List<ParticipantAdapterItem> list = new ArrayList<>();
-                                addContacts(list);
 
                                 synchronized (LOG_TAG) {
                                     mContactsParticipants = list;
@@ -622,9 +550,6 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
                                           final ParticipantAdapterItem theFirstEntry,
                                           final boolean sort,
                                           final OnParticipantsSearchListener searchListener) {
-        // ensure that the PIDs have been retrieved
-        // it might have failed
-        ContactsManager.getInstance().retrievePids();
 
         // the caller defines a first entry to display
         ParticipantAdapterItem firstEntry = theFirstEntry;
@@ -677,22 +602,7 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
             mParticipantsListsList.add(firstEntryList);
             mFirstEntryPosition = 0;
         }
-        if (ContactsManager.getInstance().isContactBookAccessAllowed()) {
-            mLocalContactsSectionPosition = mFirstEntryPosition + 1;
-            mKnownContactsSectionPosition = mLocalContactsSectionPosition + 1;
-            // display the local contacts
-            // -> if there are some
-            // -> the PIDS retrieval is in progress
-            // -> the user displays only the matrix id (if there is no contact with matrix Id, it could impossible to deselect the toggle
-            // -> always displays when there is something to search to let the user toggles the matrix id checkbox.
-            if ((contactBookList.size() > 0) || !ContactsManager.getInstance().arePIDsRetrieved() || mShowMatrixUserOnly || !TextUtils.isEmpty(mPattern)) {
-                // the contacts are sorted by alphabetical method
-                Collections.sort(contactBookList, ParticipantAdapterItem.alphaComparator);
-            }
-            mParticipantsListsList.add(contactBookList);
-        } else {
-            mKnownContactsSectionPosition = mFirstEntryPosition + 1;
-        }
+        mKnownContactsSectionPosition = mFirstEntryPosition + 1;
 
         if (!TextUtils.isEmpty(mPattern)) {
             if ((roomContactsList.size() > 0) && sort) {
@@ -773,9 +683,7 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
             Log.e(LOG_TAG, "getGroupTitle position " + position + " is invalid, mParticipantsListsList.size()=" + mParticipantsListsList.size());
             groupSize = 0;
         }
-        if (position == mLocalContactsSectionPosition) {
-            return mContext.getString(R.string.people_search_local_contacts, groupSize);
-        } else if (position == mKnownContactsSectionPosition) {
+        if (position == mKnownContactsSectionPosition) {
             final String titleExtra;
 
             if (TextUtils.isEmpty(mPattern) && couldHaveUnusedParticipants()) {
@@ -865,8 +773,7 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
             return convertView;
         }
 
-        loadingView.setVisibility(groupPosition == mLocalContactsSectionPosition && !ContactsManager.getInstance().arePIDsRetrieved() ?
-                View.VISIBLE : View.GONE);
+        loadingView.setVisibility(View.GONE);
 
         ImageView imageView = convertView.findViewById(R.id.heading_image);
         View matrixView = convertView.findViewById(R.id.people_header_matrix_contacts_layout);
@@ -897,8 +804,8 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
                     }
                 }
             }
-            // display a search toggle for the local contacts
-            matrixView.setVisibility(((groupPosition == mLocalContactsSectionPosition) && groupShouldBeExpanded) ? View.VISIBLE : View.GONE);
+            // hide a search toggle for the local contacts
+            matrixView.setVisibility(View.GONE);
 
             // matrix user checkbox
             CheckBox checkBox = convertView.findViewById(R.id.contacts_filter_checkbox);
@@ -1040,7 +947,6 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
     private void resetGroupExpansionPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.remove(KEY_EXPAND_STATE_SEARCH_LOCAL_CONTACTS_GROUP);
         editor.remove(KEY_EXPAND_STATE_SEARCH_MATRIX_CONTACTS_GROUP);
         editor.remove(KEY_FILTER_MATRIX_USERS_ONLY);
         editor.apply();
@@ -1055,9 +961,7 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
     private boolean isGroupExpanded(int groupPosition) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
-        if (groupPosition == mLocalContactsSectionPosition) {
-            return preferences.getBoolean(KEY_EXPAND_STATE_SEARCH_LOCAL_CONTACTS_GROUP, CommonActivityUtils.GROUP_IS_EXPANDED);
-        } else if (groupPosition == mKnownContactsSectionPosition) {
+        if (groupPosition == mKnownContactsSectionPosition) {
             return preferences.getBoolean(KEY_EXPAND_STATE_SEARCH_MATRIX_CONTACTS_GROUP, CommonActivityUtils.GROUP_IS_EXPANDED);
         }
 
@@ -1074,9 +978,7 @@ public class VectorParticipantsAdapter extends BaseExpandableListAdapter {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = preferences.edit();
 
-        if (groupPosition == mLocalContactsSectionPosition) {
-            editor.putBoolean(KEY_EXPAND_STATE_SEARCH_LOCAL_CONTACTS_GROUP, isExpanded);
-        } else if (groupPosition == mKnownContactsSectionPosition) {
+        if (groupPosition == mKnownContactsSectionPosition) {
             editor.putBoolean(KEY_EXPAND_STATE_SEARCH_MATRIX_CONTACTS_GROUP, isExpanded);
         }
 

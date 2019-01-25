@@ -205,7 +205,7 @@ public class VectorUnifiedSearchFragmentPagerAdapter extends FragmentPagerAdapte
                 break;
             }
             case R.string.tab_title_search_people: {
-                res = ((VectorSearchPeopleListFragment) fragment).isReady();
+                res = !TextUtils.isEmpty(pattern);
                 ((VectorSearchPeopleListFragment) fragment).searchPattern(pattern, listener);
                 break;
             }
@@ -217,25 +217,6 @@ public class VectorUnifiedSearchFragmentPagerAdapter extends FragmentPagerAdapte
         }
 
         return res;
-    }
-
-    /**
-     * Provide the permission request for a dedicated position
-     *
-     * @param position the position
-     * @return the required permission or 0 if none are required
-     */
-    public int getPermissionsRequest(int position) {
-        if (null != mFragmentsData) {
-            Pair<Integer, Fragment> pair = mFragmentsData.get(position);
-            int titleId = pair == null ? -1 : pair.first;
-
-            if (titleId == R.string.tab_title_search_people) {
-                return PermissionsToolsKt.PERMISSIONS_FOR_MEMBERS_SEARCH;
-            }
-        }
-
-        return 0;
     }
 
     /**

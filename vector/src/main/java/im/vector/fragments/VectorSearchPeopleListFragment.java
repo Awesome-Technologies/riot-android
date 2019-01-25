@@ -38,12 +38,9 @@ import java.util.Map;
 import butterknife.BindView;
 import im.vector.Matrix;
 import im.vector.R;
-import im.vector.activity.VectorBaseSearchActivity;
 import im.vector.activity.VectorMemberDetailsActivity;
 import im.vector.adapters.ParticipantAdapterItem;
 import im.vector.adapters.VectorParticipantsAdapter;
-import im.vector.contacts.Contact;
-import im.vector.contacts.ContactsManager;
 import im.vector.util.VectorUtils;
 
 public class VectorSearchPeopleListFragment extends VectorBaseFragment {
@@ -56,40 +53,6 @@ public class VectorSearchPeopleListFragment extends VectorBaseFragment {
     @BindView(R.id.search_people_list)
     ExpandableListView mPeopleListView;
     private VectorParticipantsAdapter mAdapter;
-
-    // contacts manager listener
-    // detect if a contact is a matrix user
-    private final ContactsManager.ContactsManagerListener mContactsListener = new ContactsManager.ContactsManagerListener() {
-        @Override
-        public void onRefresh() {
-            if (null != getActivity()) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (getActivity() instanceof VectorBaseSearchActivity.IVectorSearchActivity) {
-                            ((VectorBaseSearchActivity.IVectorSearchActivity) getActivity()).refreshSearch();
-                        }
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onContactPresenceUpdate(final Contact contact, final String matrixId) {
-        }
-
-        @Override
-        public void onPIDsUpdate() {
-            if (null != getActivity()) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdapter.onPIdsUpdate();
-                    }
-                });
-            }
-        }
-    };
 
     // refresh the presence asap
     private final MXEventListener mEventsListener = new MXEventListener() {
@@ -196,13 +159,6 @@ public class VectorSearchPeopleListFragment extends VectorBaseFragment {
     }
 
     /**
-     * @return true if the local search is ready to start.
-     */
-    public boolean isReady() {
-        return ContactsManager.getInstance().didPopulateLocalContacts() && mAdapter.isKnownMembersInitialized();
-    }
-
-    /**
      * Search a pattern in the room
      *
      * @param pattern                the pattern to search
@@ -210,12 +166,6 @@ public class VectorSearchPeopleListFragment extends VectorBaseFragment {
      */
     public void searchPattern(final String pattern, final MatrixMessageListFragment.OnSearchResultListener onSearchResultListener) {
         if (null == mPeopleListView) {
-            return;
-        }
-
-        // wait that the local contacts are populated
-        if (!ContactsManager.getInstance().didPopulateLocalContacts()) {
-            mAdapter.reset();
             return;
         }
 
@@ -245,13 +195,11 @@ public class VectorSearchPeopleListFragment extends VectorBaseFragment {
     public void onPause() {
         super.onPause();
         mSession.getDataHandler().removeListener(mEventsListener);
-        ContactsManager.getInstance().removeListener(mContactsListener);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mSession.getDataHandler().addListener(mEventsListener);
-        ContactsManager.getInstance().addListener(mContactsListener);
     }
 }

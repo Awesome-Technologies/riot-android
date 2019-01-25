@@ -18,16 +18,13 @@
 package im.vector.activity;
 
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.matrix.androidsdk.MXSession;
 import org.matrix.androidsdk.fragments.MatrixMessageListFragment;
@@ -36,8 +33,6 @@ import org.matrix.androidsdk.util.Log;
 import im.vector.Matrix;
 import im.vector.R;
 import im.vector.adapters.VectorUnifiedSearchFragmentPagerAdapter;
-import im.vector.contacts.ContactsManager;
-import im.vector.util.PermissionsToolsKt;
 
 /**
  * Displays a generic activity search method
@@ -124,12 +119,6 @@ public class VectorUnifiedSearchActivity extends VectorBaseSearchActivity implem
 
             @Override
             public void onPageSelected(int position) {
-                int permissions = mPagerAdapter.getPermissionsRequest(position);
-
-                if (0 != permissions) {
-                    // Check permission to access contacts
-                    PermissionsToolsKt.checkPermissions(permissions, VectorUnifiedSearchActivity.this, PermissionsToolsKt.PERMISSION_REQUEST_CODE);
-                }
                 searchAccordingToSelectedTab();
             }
 
@@ -255,24 +244,6 @@ public class VectorUnifiedSearchActivity extends VectorBaseSearchActivity implem
             // display the "no result" text only if the researched text is not empty
             mNoResultsTxtView.setVisibility(((0 == nbrMessages)
                     && !TextUtils.isEmpty(mPatternToSearchEditText.getText().toString())) ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (0 == permissions.length) {
-            Log.d(LOG_TAG, "## onRequestPermissionsResult(): cancelled " + requestCode);
-        } else if (requestCode == PermissionsToolsKt.PERMISSION_REQUEST_CODE) {
-            if (PackageManager.PERMISSION_GRANTED == grantResults[0]) {
-                Log.d(LOG_TAG, "## onRequestPermissionsResult(): READ_CONTACTS permission granted");
-                // trigger a contacts book refresh
-                ContactsManager.getInstance().refreshLocalContactsSnapshot();
-
-                searchAccordingToSelectedTab();
-            } else {
-                Log.d(LOG_TAG, "## onRequestPermissionsResult(): READ_CONTACTS permission not granted");
-                Toast.makeText(this, R.string.missing_permissions_warning, Toast.LENGTH_SHORT).show();
-            }
         }
     }
 

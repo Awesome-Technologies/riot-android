@@ -19,8 +19,6 @@ package im.vector.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -28,7 +26,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import org.matrix.androidsdk.MXPatterns;
 import org.matrix.androidsdk.listeners.MXEventListener;
@@ -51,9 +48,6 @@ import im.vector.Matrix;
 import im.vector.R;
 import im.vector.adapters.ParticipantAdapterItem;
 import im.vector.adapters.VectorParticipantsAdapter;
-import im.vector.contacts.Contact;
-import im.vector.contacts.ContactsManager;
-import im.vector.util.PermissionsToolsKt;
 import im.vector.util.VectorUtils;
 import im.vector.view.VectorAutoCompleteTextView;
 
@@ -93,33 +87,6 @@ public class VectorRoomInviteMembersActivity extends VectorBaseSearchActivity {
 
     // tell if a confirmation dialog must be displayed to validate the user ids list
     private boolean mAddConfirmationDialog;
-
-    // retrieve a matrix Id from an email
-    private final ContactsManager.ContactsManagerListener mContactsListener = new ContactsManager.ContactsManagerListener() {
-        @Override
-        public void onRefresh() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    onPatternUpdate(false);
-                }
-            });
-        }
-
-        @Override
-        public void onContactPresenceUpdate(final Contact contact, final String matrixId) {
-        }
-
-        @Override
-        public void onPIDsUpdate() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter.onPIdsUpdate();
-                }
-            });
-        }
-    };
 
     // refresh the presence asap
     private final MXEventListener mEventsListener = new MXEventListener() {
@@ -228,39 +195,18 @@ public class VectorRoomInviteMembersActivity extends VectorBaseSearchActivity {
                 return false;
             }
         });
-
-        // Check permission to access contacts
-        PermissionsToolsKt.checkPermissions(PermissionsToolsKt.PERMISSIONS_FOR_MEMBERS_SEARCH, this, PermissionsToolsKt.PERMISSION_REQUEST_CODE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mSession.getDataHandler().addListener(mEventsListener);
-        ContactsManager.getInstance().addListener(mContactsListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mSession.getDataHandler().removeListener(mEventsListener);
-        ContactsManager.getInstance().removeListener(mContactsListener);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (0 == permissions.length) {
-            Log.d(LOG_TAG, "## onRequestPermissionsResult(): cancelled " + requestCode);
-        } else if (requestCode == PermissionsToolsKt.PERMISSION_REQUEST_CODE) {
-            if (PackageManager.PERMISSION_GRANTED == grantResults[0]) {
-                Log.d(LOG_TAG, "## onRequestPermissionsResult(): READ_CONTACTS permission granted");
-                ContactsManager.getInstance().refreshLocalContactsSnapshot();
-                onPatternUpdate(false);
-            } else {
-                Log.d(LOG_TAG, "## onRequestPermissionsResult(): READ_CONTACTS permission not granted");
-                Toast.makeText(this, R.string.missing_permissions_warning, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     /**
@@ -273,14 +219,6 @@ public class VectorRoomInviteMembersActivity extends VectorBaseSearchActivity {
         // display a spinner while the other room members are listed
         if (!mAdapter.isKnownMembersInitialized()) {
             showWaitingView();
-        }
-
-        // wait that the local contacts are populated
-        if (!ContactsManager.getInstance().didPopulateLocalContacts()) {
-            Log.d(LOG_TAG, "## onPatternUpdate() : The local contacts are not yet populated");
-            mAdapter.reset();
-            showWaitingView();
-            return;
         }
 
         mAdapter.setSearchedPattern(pattern, null, new VectorParticipantsAdapter.OnParticipantsSearchListener() {

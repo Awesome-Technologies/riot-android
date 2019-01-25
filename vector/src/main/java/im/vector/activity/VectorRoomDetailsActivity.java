@@ -17,11 +17,8 @@
 
 package im.vector.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
@@ -35,11 +32,9 @@ import java.util.List;
 import butterknife.BindView;
 import im.vector.Matrix;
 import im.vector.R;
-import im.vector.contacts.ContactsManager;
 import im.vector.fragments.VectorRoomDetailsMembersFragment;
 import im.vector.fragments.VectorRoomSettingsFragment;
 import im.vector.fragments.VectorSearchRoomFilesListFragment;
-import im.vector.util.PermissionsToolsKt;
 
 /**
  * This class implements the room details screen, using a tab UI pattern.
@@ -81,9 +76,6 @@ public class VectorRoomDetailsActivity extends MXCActionBarActivity implements T
 
     private String mRoomId;
     private String mMatrixId;
-
-    // request the contacts permission
-    private boolean mIsContactsPermissionChecked;
 
     private final MXEventListener mEventListener = new MXEventListener() {
         @Override
@@ -172,28 +164,6 @@ public class VectorRoomDetailsActivity extends MXCActionBarActivity implements T
         if (null != mTabLayout) {
             int currentIndex = mTabLayout.getSelectedTabPosition();
             outState.putInt(KEY_STATE_CURRENT_TAB_INDEX, currentIndex);
-        }
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // Transmit to Fragment
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (0 == permissions.length) {
-            Log.d(LOG_TAG, "## onRequestPermissionsResult(): cancelled " + requestCode);
-        } else if (requestCode == PermissionsToolsKt.PERMISSION_REQUEST_CODE) {
-            if (Manifest.permission.READ_CONTACTS.equals(permissions[0])) {
-                if (PackageManager.PERMISSION_GRANTED == grantResults[0]) {
-                    Log.d(LOG_TAG, "## onRequestPermissionsResult(): READ_CONTACTS permission granted");
-                } else {
-                    Log.w(LOG_TAG, "## onRequestPermissionsResult(): READ_CONTACTS permission not granted");
-                    Toast.makeText(this, R.string.missing_permissions_warning, Toast.LENGTH_SHORT).show();
-                }
-
-                ContactsManager.getInstance().refreshLocalContactsSnapshot();
-            }
         }
     }
 
@@ -313,10 +283,6 @@ public class VectorRoomDetailsActivity extends MXCActionBarActivity implements T
             }
             mCurrentTabIndex = PEOPLE_TAB_INDEX;
 
-            if (!mIsContactsPermissionChecked) {
-                mIsContactsPermissionChecked = true;
-                PermissionsToolsKt.checkPermissions(PermissionsToolsKt.PERMISSIONS_FOR_MEMBER_DETAILS, this, PermissionsToolsKt.PERMISSION_REQUEST_CODE);
-            }
         } else if (tabIndex == SETTINGS_TAB_INDEX) {
             mRoomSettingsFragment = (VectorRoomSettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT_SETTINGS_ROOM_DETAIL);
             if (null == mRoomSettingsFragment) {

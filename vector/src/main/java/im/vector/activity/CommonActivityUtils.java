@@ -79,7 +79,6 @@ import im.vector.MyPresenceManager;
 import im.vector.R;
 import im.vector.VectorApp;
 import im.vector.adapters.VectorRoomsSelectionAdapter;
-import im.vector.contacts.ContactsManager;
 import im.vector.contacts.PIDsRetriever;
 import im.vector.extensions.MatrixSdkExtensionsKt;
 import im.vector.fragments.VectorUnknownDevicesFragment;
@@ -358,7 +357,6 @@ public class CommonActivityUtils {
 
                 // reset the contacts
                 PIDsRetriever.getInstance().reset();
-                ContactsManager.getInstance().reset();
 
                 MXMediaCache.clearThumbnailsCache(context);
 
@@ -426,7 +424,6 @@ public class CommonActivityUtils {
 
                 // reset the contacts
                 PIDsRetriever.getInstance().reset();
-                ContactsManager.getInstance().reset();
 
                 MXMediaCache.clearThumbnailsCache(context);
 

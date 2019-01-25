@@ -26,13 +26,11 @@ import android.graphics.Typeface
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.Settings
 import android.support.design.widget.TextInputEditText
 import android.support.v14.preference.SwitchPreference
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.*
 import android.text.Editable
@@ -53,7 +51,6 @@ import im.vector.Matrix
 import im.vector.R
 import im.vector.VectorApp
 import im.vector.activity.*
-import im.vector.contacts.ContactsManager
 import im.vector.extensions.getFingerprintHumanReadable
 import im.vector.extensions.withArgs
 import im.vector.preference.*
@@ -710,11 +707,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        // if the user toggles the contacts book permission
-        if (TextUtils.equals(key, ContactsManager.CONTACTS_BOOK_ACCESS_KEY)) {
-            // reset the current snapshot
-            ContactsManager.getInstance().clearSnapshot()
-        }
+
     }
 
     override fun onResume() {
@@ -1765,22 +1758,6 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     //==============================================================================================================
     // contacts management
     //==============================================================================================================
-
-    private fun setContactsPreferences() {
-        // Permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // on Android >= 23, use the system one
-            mContactSettingsCategory.removePreference(findPreference(ContactsManager.CONTACTS_BOOK_ACCESS_KEY))
-        }
-        // Phonebook country
-        mContactPhonebookCountryPreference.summary = PhoneNumberUtils.getHumanCountryCode(PhoneNumberUtils.getCountryCode(activity))
-
-        mContactPhonebookCountryPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = CountryPickerActivity.getIntent(activity, true)
-            startActivityForResult(intent, REQUEST_PHONEBOOK_COUNTRY)
-            true
-        }
-    }
 
     private fun onPhonebookCountryUpdate(data: Intent?) {
         if (data != null && data.hasExtra(CountryPickerActivity.EXTRA_OUT_COUNTRY_NAME)
