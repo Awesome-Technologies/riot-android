@@ -10,6 +10,10 @@
     <string name="bottom_action_rooms">Gruppen</string>
     <string name="bottom_action_settings">Einstellungen</string>
 
+    <!-- home sliding menu -->
+    <string name="room_sliding_menu_global_search">Globale Suche</string>
+    <string name="room_sliding_menu_historical">Archiv</string>
+
     <!-- Home screen -->
     <string name="home_filter_placeholder_home">Nach Gruppen suchen</string>
     <string name="home_filter_placeholder_rooms">Nach Gruppen suchen</string>

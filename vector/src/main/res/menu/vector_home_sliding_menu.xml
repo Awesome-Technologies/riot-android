@@ -3,14 +3,14 @@
 
     <group android:id="@+id/account_group">
         <item
-            android:id="@+id/sliding_menu_messages"
-            android:icon="@drawable/logo_transparent"
-            android:title="@string/room_sliding_menu_messages"/>
+            android:id="@+id/sliding_menu_global_search"
+            android:icon="@drawable/ic_material_search_white"
+            android:title="@string/room_sliding_menu_global_search"/>
 
         <item
-            android:id="@+id/sliding_menu_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/room_sliding_menu_settings"/>
+            android:id="@+id/sliding_menu_historical"
+            android:icon="@drawable/ic_material_history_white"
+            android:title="@string/room_sliding_menu_historical"/>
 
         <item
             android:id="@+id/sliding_menu_send_bug_report"

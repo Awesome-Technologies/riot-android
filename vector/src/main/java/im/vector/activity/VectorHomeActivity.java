@@ -744,27 +744,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // search in rooms content
-            case R.id.ic_action_global_search:
-                final Intent searchIntent = new Intent(this, VectorUnifiedSearchActivity.class);
-
-                if (R.id.bottom_action_people == mCurrentMenuId) {
-                    searchIntent.putExtra(VectorUnifiedSearchActivity.EXTRA_TAB_INDEX, VectorUnifiedSearchActivity.SEARCH_PEOPLE_TAB_POSITION);
-                }
-
-                startActivity(searchIntent);
-                return true;
-            case R.id.ic_action_historical:
-                startActivity(new Intent(this, HistoricalRoomsActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -1750,14 +1729,19 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             @Override
             public void onDrawerClosed(View view) {
                 switch (mSlidingMenuIndex) {
-                    case R.id.sliding_menu_messages: {
-                        // no action
+                    case R.id.sliding_menu_global_search: {
+                        final Intent searchIntent = new Intent(VectorHomeActivity.this, VectorUnifiedSearchActivity.class);
+
+                        if (R.id.bottom_action_people == mCurrentMenuId) {
+                            searchIntent.putExtra(VectorUnifiedSearchActivity.EXTRA_TAB_INDEX, VectorUnifiedSearchActivity.SEARCH_PEOPLE_TAB_POSITION);
+                        }
+
+                        startActivity(searchIntent);
                         break;
                     }
 
-                    case R.id.sliding_menu_settings: {
-                        // launch the settings activity
-                        startActivity(VectorSettingsActivity.getIntent(VectorHomeActivity.this, mSession.getMyUserId()));
+                    case R.id.sliding_menu_historical: {
+                        startActivity(new Intent(VectorHomeActivity.this, HistoricalRoomsActivity.class));
                         break;
                     }
 
@@ -1890,7 +1874,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                 @Override
                 public void onClick(View v) {
                     // Open the settings
-                    mSlidingMenuIndex = R.id.sliding_menu_settings;
+                    mBottomNavigationView.findViewById(R.id.bottom_action_settings).performClick();
                     mDrawerLayout.closeDrawers();
                 }
             });
@@ -1910,7 +1894,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                 @Override
                 public void onClick(View v) {
                     // Open the settings
-                    mSlidingMenuIndex = R.id.sliding_menu_settings;
+                    mBottomNavigationView.findViewById(R.id.bottom_action_settings).performClick();
                     mDrawerLayout.closeDrawers();
                 }
             });
