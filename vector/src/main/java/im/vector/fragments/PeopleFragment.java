@@ -50,6 +50,7 @@ import im.vector.R;
 import im.vector.activity.VectorMemberDetailsActivity;
 import im.vector.adapters.ParticipantAdapterItem;
 import im.vector.adapters.PeopleAdapter;
+import im.vector.ui.themes.ThemeUtils;
 import im.vector.util.HomeRoomsViewModel;
 import im.vector.util.VectorUtils;
 import im.vector.view.EmptyViewItemDecoration;
@@ -103,8 +104,11 @@ public class PeopleFragment extends AbsHomeFragment implements AbsHomeFragment.O
             }
         };
 
-        mPrimaryColor = ContextCompat.getColor(getActivity(), R.color.tab_people);
-        mSecondaryColor = ContextCompat.getColor(getActivity(), R.color.tab_people_secondary);
+        mPrimaryColor = ThemeUtils.INSTANCE.getColor(getActivity(), R.attr.vctr_tab_home);
+        mSecondaryColor = ThemeUtils.INSTANCE.getColor(getActivity(), R.attr.vctr_tab_home_secondary);
+
+        mFabColor = ContextCompat.getColor(getActivity(), R.color.tab_people);
+        mFabPressedColor = ContextCompat.getColor(getActivity(), R.color.tab_people_secondary);
 
         initViews();
 
