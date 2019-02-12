@@ -539,10 +539,10 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
      * Display the Floating Action Menu if it is required
      */
     private void showFloatingActionMenuIfRequired() {
-        if (mCurrentMenuId == R.id.bottom_action_settings) {
-            concealFloatingActionMenu();
-        } else {
+        if (mCurrentMenuId == R.id.bottom_action_people) {
             revealFloatingActionMenu();
+        } else {
+            concealFloatingActionMenu();
         }
     }
 
