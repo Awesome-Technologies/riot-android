@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.matrix.androidsdk.crypto.CryptoConstantsKt;
 import org.matrix.androidsdk.data.Room;
 import org.matrix.androidsdk.data.store.IMXStore;
 import org.matrix.androidsdk.rest.callback.ApiCallback;
@@ -70,13 +71,39 @@ public class VectorRoomCreationActivity extends MXCActionBarActivity {
     private final ApiCallback<String> mCreateDirectMessageCallBack = new ApiCallback<String>() {
         @Override
         public void onSuccess(final String roomId) {
-            Map<String, Object> params = new HashMap<>();
-            params.put(VectorRoomActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
-            params.put(VectorRoomActivity.EXTRA_ROOM_ID, roomId);
-            params.put(VectorRoomActivity.EXTRA_EXPAND_ROOM_HEADER, true);
+            Room room = mSession.getDataHandler().getRoom(roomId);
+            room.enableEncryptionWithAlgorithm(CryptoConstantsKt.MXCRYPTO_ALGORITHM_MEGOLM, new ApiCallback<Void>() {
 
-            Log.d(LOG_TAG, "## mCreateDirectMessageCallBack: onSuccess - start goToRoomPage");
-            CommonActivityUtils.goToRoomPage(VectorRoomCreationActivity.this, mSession, params);
+                private void onDone() {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put(VectorRoomActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
+                    params.put(VectorRoomActivity.EXTRA_ROOM_ID, roomId);
+                    params.put(VectorRoomActivity.EXTRA_EXPAND_ROOM_HEADER, true);
+
+                    Log.d(LOG_TAG, "## mCreateDirectMessageCallBack: onSuccess - start goToRoomPage");
+                    CommonActivityUtils.goToRoomPage(VectorRoomCreationActivity.this, mSession, params);
+                }
+
+                @Override
+                public void onSuccess(Void info) {
+                    onDone();
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    onDone();
+                }
+
+                @Override
+                public void onMatrixError(MatrixError e) {
+                    onDone();
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    onDone();
+                }
+            });
         }
 
         private void onError(final String message) {
