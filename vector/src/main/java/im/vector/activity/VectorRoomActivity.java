@@ -3828,16 +3828,10 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
             final List<DialogListItem> items = new ArrayList<>();
 
-            // Send file
-            items.add(DialogListItem.SendFile.INSTANCE);
-
             // Send voice
             if (PreferencesManager.isSendVoiceFeatureEnabled(this)) {
                 items.add(DialogListItem.SendVoice.INSTANCE);
             }
-
-            // Send sticker
-            items.add(DialogListItem.SendSticker.INSTANCE);
 
             // Camera
             if (PreferencesManager.useNativeCamera(this)) {
