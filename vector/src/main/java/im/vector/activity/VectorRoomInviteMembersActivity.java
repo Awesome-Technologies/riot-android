@@ -17,6 +17,7 @@
 
 package im.vector.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -173,6 +175,9 @@ public class VectorRoomInviteMembersActivity extends VectorBaseSearchActivity {
         // the user defines a
         if (null != mPatternToSearchEditText) {
             mPatternToSearchEditText.setHint(R.string.room_participants_invite_search_another_user);
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mPatternToSearchEditText, InputMethodManager.SHOW_IMPLICIT);
         }
 
         setWaitingView(findViewById(R.id.search_in_progress_view));
