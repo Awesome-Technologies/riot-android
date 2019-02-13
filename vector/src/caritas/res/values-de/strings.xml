@@ -52,6 +52,7 @@
 
     <!-- Search -->
     <string name="search_members_hint">Gruppen-Mitglieder filtern</string>
+    <string name="people_search_invite_hint">Gib mindestens einen Buchstaben ein, um die Suche zu starten.</string>
 
     <!-- Room recents -->
     <string name="room_recents_create_room">Gruppe erstellen</string>

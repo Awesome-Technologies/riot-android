@@ -26,6 +26,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import org.matrix.androidsdk.MXPatterns;
 import org.matrix.androidsdk.listeners.MXEventListener;
@@ -78,6 +79,10 @@ public class VectorRoomInviteMembersActivity extends VectorBaseSearchActivity {
     // main UI items
     @BindView(R.id.room_details_members_list)
     ExpandableListView mListView;
+
+    // main UI items
+    @BindView(R.id.search_invite_hint)
+    TextView mInviteHint;
 
     // participants list
     private List<ParticipantAdapterItem> mHiddenParticipantItems = new ArrayList<>();
@@ -216,6 +221,8 @@ public class VectorRoomInviteMembersActivity extends VectorBaseSearchActivity {
     protected void onPatternUpdate(boolean isTypingUpdate) {
         String pattern = mPatternToSearchEditText.getText().toString();
 
+        mInviteHint.setVisibility(pattern.isEmpty() ? View.VISIBLE : View.GONE);
+
         // display a spinner while the other room members are listed
         if (!mAdapter.isKnownMembersInitialized()) {
             showWaitingView();
@@ -341,85 +348,5 @@ public class VectorRoomInviteMembersActivity extends VectorBaseSearchActivity {
             setResult(RESULT_OK, intent);
             finish();
         }
-    }
-
-    /**
-     * Display the invitation dialog.
-     */
-    @OnClick(R.id.search_invite_by_id)
-    void displayInviteByUserId() {
-        View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_invite_by_id, null);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle(R.string.people_search_invite_by_id_dialog_title)
-                .setView(dialogLayout);
-
-        final VectorAutoCompleteTextView inviteTextView = dialogLayout.findViewById(R.id.invite_by_id_edit_text);
-        inviteTextView.initAutoCompletion(mSession);
-        inviteTextView.setProvideMatrixIdOnly(true);
-
-        final AlertDialog inviteDialog = builder
-                .setPositiveButton(R.string.invite, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // will be overridden to avoid dismissing the dialog while displaying the progress
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
-
-        final Button inviteButton = inviteDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-
-        if (null != inviteButton) {
-            inviteButton.setEnabled(false);
-
-            inviteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String text = inviteTextView.getText().toString();
-                    List<ParticipantAdapterItem> items = new ArrayList<>();
-                    List<Pattern> patterns = Arrays.asList(MXPatterns.PATTERN_CONTAIN_MATRIX_USER_IDENTIFIER, android.util.Patterns.EMAIL_ADDRESS);
-
-                    for (Pattern pattern : patterns) {
-                        Matcher matcher = pattern.matcher(text);
-                        while (matcher.find()) {
-                            try {
-                                String userId = text.substring(matcher.start(0), matcher.end(0));
-                                items.add(new ParticipantAdapterItem(userId, null, userId, true));
-                            } catch (Exception e) {
-                                Log.e(LOG_TAG, "## displayInviteByUserId() " + e.getMessage(), e);
-                            }
-                        }
-                    }
-
-                    finish(items);
-
-                    inviteDialog.dismiss();
-                }
-            });
-        }
-
-        inviteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (null != inviteButton) {
-                    String text = inviteTextView.getText().toString();
-
-                    boolean containMXID = MXPatterns.PATTERN_CONTAIN_MATRIX_USER_IDENTIFIER.matcher(text).find();
-                    boolean containEmailAddress = android.util.Patterns.EMAIL_ADDRESS.matcher(text).find();
-
-                    inviteButton.setEnabled(containMXID || containEmailAddress);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 }

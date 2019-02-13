@@ -51,6 +51,7 @@
     <!-- Search -->
     <string name="search_members_hint">Filter group members</string>
     <string name="tab_title_search_rooms">GROUPS</string>
+    <string name="people_search_invite_hint">Type at least one character to start the search.</string>
 
     <!-- Room recents -->
     <string name="room_recents_conversations">GROUPS</string>
