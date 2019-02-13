@@ -54,7 +54,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,9 +67,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.jetbrains.annotations.NotNull;
 import org.matrix.androidsdk.MXDataHandler;
@@ -202,20 +199,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     @BindView(R.id.home_keys_backup_banner)
     KeysBackupBanner mKeysBackupBanner;
 
-    @BindView(R.id.floating_action_menu)
-    FloatingActionsMenu mFloatingActionsMenu;
-
-    @BindView(com.getbase.floatingactionbutton.R.id.fab_expand_menu_button)
-    AddFloatingActionButton mFabMain;
-
     @BindView(R.id.button_start_chat)
     FloatingActionButton mFabStartChat;
-
-    @BindView(R.id.button_create_room)
-    FloatingActionButton mFabCreateRoom;
-
-    @BindView(R.id.button_join_room)
-    FloatingActionButton mFabJoinRoom;
 
     // mFloatingActionButton is hidden for 1s when there is scroll. This Runnable will show it again
     private Runnable mShowFloatingActionButtonRunnable;
@@ -538,11 +523,11 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     /**
      * Display the Floating Action Menu if it is required
      */
-    private void showFloatingActionMenuIfRequired() {
+    private void showFloatingActionButtonIfRequired() {
         if (mCurrentMenuId == R.id.bottom_action_people) {
-            revealFloatingActionMenu();
+            revealFloatingActionButton();
         } else {
-            concealFloatingActionMenu();
+            concealFloatingActionButton();
         }
     }
 
@@ -579,7 +564,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             addEventsListener();
         }
 
-        showFloatingActionMenuIfRequired();
+        showFloatingActionButtonIfRequired();
 
         refreshSlidingMenu();
 
@@ -790,11 +775,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             return;
         }
 
-        if (mFloatingActionsMenu.isExpanded()) {
-            mFloatingActionsMenu.collapse();
-            return;
-        }
-
         // Clear backstack
         mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
@@ -825,8 +805,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             removeEventsListener();
         }
 
-        if (mShowFloatingActionButtonRunnable != null && mFloatingActionsMenu != null) {
-            mFloatingActionsMenu.removeCallbacks(mShowFloatingActionButtonRunnable);
+        if (mShowFloatingActionButtonRunnable != null && mFabStartChat != null) {
+            mFabStartChat.removeCallbacks(mShowFloatingActionButtonRunnable);
             mShowFloatingActionButtonRunnable = null;
         }
 
@@ -948,8 +928,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                 break;
         }
 
-        if (mShowFloatingActionButtonRunnable != null && mFloatingActionsMenu != null) {
-            mFloatingActionsMenu.removeCallbacks(mShowFloatingActionButtonRunnable);
+        if (mShowFloatingActionButtonRunnable != null && mFabStartChat != null) {
+            mFabStartChat.removeCallbacks(mShowFloatingActionButtonRunnable);
             mShowFloatingActionButtonRunnable = null;
         }
 
@@ -958,7 +938,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
         mCurrentMenuId = item.getItemId();
 
-        showFloatingActionMenuIfRequired();
+        showFloatingActionButtonIfRequired();
 
         if (fragment != null) {
             resetFilter();
@@ -987,6 +967,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                                final int fabPressedColor) {
         // Apply primary color
         mToolbar.setBackgroundColor(primaryColor);
+
         mVectorPendingCallView.updateBackgroundColor(primaryColor);
         mSyncInProgressView.setBackgroundColor(primaryColor);
 
@@ -1006,28 +987,11 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             getWindow().setStatusBarColor(_secondaryColor);
         }
 
+        mFabStartChat.setColorNormal(primaryColor);
+        mFabStartChat.setColorPressed(_secondaryColor);
+
         // FAB button
         if (fabColor != -1) {
-            Class menuClass = FloatingActionsMenu.class;
-            try {
-                Field normal = menuClass.getDeclaredField("mAddButtonColorNormal");
-                normal.setAccessible(true);
-                Field pressed = menuClass.getDeclaredField("mAddButtonColorPressed");
-                pressed.setAccessible(true);
-
-                normal.set(mFloatingActionsMenu, fabColor);
-                pressed.set(mFloatingActionsMenu, fabPressedColor);
-
-                mFabMain.setColorNormal(fabColor);
-                mFabMain.setColorPressed(fabPressedColor);
-            } catch (Exception ignored) {
-
-            }
-
-            mFabJoinRoom.setColorNormal(fabColor);
-            mFabJoinRoom.setColorPressed(fabPressedColor);
-            mFabCreateRoom.setColorNormal(fabColor);
-            mFabCreateRoom.setColorPressed(fabPressedColor);
             mFabStartChat.setColorNormal(fabColor);
             mFabStartChat.setColorPressed(fabPressedColor);
         }
@@ -1076,50 +1040,10 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setOnQueryTextListener(this);
 
-        // Set here background of labels, cause we cannot set attr color in drawable on API < 21
-        Class menuClass = FloatingActionsMenu.class;
-        try {
-            Field fabLabelStyle = menuClass.getDeclaredField("mLabelsStyle");
-            fabLabelStyle.setAccessible(true);
-            fabLabelStyle.set(mFloatingActionsMenu, ThemeUtils.INSTANCE.getResourceId(this, R.style.Floating_Actions_Menu));
-
-            Method createLabels = menuClass.getDeclaredMethod("createLabels");
-            createLabels.setAccessible(true);
-            createLabels.invoke(mFloatingActionsMenu);
-        } catch (Exception ignored) {
-
-        }
-
         mFabStartChat.setIconDrawable(ThemeUtils.INSTANCE.tintDrawableWithColor(
-                ContextCompat.getDrawable(this, R.drawable.ic_person_black_24dp),
-                ContextCompat.getColor(this, android.R.color.white)
-        ));
-
-        mFabCreateRoom.setIconDrawable(ThemeUtils.INSTANCE.tintDrawableWithColor(
                 ContextCompat.getDrawable(this, R.drawable.ic_add_white),
                 ContextCompat.getColor(this, android.R.color.white)
         ));
-
-        mFabJoinRoom.setIconDrawable(ThemeUtils.INSTANCE.tintDrawableWithColor(
-                ContextCompat.getDrawable(this, R.drawable.riot_tab_rooms),
-                ContextCompat.getColor(this, android.R.color.white)
-        ));
-
-        mFloatingActionsMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
-            @Override
-            public void onMenuExpanded() {
-                touchGuard.animate().alpha(0.6f);
-
-                touchGuard.setClickable(true);
-            }
-
-            @Override
-            public void onMenuCollapsed() {
-                touchGuard.animate().alpha(0);
-
-                touchGuard.setClickable(false);
-            }
-        });
 
         touchGuard.setClickable(false);
     }
@@ -1290,16 +1214,15 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
      * *********************************************************************************************
      */
 
-    private void revealFloatingActionMenu() {
-        if (null != mFloatingActionsMenu) {
-            mFloatingActionsMenu.collapse();
-            mFloatingActionsMenu.setVisibility(View.VISIBLE);
-            ViewPropertyAnimator animator = mFabMain.animate().scaleX(1).scaleY(1).alpha(1).setListener(new AnimatorListenerAdapter() {
+    private void revealFloatingActionButton() {
+        if (null != mFabStartChat) {
+            mFabStartChat.setVisibility(View.VISIBLE);
+            ViewPropertyAnimator animator = mFabStartChat.animate().scaleX(1).scaleY(1).alpha(1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    if (mFloatingActionsMenu != null) {
-                        mFloatingActionsMenu.setVisibility(View.VISIBLE);
+                    if (mFabStartChat != null) {
+                        mFabStartChat.setVisibility(View.VISIBLE);
                     }
                 }
             });
@@ -1307,15 +1230,14 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         }
     }
 
-    private void concealFloatingActionMenu() {
-        if (null != mFloatingActionsMenu) {
-            mFloatingActionsMenu.collapse();
-            ViewPropertyAnimator animator = mFabMain.animate().scaleX(0).scaleY(0).alpha(0).setListener(new AnimatorListenerAdapter() {
+    private void concealFloatingActionButton() {
+        if (null != mFabStartChat) {
+            ViewPropertyAnimator animator = mFabStartChat.animate().scaleX(0).scaleY(0).alpha(0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    if (mFloatingActionsMenu != null) {
-                        mFloatingActionsMenu.setVisibility(View.GONE);
+                    if (mFabStartChat != null) {
+                        mFabStartChat.setVisibility(View.GONE);
                     }
                 }
             });
@@ -1335,34 +1257,34 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             // before the new one is plugged.
             // for example, if the switch is performed while the current list is scrolling.
             if (TextUtils.equals(mCurrentFragmentTag, fragmentTag)) {
-                if (null != mFloatingActionsMenu) {
+                if (null != mFabStartChat) {
                     if (mShowFloatingActionButtonRunnable == null) {
                         // Avoid repeated calls.
-                        concealFloatingActionMenu();
+                        concealFloatingActionButton();
                         mShowFloatingActionButtonRunnable = new Runnable() {
                             @Override
                             public void run() {
                                 mShowFloatingActionButtonRunnable = null;
-                                showFloatingActionMenuIfRequired();
+                                showFloatingActionButtonIfRequired();
                             }
                         };
                     } else {
-                        mFloatingActionsMenu.removeCallbacks(mShowFloatingActionButtonRunnable);
+                        mFabStartChat.removeCallbacks(mShowFloatingActionButtonRunnable);
                     }
 
                     try {
-                        mFloatingActionsMenu.postDelayed(mShowFloatingActionButtonRunnable, 1000);
+                        mFabStartChat.postDelayed(mShowFloatingActionButtonRunnable, 1000);
                     } catch (Throwable throwable) {
                         Log.e(LOG_TAG, "failed to postDelayed " + throwable.getMessage(), throwable);
 
-                        if (mShowFloatingActionButtonRunnable != null && mFloatingActionsMenu != null) {
-                            mFloatingActionsMenu.removeCallbacks(mShowFloatingActionButtonRunnable);
+                        if (mShowFloatingActionButtonRunnable != null && mFabStartChat != null) {
+                            mFabStartChat.removeCallbacks(mShowFloatingActionButtonRunnable);
                         }
 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                showFloatingActionMenuIfRequired();
+                                showFloatingActionButtonIfRequired();
                             }
                         });
 
@@ -1378,7 +1300,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
      * @return fab view
      */
     public View getFloatingActionButton() {
-        return mFabMain;
+        return mFabStartChat;
     }
 
     /**
@@ -1388,156 +1310,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         final Intent settingsIntent = new Intent(VectorHomeActivity.this, VectorRoomCreationActivity.class);
         settingsIntent.putExtra(MXCActionBarActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
         startActivity(settingsIntent);
-    }
-
-    /**
-     * Create a room and open the dedicated activity
-     */
-    private void createRoom() {
-        showWaitingView();
-        mSession.createRoom(new SimpleApiCallback<String>(VectorHomeActivity.this) {
-            @Override
-            public void onSuccess(final String roomId) {
-                mToolbar.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        hideWaitingView();
-
-                        Map<String, Object> params = new HashMap<>();
-                        params.put(VectorRoomActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
-                        params.put(VectorRoomActivity.EXTRA_ROOM_ID, roomId);
-                        params.put(VectorRoomActivity.EXTRA_EXPAND_ROOM_HEADER, true);
-                        CommonActivityUtils.goToRoomPage(VectorHomeActivity.this, mSession, params);
-                    }
-                });
-            }
-
-            private void onError(final String message) {
-                mToolbar.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (null != message) {
-                            Toast.makeText(VectorHomeActivity.this, message, Toast.LENGTH_LONG).show();
-                        }
-                        hideWaitingView();
-                    }
-                });
-            }
-
-            @Override
-            public void onNetworkError(Exception e) {
-                onError(e.getLocalizedMessage());
-            }
-
-            @Override
-            public void onMatrixError(final MatrixError e) {
-                if (MatrixError.M_CONSENT_NOT_GIVEN.equals(e.errcode)) {
-                    getConsentNotGivenHelper().displayDialog(e);
-                } else {
-                    onError(e.getLocalizedMessage());
-                }
-            }
-
-            @Override
-            public void onUnexpectedError(final Exception e) {
-                onError(e.getLocalizedMessage());
-            }
-        });
-    }
-
-    /**
-     * Offer to join a room by alias or Id
-     */
-    private void joinARoom() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View dialogView = inflater.inflate(R.layout.dialog_join_room_by_id, null);
-
-        final EditText textInput = dialogView.findViewById(R.id.join_room_edit_text);
-        textInput.setTextColor(ThemeUtils.INSTANCE.getColor(this, android.R.attr.textColorPrimary));
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        // set dialog layout
-        alertDialogBuilder
-                .setTitle(R.string.room_recents_join_room_title)
-                .setView(dialogView);
-
-        // set dialog message
-        AlertDialog alertDialog = alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton(R.string.join,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                showWaitingView();
-
-                                String text = textInput.getText().toString().trim();
-
-                                mSession.joinRoom(text, new ApiCallback<String>() {
-                                    @Override
-                                    public void onSuccess(String roomId) {
-                                        hideWaitingView();
-
-                                        Map<String, Object> params = new HashMap<>();
-                                        params.put(VectorRoomActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
-                                        params.put(VectorRoomActivity.EXTRA_ROOM_ID, roomId);
-                                        CommonActivityUtils.goToRoomPage(VectorHomeActivity.this, mSession, params);
-                                    }
-
-                                    private void onError(final String message) {
-                                        mToolbar.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if (null != message) {
-                                                    Toast.makeText(VectorHomeActivity.this, message, Toast.LENGTH_LONG).show();
-                                                }
-                                                hideWaitingView();
-                                            }
-                                        });
-                                    }
-
-                                    @Override
-                                    public void onNetworkError(Exception e) {
-                                        onError(e.getLocalizedMessage());
-                                    }
-
-                                    @Override
-                                    public void onMatrixError(final MatrixError e) {
-                                        if (MatrixError.M_CONSENT_NOT_GIVEN.equals(e.errcode)) {
-                                            getConsentNotGivenHelper().displayDialog(e);
-                                        } else {
-                                            onError(e.getLocalizedMessage());
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onUnexpectedError(final Exception e) {
-                                        onError(e.getLocalizedMessage());
-                                    }
-                                });
-                            }
-                        })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
-
-        final Button joinButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        if (null != joinButton) {
-            joinButton.setEnabled(false);
-            textInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String text = textInput.getText().toString().trim();
-                    joinButton.setEnabled(MXPatterns.isRoomId(text) || MXPatterns.isRoomAlias(text));
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
-        }
     }
 
     /*
@@ -2208,25 +1980,11 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
     @OnClick(R.id.floating_action_menu_touch_guard)
     void touchGuardClicked() {
-        mFloatingActionsMenu.collapse();
     }
 
     @OnClick(R.id.button_start_chat)
     void fabMenuStartChat() {
-        mFloatingActionsMenu.collapse();
         invitePeopleToNewRoom();
-    }
-
-    @OnClick(R.id.button_create_room)
-    void fabMenuCreateRoom() {
-        mFloatingActionsMenu.collapse();
-        createRoom();
-    }
-
-    @OnClick(R.id.button_join_room)
-    void fabMenuJoinRoom() {
-        mFloatingActionsMenu.collapse();
-        joinARoom();
     }
 
     //==============================================================================================================
