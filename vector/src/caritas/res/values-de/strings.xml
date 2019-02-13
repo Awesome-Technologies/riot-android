@@ -40,9 +40,9 @@
     <!--  Chat participants -->
     <string name="room_participants_leave_prompt_title">Gruppe verlassen</string>
     <string name="room_participants_leave_prompt_msg">Bist du sicher, dass du die Gruppe verlassen möchtest?</string>
-
     <string name="room_participants_action_leave">Diese Gruppe verlassen</string>
     <string name="room_participants_action_remove">Aus dieser Gruppe entfernen</string>
+    <string name="room_participants_invite_search_another_user">Name</string>
 
     <!--  Chat -->
     <string name="room_do_not_have_permission_to_post">Du bist nicht berechtigt, in diese Gruppe zu schreiben</string>
