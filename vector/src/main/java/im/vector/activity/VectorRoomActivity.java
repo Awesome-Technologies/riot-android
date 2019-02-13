@@ -2643,7 +2643,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         }
 
         if ((null == sRoomPreviewData) && (null == mEventId) && canSendMessages(mRoom.getState())) {
-            boolean isCallSupported = mRoom.canPerformCall() && mSession.isVoipCallSupported();
+            boolean isCallSupported = false;
             IMXCall call = CallsManager.getSharedInstance().getActiveCall();
             Widget activeWidget = mVectorOngoingConferenceCallView.getActiveWidget();
 
