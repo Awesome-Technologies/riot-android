@@ -409,6 +409,18 @@ public class RoomsFragment extends AbsHomeFragment implements AbsHomeFragment.On
                     @Override
                     public void onSuccess(List<PublicRoom> publicRooms) {
                         if (isAdded()) {
+                            // Filter out rooms the user is already in
+                            List<PublicRoom> deleteList = new ArrayList<>();
+                            for (Room room : mRooms) {
+                                for (PublicRoom publicRoom: publicRooms) {
+                                    if (room.getRoomId().equals(publicRoom.roomId)) {
+                                        deleteList.add(publicRoom);
+                                        break;
+                                    }
+                                }
+                            }
+                            publicRooms.removeAll(deleteList);
+
                             mAdapter.setNoMorePublicRooms(publicRooms.size() < PublicRoomsManager.PUBLIC_ROOMS_LIMIT);
                             mAdapter.setPublicRooms(publicRooms);
                             addPublicRoomsListener();
