@@ -2502,10 +2502,6 @@ public class VectorMessagesAdapter extends AbstractMessagesAdapter {
             menu.getItem(i).setVisible(false);
         }
 
-        menu.findItem(R.id.ic_action_view_source).setVisible(true);
-        menu.findItem(R.id.ic_action_view_decrypted_source).setVisible(event.isEncrypted() && (null != event.getClearEvent()));
-        menu.findItem(R.id.ic_action_vector_permalink).setVisible(true);
-
         if (!TextUtils.isEmpty(textMsg)) {
             menu.findItem(R.id.ic_action_vector_copy).setVisible(true);
             menu.findItem(R.id.ic_action_vector_quote).setVisible(true);
@@ -2551,23 +2547,9 @@ public class VectorMessagesAdapter extends AbstractMessagesAdapter {
                 Message message = JsonUtils.toMessage(event.getContentAsJsonObject());
 
                 // share / forward the message
-                menu.findItem(R.id.ic_action_vector_share).setVisible(!mIsRoomEncrypted);
                 menu.findItem(R.id.ic_action_vector_forward).setVisible(true);
-
-                // save the media in the downloads directory
-                if (Message.MSGTYPE_IMAGE.equals(message.msgtype)
-                        || Message.MSGTYPE_VIDEO.equals(message.msgtype)
-                        || Message.MSGTYPE_FILE.equals(message.msgtype)) {
-                    menu.findItem(R.id.ic_action_vector_save).setVisible(true);
-                }
-
-                // offer to report a message content
-                menu.findItem(R.id.ic_action_vector_report).setVisible(!mIsPreviewMode && !TextUtils.equals(event.sender, mSession.getMyUserId()));
             }
         }
-
-        // e2e
-        menu.findItem(R.id.ic_action_device_verification).setVisible(mE2eIconByEventId.containsKey(event.eventId));
 
         // display the menu
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

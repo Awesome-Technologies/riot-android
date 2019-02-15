@@ -155,7 +155,6 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
     // onMediaAction actions
     // private static final int ACTION_VECTOR_SHARE = R.id.ic_action_vector_share;
     private static final int ACTION_VECTOR_FORWARD = R.id.ic_action_vector_forward;
-    private static final int ACTION_VECTOR_SAVE = R.id.ic_action_vector_save;
     static final int ACTION_VECTOR_OPEN = 123456;
 
     private VectorImageGetter mVectorImageGetter;
@@ -657,7 +656,7 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
                 }
                 ((VectorRoomActivity) attachedActivity).insertQuoteInTextEditor(quotedTextMsg + "\n\n");
             }
-        } else if ((action == R.id.ic_action_vector_share) || (action == R.id.ic_action_vector_forward) || (action == R.id.ic_action_vector_save)) {
+        } else if (action == R.id.ic_action_vector_forward) {
             //
             Message message = JsonUtils.toMessage(event.getContent());
 
@@ -691,7 +690,7 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
             // media file ?
             if (null != mediaUrl) {
                 onMediaAction(action, mediaUrl, mediaMimeType, message.body, encryptedFileInfo);
-            } else if ((action == R.id.ic_action_vector_share) || (action == R.id.ic_action_vector_forward) || (action == R.id.ic_action_vector_quote)) {
+            } else if (action == R.id.ic_action_vector_forward) {
                 // use the body
                 final Intent sendIntent = new Intent();
 
@@ -705,36 +704,6 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
                     startActivity(sendIntent);
                 }
             }
-        } else if (action == R.id.ic_action_vector_permalink) {
-            SystemUtilsKt.copyToClipboard(getActivity(), PermalinkUtils.createPermalink(event));
-        } else if (action == R.id.ic_action_vector_report) {
-            onMessageReport(event);
-        } else if ((action == R.id.ic_action_view_source) || (action == R.id.ic_action_view_decrypted_source)) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_event_content, null);
-                    TextView textview = view.findViewById(R.id.event_content_text_view);
-
-                    Gson gson = new GsonBuilder()
-                            .disableHtmlEscaping()
-                            .setPrettyPrinting()
-                            .create();
-
-                    textview.setText(gson.toJson(JsonUtils.toJson((action == R.id.ic_action_view_source) ? event : event.getClearEvent())));
-
-                    new AlertDialog.Builder(getActivity())
-                            .setView(view)
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            })
-                            .show();
-                }
-            });
-        } else if (action == R.id.ic_action_device_verification) {
-            onE2eIconClick(event, mAdapter.getDeviceInfo(event.eventId));
         } else if (action == R.id.ic_action_re_request_e2e_key) {
             mSession.getCrypto().reRequestRoomKeyForEvent(event);
 
@@ -842,18 +811,14 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
                         return;
                     }
 
-                    if (menuAction == ACTION_VECTOR_SAVE || menuAction == ACTION_VECTOR_OPEN) {
+                    if (menuAction == ACTION_VECTOR_OPEN) {
                         if (PermissionsToolsKt.checkPermissions(PermissionsToolsKt.PERMISSIONS_FOR_WRITING_FILES,
                                 VectorMessageListFragment.this, PermissionsToolsKt.PERMISSION_REQUEST_CODE)) {
                             CommonActivityUtils.saveMediaIntoDownloads(getActivity(), file, trimmedFileName, mediaMimeType, new SimpleApiCallback<String>() {
                                 @Override
                                 public void onSuccess(String savedMediaPath) {
                                     if (null != savedMediaPath) {
-                                        if (menuAction == ACTION_VECTOR_SAVE) {
-                                            Toast.makeText(getActivity(), getText(R.string.media_slider_saved), Toast.LENGTH_LONG).show();
-                                        } else {
-                                            ExternalApplicationsUtilKt.openMedia(getActivity(), savedMediaPath, mediaMimeType);
-                                        }
+                                        ExternalApplicationsUtilKt.openMedia(getActivity(), savedMediaPath, mediaMimeType);
                                     }
                                 }
                             });
