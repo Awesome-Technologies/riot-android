@@ -578,6 +578,12 @@ public class RoomUtils {
                 if (null != item) {
                     item.setTitle(R.string.forget_room);
                 }
+            } else if (room.isDirect()) {
+                item = popup.getMenu().findItem(R.id.ic_action_select_remove);
+
+                if (null != item) {
+                    item.setVisible(false);
+                }
             }
 
             if (moreActionListener != null) {
