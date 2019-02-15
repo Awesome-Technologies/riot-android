@@ -3749,7 +3749,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
                 canUpdateTitle = powerLevel >= powerLevels.minimumPowerLevelForSendingEventAsStateEvent(Event.EVENT_TYPE_STATE_ROOM_NAME);
             }
 
-            if (canUpdateTitle) {
+            if (canUpdateTitle && !mRoom.isDirect()) {
                 onRoomTitleClick();
             } else {
                 launchRoomDetails(VectorRoomDetailsActivity.SETTINGS_TAB_INDEX);
