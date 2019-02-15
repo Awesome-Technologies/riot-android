@@ -20,7 +20,7 @@
 
     <!-- Rooms fragment -->
     <string name="rooms_header">Groups</string>
-    <string name="rooms_directory_header">Group directory</string>
+    <string name="rooms_directory_header">Public Groups</string>
     <string name="no_room_placeholder">No groups</string>
     <string name="no_public_room_placeholder">No public groups available</string>
 
