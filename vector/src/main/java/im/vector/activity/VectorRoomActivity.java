@@ -1523,7 +1523,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             }
             // kicked / banned room
             if (leaveRoomMenuItem != null) {
-                leaveRoomMenuItem.setVisible(member != null && !member.kickedOrBanned());
+                leaveRoomMenuItem.setVisible(member != null && !member.kickedOrBanned() && !mRoom.isDirect());
             }
         } else {
             // Hide all items
