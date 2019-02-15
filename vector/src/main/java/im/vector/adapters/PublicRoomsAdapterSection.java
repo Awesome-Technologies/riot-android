@@ -26,10 +26,6 @@ import java.util.List;
 
 class PublicRoomsAdapterSection extends AdapterSection<PublicRoom> {
 
-    // estimated public rooms count
-    // the server should provide this value
-    private int mEstimatedPublicRoomsCount = -1;
-
     // tell if the
     private boolean mHasMoreResults;
 
@@ -42,11 +38,7 @@ class PublicRoomsAdapterSection extends AdapterSection<PublicRoom> {
     protected void updateTitle() {
         String newTitle;
         if (TextUtils.isEmpty(mCurrentFilterPattern)) {
-            if (mEstimatedPublicRoomsCount > 0) {
-                newTitle = mTitle.concat("   " + mEstimatedPublicRoomsCount);
-            } else {
-                newTitle = mTitle;
-            }
+            newTitle = mTitle;
         } else if (getNbItems() > 0) {
             if (mHasMoreResults) {
                 newTitle = mTitle.concat("   " + getNbItems());
@@ -58,16 +50,6 @@ class PublicRoomsAdapterSection extends AdapterSection<PublicRoom> {
         }
 
         formatTitle(newTitle);
-    }
-
-    /**
-     * Update the extimated rooms count.
-     *
-     * @param estimatedValue the estimated count
-     */
-    public void setEstimatedPublicRoomsCount(int estimatedValue) {
-        mEstimatedPublicRoomsCount = estimatedValue;
-        mHasMoreResults = false;
     }
 
     /**

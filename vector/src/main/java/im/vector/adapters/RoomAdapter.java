@@ -176,10 +176,6 @@ public class RoomAdapter extends AbsAdapter {
         updateSections();
     }
 
-    public void setEstimatedPublicRoomsCount(int estimatedCount) {
-        mPublicRoomsSection.setEstimatedPublicRoomsCount(estimatedCount);
-    }
-
     public void setNoMorePublicRooms(boolean noMore) {
         mPublicRoomsSection.setHasMoreResults(noMore);
     }

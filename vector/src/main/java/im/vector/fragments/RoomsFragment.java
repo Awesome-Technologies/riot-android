@@ -69,9 +69,6 @@ public class RoomsFragment extends AbsHomeFragment implements AbsHomeFragment.On
     //
     private static final String SELECTED_ROOM_DIRECTORY = "SELECTED_ROOM_DIRECTORY";
 
-    // estimated number of public rooms
-    private Integer mEstimatedPublicRoomCount = null;
-
     @BindView(R.id.recyclerview)
     RecyclerView mRecycler;
 
@@ -138,7 +135,6 @@ public class RoomsFragment extends AbsHomeFragment implements AbsHomeFragment.On
     @Override
     public void onPause() {
         super.onPause();
-        mEstimatedPublicRoomCount = null;
         mRecycler.removeOnScrollListener(mScrollListener);
     }
 
@@ -405,56 +401,6 @@ public class RoomsFragment extends AbsHomeFragment implements AbsHomeFragment.On
         showPublicRoomsLoadingView();
 
         mAdapter.setNoMorePublicRooms(false);
-
-        if (null == mEstimatedPublicRoomCount) {
-            final EventsRestClient eventsRestClient = mSession != null ? mSession.getEventsApiClient() : null;
-            if (eventsRestClient == null) {
-                hidePublicRoomsLoadingView();
-                return;
-            }
-            eventsRestClient.getPublicRoomsCount(
-                    mSelectedRoomDirectory.getHomeServer(),
-                    mSelectedRoomDirectory.getThirdPartyInstanceId(),
-                    mSelectedRoomDirectory.isIncludedAllNetworks(),
-                    new ApiCallback<Integer>() {
-                        private void onDone(int count) {
-                            mEstimatedPublicRoomCount = count;
-                            mAdapter.setEstimatedPublicRoomsCount(count);
-
-                            // next step
-                            initPublicRooms(displayOnTop);
-                        }
-
-                        @Override
-                        public void onSuccess(Integer count) {
-                            if (null != count) {
-                                onDone(count);
-                            } else {
-                                onDone(-1);
-                            }
-                        }
-
-                        @Override
-                        public void onNetworkError(Exception e) {
-                            Log.e(LOG_TAG, "## startPublicRoomsSearch() : getPublicRoomsCount failed " + e.getMessage(), e);
-                            onDone(-1);
-                        }
-
-                        @Override
-                        public void onMatrixError(MatrixError e) {
-                            Log.e(LOG_TAG, "## startPublicRoomsSearch() : getPublicRoomsCount failed " + e.getMessage());
-                            onDone(-1);
-                        }
-
-                        @Override
-                        public void onUnexpectedError(Exception e) {
-                            Log.e(LOG_TAG, "## startPublicRoomsSearch() : getPublicRoomsCount failed " + e.getMessage(), e);
-                            onDone(-1);
-                        }
-                    }
-            );
-            return;
-        }
 
         PublicRoomsManager.getInstance().startPublicRoomsSearch(mSelectedRoomDirectory.getHomeServer(),
                 mSelectedRoomDirectory.getThirdPartyInstanceId(),
