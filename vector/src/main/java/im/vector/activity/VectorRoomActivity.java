@@ -1475,7 +1475,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem searchInRoomMenuItem = menu.findItem(R.id.ic_action_search_in_room);
-        MenuItem useMatrixAppsMenuItem = menu.findItem(R.id.ic_action_matrix_apps);
         MenuItem resendUnsentMenuItem = menu.findItem(R.id.ic_action_room_resend_unsent);
         MenuItem deleteUnsentMenuItem = menu.findItem(R.id.ic_action_room_delete_unsent);
         MenuItem settingsMenuItem = menu.findItem(R.id.ic_action_room_settings);
@@ -1488,9 +1487,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             // Hide all items
             if (searchInRoomMenuItem != null) {
                 searchInRoomMenuItem.setVisible(false);
-            }
-            if (useMatrixAppsMenuItem != null) {
-                useMatrixAppsMenuItem.setVisible(false);
             }
             if (resendUnsentMenuItem != null) {
                 resendUnsentMenuItem.setVisible(false);
@@ -1516,9 +1512,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             if (searchInRoomMenuItem != null) {
                 searchInRoomMenuItem.setVisible(!mRoom.isEncrypted());
             }
-            if (useMatrixAppsMenuItem != null) {
-                useMatrixAppsMenuItem.setVisible(TextUtils.isEmpty(mEventId) && null == sRoomPreviewData);
-            }
             if (resendUnsentMenuItem != null) {
                 resendUnsentMenuItem.setVisible(mHasUnsentEvents);
             }
@@ -1536,9 +1529,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             // Hide all items
             if (searchInRoomMenuItem != null) {
                 searchInRoomMenuItem.setVisible(false);
-            }
-            if (useMatrixAppsMenuItem != null) {
-                useMatrixAppsMenuItem.setVisible(false);
             }
             if (resendUnsentMenuItem != null) {
                 resendUnsentMenuItem.setVisible(false);
@@ -1560,9 +1550,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.ic_action_matrix_apps:
-                openIntegrationManagerActivity(null);
-                return true;
             case R.id.ic_action_search_in_room:
                 try {
                     enableActionBarHeader(HIDE_ACTION_BAR_HEADER);
