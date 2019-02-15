@@ -893,7 +893,7 @@ public class VectorMemberDetailsActivity extends MXCActionBarActivity implements
 
         // Check user's power level before allowing an action (kick, ban, ...)
         if (TextUtils.equals(mMemberId, selfUserId)) {
-            if (null != mRoom) {
+            if (null != mRoom && !mRoom.isDirect()) {
                 supportedActions.add(ITEM_ACTION_LEAVE);
             }
 
@@ -912,12 +912,6 @@ public class VectorMemberDetailsActivity extends MXCActionBarActivity implements
                 }
             }
         } else if (null != mRoomMember) {
-            // 1:1 call
-            if ((null != mCallableRoom) && mSession.isVoipCallSupported() && (null == CallsManager.getSharedInstance().getActiveCall())) {
-                // Offer voip call options
-                supportedActions.add(ITEM_ACTION_START_VOICE_CALL);
-                supportedActions.add(ITEM_ACTION_START_VIDEO_CALL);
-            }
 
             String membership = mRoomMember.membership;
 
