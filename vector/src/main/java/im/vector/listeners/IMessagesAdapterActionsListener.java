@@ -168,14 +168,6 @@ public interface IMessagesAdapterActionsListener {
     void onEventAction(final Event event, final String textMsg, final int action);
 
     /**
-     * the user taps on the e2e icon
-     *
-     * @param event      the event
-     * @param deviceInfo the device info
-     */
-    void onE2eIconClick(final Event event, final MXDeviceInfo deviceInfo);
-
-    /**
      * The event for which the user asked again for the key is now decrypted
      */
     void onEventDecrypted();

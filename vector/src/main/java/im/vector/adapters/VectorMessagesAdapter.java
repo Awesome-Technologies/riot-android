@@ -2121,15 +2121,6 @@ public class VectorMessagesAdapter extends AbstractMessagesAdapter {
                     e2eIconView.setLayoutParams(e2eIconViewLayout);
                     bodyLayoutView.setLayoutParams(bodyLayout);
                 }
-
-                e2eIconView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (null != mVectorMessagesAdapterEventsListener) {
-                            mVectorMessagesAdapterEventsListener.onE2eIconClick(event, mE2eDeviceByEventId.get(event.eventId));
-                        }
-                    }
-                });
             } else {
                 e2eIconView.setVisibility(View.GONE);
                 if (null != senderMargin) {
