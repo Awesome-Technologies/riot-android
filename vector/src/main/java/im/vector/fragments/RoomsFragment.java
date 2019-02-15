@@ -69,9 +69,6 @@ public class RoomsFragment extends AbsHomeFragment implements AbsHomeFragment.On
     //
     private static final String SELECTED_ROOM_DIRECTORY = "SELECTED_ROOM_DIRECTORY";
 
-    // dummy spinner to select the public rooms
-    private Spinner mPublicRoomsSelector;
-
     // estimated number of public rooms
     private Integer mEstimatedPublicRoomCount = null;
 
@@ -232,11 +229,6 @@ public class RoomsFragment extends AbsHomeFragment implements AbsHomeFragment.On
             }
         }, this, this);
         mRecycler.setAdapter(mAdapter);
-
-        View spinner = mAdapter.findSectionSubViewById(R.id.public_rooms_selector);
-        if (spinner != null && spinner instanceof Spinner) {
-            mPublicRoomsSelector = (Spinner) spinner;
-        }
     }
 
     /*
@@ -372,27 +364,6 @@ public class RoomsFragment extends AbsHomeFragment implements AbsHomeFragment.On
             mRoomDirectoryAdapter = new ArrayAdapter<>(getActivity(), R.layout.public_room_spinner_item);
         } else {
             mRoomDirectoryAdapter.clear();
-        }
-
-        if (mPublicRoomsSelector != null) {
-            // reported by GA
-            // https://stackoverflow.com/questions/26752974/adapterdatasetobserver-was-not-registered
-            if (mRoomDirectoryAdapter != mPublicRoomsSelector.getAdapter()) {
-                mPublicRoomsSelector.setAdapter(mRoomDirectoryAdapter);
-            } else {
-                mRoomDirectoryAdapter.notifyDataSetChanged();
-            }
-
-            mPublicRoomsSelector.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        startActivityForResult(RoomDirectoryPickerActivity.getIntent(getActivity(), mSession.getMyUserId()),
-                                DIRECTORY_SOURCE_ACTIVITY_REQUEST_CODE);
-                    }
-                    return true;
-                }
-            });
         }
 
         mRoomDirectoryAdapter.add(mSelectedRoomDirectory.getDisplayName());
