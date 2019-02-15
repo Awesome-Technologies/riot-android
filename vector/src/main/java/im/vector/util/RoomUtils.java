@@ -563,11 +563,6 @@ public class RoomUtils {
                 item.setIcon(R.drawable.ic_material_transparent);
             }
 
-            if (!room.isDirect()) {
-                item = popup.getMenu().findItem(R.id.ic_action_select_direct_chat);
-                item.setIcon(R.drawable.ic_material_transparent);
-            }
-
             // TODO LazyLoading, current user may be null
             RoomMember member = room.getMember(session.getMyUserId());
             final boolean isBannedKickedRoom = (null != member) && member.kickedOrBanned();
@@ -633,10 +628,6 @@ public class RoomUtils {
                                 } else {
                                     moreActionListener.onLeaveRoom(session, room.getRoomId());
                                 }
-                                break;
-                            }
-                            case R.id.ic_action_select_direct_chat: {
-                                moreActionListener.onToggleDirectChat(session, room.getRoomId());
                                 break;
                             }
                             case R.id.ic_action_add_homescreen_shortcut: {
