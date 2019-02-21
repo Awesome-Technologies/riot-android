@@ -468,6 +468,10 @@ public class VectorRoomDetailsMembersFragment extends VectorBaseFragment {
             mRoom = anActivity.getRoom();
             mSession = anActivity.getSession();
 
+            if (mRoom.isDirect()) {
+                view.findViewById(R.id.search_layout).setVisibility(View.GONE);
+            }
+
             // GA issue
             if ((null != mSession) && mSession.isAlive()) {
                 finalizeInit();
