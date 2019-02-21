@@ -671,6 +671,10 @@ public class VectorRoomDetailsMembersFragment extends VectorBaseFragment {
         if ((null != mSwitchDeletionMenuItem) && (mSwitchDeletionMenuItem.isEnabled())) {
             mSwitchDeletionMenuItem.setVisible(!mIsMultiSelectionMode);
         }
+
+        if (mRoom.isDirect()) {
+            mAddMembersFloatingActionButton.setVisibility(View.GONE);
+        }
     }
 
     /**
