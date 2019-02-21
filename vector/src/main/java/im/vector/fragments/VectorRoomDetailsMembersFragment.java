@@ -558,13 +558,14 @@ public class VectorRoomDetailsMembersFragment extends VectorBaseFragment {
      * <ul>
      * <li>the user is not admin </li>
      * <li>only one member is present in the room</li>
+     * <li>this is a direct chat</li>
      * </ul>
      */
     private void processEditionMode() {
         boolean isEnabled;
 
         if (null != mSwitchDeletionMenuItem) {
-            if (!isUserAdmin()) {
+            if (!isUserAdmin() || mRoom.isDirect()) {
                 isEnabled = false;
             } else isEnabled = 1 != mAdapter.getItemsCount();
 
