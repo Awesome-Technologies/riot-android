@@ -3092,7 +3092,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         }
 
         mActionBarHeaderActiveMembersTextView.setText(text);
-        mActionBarHeaderActiveMembersLayout.setVisibility(View.VISIBLE);
+        mActionBarHeaderActiveMembersLayout.setVisibility((mRoom != null && mRoom.isDirect()) ? View.GONE : View.VISIBLE);
     }
 
     /**
