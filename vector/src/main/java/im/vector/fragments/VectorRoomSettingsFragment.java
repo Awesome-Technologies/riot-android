@@ -118,12 +118,16 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
     private static final String PREF_KEY_ROOM_DIRECTORY_VISIBILITY_SWITCH = "roomNameListedInDirectorySwitch";
     private static final String PREF_KEY_ROOM_TAG_LIST = "roomTagList";
     private static final String PREF_KEY_ROOM_ACCESS_RULES_LIST = "roomAccessRulesList";
+    private static final String PREF_KEY_ACCESS_VISIBILITY_DIVIDER = "prefCatAccessVisibilityDivider";
+    private static final String PREF_KEY_ACCESS_VISIBILITY = "prefCatAccessVisibility";
     private static final String PREF_KEY_ROOM_HISTORY_READABILITY_LIST = "roomReadHistoryRulesList";
     private static final String PREF_KEY_ROOM_NOTIFICATIONS_LIST = "roomNotificationPreference";
     private static final String PREF_KEY_ROOM_LEAVE = "roomLeave";
     private static final String PREF_KEY_ROOM_INTERNAL_ID = "roomInternalId";
     private static final String PREF_KEY_ADDRESSES = "addresses";
+    private static final String PREF_KEY_ADDRESSES_DIVIDER = "addresses_divider";
     private static final String PREF_KEY_ADVANCED = "advanced";
+    private static final String PREF_KEY_ADVANCED_DIVIDER = "advanced_divider";
 
     private static final String PREF_KEY_BANNED = "banned";
     private static final String PREF_KEY_BANNED_DIVIDER = "banned_divider";
@@ -355,85 +359,26 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
             }
         });
 
-        // display the room Id.
-        Preference roomInternalIdPreference = findPreference(PREF_KEY_ROOM_INTERNAL_ID);
-        if (null != roomInternalIdPreference) {
-            roomInternalIdPreference.setSummary(mRoom.getRoomId());
+        mRoomNameEditTxt.setVisible(!mRoom.isDirect());
+        mRoomTopicEditTxt.setVisible(!mRoom.isDirect());
+        mAddressesSettingsCategory.setVisible(false);
+        mAdvancedSettingsCategory.setVisible(false);
+        mRoomDirectoryVisibilitySwitch.setVisible(false);
+        mRoomAccessRulesListPreference.setVisible(false);
+        mFlairSettingsCategory.setVisible(false);
+        mRoomHistoryReadabilityRulesListPreference.setVisible(!mRoom.isDirect());
+        findPreference(PREF_KEY_ACCESS_VISIBILITY).setVisible(!mRoom.isDirect());
 
-            roomInternalIdPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    SystemUtilsKt.copyToClipboard(getActivity(), mRoom.getRoomId());
-                    return false;
-                }
-            });
-        }
+        findPreference(PREF_KEY_ADVANCED_DIVIDER).setVisible(false);
+        findPreference(PREF_KEY_ACCESS_VISIBILITY_DIVIDER).setVisible(!mRoom.isDirect());
+        findPreference(PREF_KEY_ADDRESSES_DIVIDER).setVisible(false);
+        findPreference(PREF_KEY_FLAIR_DIVIDER).setVisible(false);
+
+        // display the room Id.
+        findPreference(PREF_KEY_ROOM_INTERNAL_ID).setVisible(false);
 
         // leave room
-        Preference leaveRoomPreference = findPreference(PREF_KEY_ROOM_LEAVE);
-
-        if (null != leaveRoomPreference) {
-            leaveRoomPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    // leave room
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.room_participants_leave_prompt_title)
-                            .setMessage(R.string.room_participants_leave_prompt_msg)
-                            .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    displayLoadingView();
-
-                                    mRoom.leave(new ApiCallback<Void>() {
-                                        @Override
-                                        public void onSuccess(Void info) {
-                                            if (null != getActivity()) {
-                                                getActivity().runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        getActivity().finish();
-                                                    }
-                                                });
-                                            }
-                                        }
-
-                                        private void onError(final String errorMessage) {
-                                            if (null != getActivity()) {
-                                                getActivity().runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        hideLoadingView(true);
-                                                        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onNetworkError(Exception e) {
-                                            onError(e.getLocalizedMessage());
-                                        }
-
-                                        @Override
-                                        public void onMatrixError(MatrixError e) {
-                                            onError(e.getLocalizedMessage());
-                                        }
-
-                                        @Override
-                                        public void onUnexpectedError(Exception e) {
-                                            onError(e.getLocalizedMessage());
-                                        }
-                                    });
-
-                                }
-                            })
-                            .setNegativeButton(R.string.cancel, null)
-                            .show();
-                    return true;
-                }
-            });
-        }
+        findPreference(PREF_KEY_ROOM_LEAVE).setVisible(!mRoom.isDirect());
 
         // init the room avatar: session and room
         mRoomPhotoAvatar.setConfiguration(mSession, mRoom);
@@ -447,6 +392,7 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
                     return false;
             }
         });
+        mRoomPhotoAvatar.setVisible(!mRoom.isDirect());
 
         // listen to preference changes
         enableSharedPreferenceListener(true);
@@ -1376,80 +1322,7 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
      * Refresh the flair list
      */
     private void refreshFlair() {
-        final List<String> groups = mRoom.getState().getRelatedGroups();
-        Collections.sort(groups, String.CASE_INSENSITIVE_ORDER);
 
-        mFlairSettingsCategory.removeAll();
-
-        if (!groups.isEmpty()) {
-            for (final String groupId : groups) {
-                VectorPreference preference = new VectorPreference(getActivity());
-                preference.setTitle(groupId);
-                preference.setKey(FLAIR_PREFERENCE_KEY_BASE + groupId);
-
-                preference.setOnPreferenceLongClickListener(new VectorPreference.OnPreferenceLongClickListener() {
-                    @Override
-                    public boolean onPreferenceLongClick(Preference preference) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                displayLoadingView();
-                                mRoom.removeRelatedGroup(groupId, mFlairUpdatesCallback);
-                            }
-                        });
-
-                        return true;
-                    }
-                });
-                mFlairSettingsCategory.addPreference(preference);
-            }
-        } else {
-            VectorPreference preference = new VectorPreference(getActivity());
-            preference.setTitle(getString(R.string.room_settings_no_flair));
-            preference.setKey(FLAIR_PREFERENCE_KEY_BASE + "no_flair");
-
-            mFlairSettingsCategory.addPreference(preference);
-        }
-
-        if (canUpdateFlair()) {
-            // display the "add addresses" entry
-            EditTextPreference addAddressPreference = new VectorEditTextPreference(getActivity());
-            addAddressPreference.setTitle(R.string.room_settings_add_new_group);
-            addAddressPreference.setDialogTitle(R.string.room_settings_add_new_group);
-            addAddressPreference.setKey(FLAIR_PREFERENCE_KEY_BASE + "__add");
-            addAddressPreference.setIcon(ThemeUtils.INSTANCE.tintDrawable(getActivity(),
-                    ContextCompat.getDrawable(getActivity(), R.drawable.ic_add_black), R.attr.vctr_settings_icon_tint_color));
-
-            addAddressPreference.setOnPreferenceChangeListener(
-                    new Preference.OnPreferenceChangeListener() {
-                        @Override
-                        public boolean onPreferenceChange(Preference preference, Object newValue) {
-                            final String groupId = ((String) newValue).trim();
-
-                            // ignore empty alias
-                            if (!TextUtils.isEmpty(groupId)) {
-                                if (!MXPatterns.isGroupId(groupId)) {
-                                    new AlertDialog.Builder(getActivity())
-                                            .setTitle(R.string.room_settings_invalid_group_format_dialog_title)
-                                            .setMessage(getString(R.string.room_settings_invalid_group_format_dialog_body, groupId))
-                                            .setPositiveButton(R.string.ok, null)
-                                            .show();
-                                } else if (!groups.contains(groupId)) {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            displayLoadingView();
-                                            mRoom.addRelatedGroup(groupId, mFlairUpdatesCallback);
-                                        }
-                                    });
-                                }
-                            }
-                            return false;
-                        }
-                    });
-
-            mFlairSettingsCategory.addPreference(addAddressPreference);
-        }
     }
 
     //================================================================================
@@ -1604,105 +1477,7 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
      * Refresh the addresses section
      */
     private void refreshAddresses() {
-        final String localSuffix = ":" + mSession.getHomeServerConfig().getHomeserverUri().getHost();
-        final String canonicalAlias = mRoom.getState().getCanonicalAlias();
-        final List<String> aliases = new ArrayList<>(mRoom.getAliases());
 
-        // remove the displayed preferences
-        mAddressesSettingsCategory.removeAll();
-
-        if (0 == aliases.size()) {
-            AddressPreference preference = new AddressPreference(getActivity());
-            preference.setTitle(getString(R.string.room_settings_addresses_no_local_addresses));
-            preference.setKey(NO_LOCAL_ADDRESS_PREFERENCE_KEY);
-            mAddressesSettingsCategory.addPreference(preference);
-        } else {
-            List<String> localAliases = new ArrayList<>();
-            List<String> remoteAliases = new ArrayList<>();
-
-            for (String alias : aliases) {
-                if (alias.endsWith(localSuffix)) {
-                    localAliases.add(alias);
-                } else {
-                    remoteAliases.add(alias);
-                }
-            }
-
-            // the local aliases are displayed first in the list
-            aliases.clear();
-            aliases.addAll(localAliases);
-            aliases.addAll(remoteAliases);
-
-            int index = 0;
-
-            for (String alias : aliases) {
-                AddressPreference preference = new AddressPreference(getActivity());
-                preference.setTitle(alias);
-                preference.setKey(ADDRESSES_PREFERENCE_KEY_BASE + index);
-                preference.setMainIconVisible(TextUtils.equals(alias, canonicalAlias));
-
-                final String fAlias = alias;
-                final AddressPreference fAddressPreference = preference;
-
-                preference.setOnPreferenceLongClickListener(new VectorPreference.OnPreferenceLongClickListener() {
-                    @Override
-                    public boolean onPreferenceLongClick(Preference preference) {
-                        onAddressLongClick(fAlias, fAddressPreference.getMainIconView());
-                        return true;
-                    }
-                });
-
-                mAddressesSettingsCategory.addPreference(preference);
-                index++;
-            }
-        }
-
-        // Everyone can add an alias: display the "add address" entry
-        EditTextPreference addAddressPreference = new VectorEditTextPreference(getActivity());
-        addAddressPreference.setTitle(R.string.room_settings_addresses_add_new_address);
-        addAddressPreference.setDialogTitle(R.string.room_settings_addresses_add_new_address);
-        addAddressPreference.setKey(ADD_ADDRESSES_PREFERENCE_KEY);
-        addAddressPreference.setIcon(ThemeUtils.INSTANCE.tintDrawable(getActivity(),
-                ContextCompat.getDrawable(getActivity(), R.drawable.ic_add_black), R.attr.vctr_settings_icon_tint_color));
-
-        addAddressPreference.setOnPreferenceChangeListener(
-                new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        final String newAddress = ((String) newValue).trim();
-
-                        // ignore empty alias
-                        if (!TextUtils.isEmpty(newAddress)) {
-                            if (!MXPatterns.isRoomAlias(newAddress)) {
-                                new AlertDialog.Builder(getActivity())
-                                        .setTitle(R.string.room_settings_addresses_invalid_format_dialog_title)
-                                        .setMessage(getString(R.string.room_settings_addresses_invalid_format_dialog_body, newAddress))
-                                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                            }
-                                        })
-                                        .show();
-                            } else if (aliases.indexOf(newAddress) < 0) {
-                                displayLoadingView();
-                                mRoom.addAlias(newAddress, new SimpleApiCallback<Void>(mAliasUpdatesCallback) {
-                                    @Override
-                                    public void onSuccess(Void info) {
-                                        // when there is only one alias, it becomes the canonical alias.
-                                        if (mRoom.getAliases().size() == 1 && canUpdateCanonicalAlias()) {
-                                            mRoom.updateCanonicalAlias(mRoom.getAliases().get(0), mAliasUpdatesCallback);
-                                        } else {
-                                            mAliasUpdatesCallback.onSuccess(info);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                        return false;
-                    }
-                });
-
-        mAddressesSettingsCategory.addPreference(addAddressPreference);
     }
 
 
@@ -1724,6 +1499,7 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
         if (null == mSession.getCrypto()) {
             mAdvancedSettingsCategory.removePreference(sendToUnverifiedDevicesPref);
         } else if (null != sendToUnverifiedDevicesPref) {
+            sendToUnverifiedDevicesPref.setVisible(false);
             if (mRoom.isEncrypted()) {
                 sendToUnverifiedDevicesPref.setChecked(false);
 
@@ -1771,97 +1547,6 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
                     return true;
                 }
             });
-        }
-
-        final String key = PREF_KEY_ENCRYPTION + mRoom.getRoomId();
-
-        // remove the displayed preferences
-        Preference e2ePref = mAdvancedSettingsCategory.findPreference(key);
-
-        if (null != e2ePref) {
-            mAdvancedSettingsCategory.removePreference(e2ePref);
-        }
-
-        // remove the preference because it might switch from a SwitchPreference to  VectorPreference
-        PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .edit()
-                .remove(key)
-                .apply();
-
-        if (mRoom.isEncrypted()) {
-            Preference isEncryptedPreference = new VectorPreference(getActivity());
-            isEncryptedPreference.setTitle(R.string.room_settings_addresses_e2e_enabled);
-            isEncryptedPreference.setKey(key);
-            isEncryptedPreference.setIcon(getResources().getDrawable(R.drawable.e2e_verified));
-            mAdvancedSettingsCategory.addPreference(isEncryptedPreference);
-        } else {
-            PowerLevels powerLevels = mRoom.getState().getPowerLevels();
-            int myPowerLevel = -1;
-            int minimumPowerLevel = 0;
-
-            if (null != powerLevels) {
-                myPowerLevel = powerLevels.getUserPowerLevel(mSession.getMyUserId());
-                minimumPowerLevel = powerLevels.minimumPowerLevelForSendingEventAsStateEvent(Event.EVENT_TYPE_MESSAGE_ENCRYPTION);
-            }
-
-            // Test if the user has enough power levels to enable the crypto is in this room
-            if (myPowerLevel < minimumPowerLevel) {
-                Preference isEncryptedPreference = new VectorPreference(getActivity());
-                isEncryptedPreference.setTitle(R.string.room_settings_addresses_e2e_disabled);
-                isEncryptedPreference.setKey(key);
-                isEncryptedPreference.setIcon(ThemeUtils.INSTANCE.tintDrawable(getActivity(),
-                        getResources().getDrawable(R.drawable.e2e_unencrypted), R.attr.vctr_settings_icon_tint_color));
-                mAdvancedSettingsCategory.addPreference(isEncryptedPreference);
-            } else if (mSession.isCryptoEnabled()) {
-                final SwitchPreference encryptSwitchPreference = new VectorSwitchPreference(getActivity());
-                encryptSwitchPreference.setTitle(R.string.room_settings_addresses_e2e_encryption_warning);
-                encryptSwitchPreference.setKey(key);
-                encryptSwitchPreference.setIcon(ThemeUtils.INSTANCE.tintDrawable(getActivity(),
-                        getResources().getDrawable(R.drawable.e2e_unencrypted), R.attr.vctr_settings_icon_tint_color));
-                encryptSwitchPreference.setChecked(false);
-                mAdvancedSettingsCategory.addPreference(encryptSwitchPreference);
-
-                encryptSwitchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValueAsVoid) {
-                        boolean newValue = (boolean) newValueAsVoid;
-
-                        if (newValue != mRoom.isEncrypted()) {
-                            displayLoadingView();
-
-                            mRoom.enableEncryptionWithAlgorithm(CryptoConstantsKt.MXCRYPTO_ALGORITHM_MEGOLM, new ApiCallback<Void>() {
-
-                                private void onDone() {
-                                    hideLoadingView(false);
-                                    refreshEndToEnd();
-                                }
-
-                                @Override
-                                public void onSuccess(Void info) {
-                                    onDone();
-                                }
-
-                                @Override
-                                public void onNetworkError(Exception e) {
-                                    onDone();
-                                }
-
-                                @Override
-                                public void onMatrixError(MatrixError e) {
-                                    onDone();
-                                }
-
-                                @Override
-                                public void onUnexpectedError(Exception e) {
-                                    onDone();
-                                }
-                            });
-                        }
-                        return true;
-                    }
-                });
-
-            }
         }
     }
 }

@@ -36,7 +36,7 @@
         android:key="roomLeave"
         android:title="@string/leave" />
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider android:key="prefCatAccessVisibilityDivider" />
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="prefCatAccessVisibility"
@@ -71,7 +71,7 @@
             android:title="@string/room_settings_room_read_history_rules_pref_title" />
     </im.vector.preference.VectorPreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider android:key="addresses_divider"  />
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="addresses"
@@ -91,7 +91,7 @@
         android:key="banned"
         android:title="@string/room_settings_banned_users_title" />
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider android:key="advanced_divider" />
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="advanced"
