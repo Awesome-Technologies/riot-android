@@ -1347,19 +1347,45 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         return roomInvites;
     }
 
-    public void onPreviewRoom(MXSession session, String roomId) {
-        String roomAlias = null;
-        String roomName = null;
-
+    public void onJoinRoom(MXSession session, String roomId) {
+        if (session == null) {
+            return;
+        }
         Room room = session.getDataHandler().getRoom(roomId);
-        if ((null != room) && (null != room.getState())) {
-            roomAlias = room.getState().getCanonicalAlias();
-            roomName = room.getRoomDisplayName(this);
+        if (room == null) {
+            return;
         }
 
-        final RoomPreviewData roomPreviewData = new RoomPreviewData(mSession, roomId, null, roomAlias, null);
-        roomPreviewData.setRoomName(roomName);
-        CommonActivityUtils.previewRoom(this, roomPreviewData);
+        showWaitingView();
+        room.join(new ApiCallback<Void>() {
+
+            private void onDone(String errorMessage) {
+                if (null != errorMessage) {
+                    Toast.makeText(VectorHomeActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+                hideWaitingView();
+            }
+
+            @Override
+            public void onSuccess(Void info) {
+                onDone(null);
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                onDone(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onMatrixError(MatrixError e) {
+                onDone(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                onDone(e.getLocalizedMessage());
+            }
+        });
     }
 
     /**

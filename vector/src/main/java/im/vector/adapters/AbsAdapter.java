@@ -475,7 +475,7 @@ public abstract class AbsAdapter extends AbsFilterableAdapter {
     }
 
     public interface RoomInvitationListener {
-        void onPreviewRoom(MXSession session, String roomId);
+        void onJoinRoom(MXSession session, String roomId);
 
         void onRejectInvitation(MXSession session, String roomId);
     }
