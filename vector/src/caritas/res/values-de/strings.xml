@@ -48,7 +48,8 @@
     <string name="room_do_not_have_permission_to_post">Du bist nicht berechtigt, in diese Gruppe zu schreiben</string>
 
     <!-- Room Details -->
-    <string name="room_details_title">Gruppen-Details</string>
+    <string name="room_details_title">Chat-Details</string>
+    <string name="room_details_files">Medien</string>
 
     <!-- Search -->
     <string name="search_members_hint">Gruppen-Mitglieder filtern</string>
