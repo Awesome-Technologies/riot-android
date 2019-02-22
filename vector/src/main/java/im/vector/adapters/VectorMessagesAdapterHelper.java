@@ -1025,8 +1025,7 @@ class VectorMessagesAdapterHelper {
             // Redacted stickers should not be displayed
             StickerMessage stickerMessage = JsonUtils.toStickerMessage(event.getContent());
             return !TextUtils.isEmpty(stickerMessage.body) && !event.isRedacted();
-        } else if (Event.EVENT_TYPE_STATE_ROOM_TOPIC.equals(eventType)
-                || Event.EVENT_TYPE_STATE_ROOM_NAME.equals(eventType)) {
+        } else if (Event.EVENT_TYPE_STATE_ROOM_TOPIC.equals(eventType)) {
             EventDisplay display = new RiotEventDisplay(context);
             return row.getText(null, display) != null;
         } else if (event.isCallEvent()) {
@@ -1034,14 +1033,12 @@ class VectorMessagesAdapterHelper {
                     || Event.EVENT_TYPE_CALL_ANSWER.equals(eventType)
                     || Event.EVENT_TYPE_CALL_HANGUP.equals(eventType);
         } else if (Event.EVENT_TYPE_STATE_ROOM_MEMBER.equals(eventType)
-                || Event.EVENT_TYPE_STATE_ROOM_THIRD_PARTY_INVITE.equals(eventType)) {
-            // if we can display text for it, it's valid.
-            EventDisplay display = new RiotEventDisplay(context);
-            return row.getText(null, display) != null;
-        } else if (Event.EVENT_TYPE_STATE_HISTORY_VISIBILITY.equals(eventType)) {
-            return true;
-        } else if (Event.EVENT_TYPE_MESSAGE_ENCRYPTED.equals(eventType)
+                || Event.EVENT_TYPE_STATE_ROOM_THIRD_PARTY_INVITE.equals(eventType)
+                || Event.EVENT_TYPE_STATE_HISTORY_VISIBILITY.equals(eventType)
+                || Event.EVENT_TYPE_STATE_ROOM_NAME.equals(eventType)
                 || Event.EVENT_TYPE_MESSAGE_ENCRYPTION.equals(eventType)) {
+            return false;
+        } else if (Event.EVENT_TYPE_MESSAGE_ENCRYPTED.equals(eventType)) {
             // if we can display text for it, it's valid.
             EventDisplay display = new RiotEventDisplay(context);
             return event.hasContentFields() && row.getText(null, display) != null;
