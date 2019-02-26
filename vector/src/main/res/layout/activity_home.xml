@@ -55,16 +55,6 @@
             app:layout_constraintTop_toBottomOf="@+id/home_recents_sync_in_progress"
             tools:visibility="visible" />
 
-        <im.vector.view.KeysBackupBanner
-            android:id="@+id/home_keys_backup_banner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listView_pending_callview"
-            tools:visibility="visible" />
-
         <!-- The main content view -->
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -74,7 +64,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_keys_backup_banner" />
+            app:layout_constraintTop_toBottomOf="@id/home_recents_sync_in_progress" />
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation"

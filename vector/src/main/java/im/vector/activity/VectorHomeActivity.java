@@ -196,9 +196,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
     private String mGroupIdToOpen = null;
 
-    @BindView(R.id.home_keys_backup_banner)
-    KeysBackupBanner mKeysBackupBanner;
-
     @BindView(R.id.button_start_chat)
     FloatingActionButton mFabStartChat;
 
@@ -329,27 +326,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         SignOutViewModel model = ViewModelProviders.of(this).get(SignOutViewModel.class);
 
         model.init(mSession);
-
-        model.getKeysBackupState().observe(this, keysBackupState -> {
-            if (keysBackupState == null) {
-                mKeysBackupBanner.render(KeysBackupBanner.State.Hidden.INSTANCE, false);
-            } else {
-                switch (keysBackupState) {
-                    case Disabled:
-                        mKeysBackupBanner.render(KeysBackupBanner.State.Setup.INSTANCE, false);
-                        break;
-                    case NotTrusted:
-                    case WrongBackUpVersion:
-                        mKeysBackupBanner.render(KeysBackupBanner.State.Recover.INSTANCE, false);
-                        break;
-                    default:
-                        mKeysBackupBanner.render(KeysBackupBanner.State.Hidden.INSTANCE, false);
-                        break;
-                }
-            }
-        });
-
-        mKeysBackupBanner.setDelegate(this);
 
         // Check whether the user has agreed to the use of analytics tracking
 
