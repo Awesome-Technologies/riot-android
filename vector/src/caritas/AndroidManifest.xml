@@ -6,8 +6,7 @@
         android:icon="@mipmap/ic_caritas"
         android:logo="@mipmap/ic_caritas"
         android:roundIcon="@mipmap/ic_caritas_round"
-        android:theme="@style/CaritasTheme.Light"
-        tools:replace="icon,logo,roundIcon,theme">
+        tools:replace="icon,logo,roundIcon">
 
         <!-- Firebase components -->
         <meta-data
