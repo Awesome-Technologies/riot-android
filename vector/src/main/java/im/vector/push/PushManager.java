@@ -44,6 +44,7 @@ import java.util.TimerTask;
 
 import im.vector.BuildConfig;
 import im.vector.Matrix;
+import im.vector.R;
 import im.vector.activity.CommonActivityUtils;
 import im.vector.push.fcm.FcmHelper;
 import im.vector.util.PreferencesManager;
@@ -134,13 +135,12 @@ public final class PushManager {
         mContext = appContext.getApplicationContext();
         // TODO customise it ?
         mBasePusherDeviceName = Build.MODEL.trim();
+        mPusherAppName = mContext.getString(R.string.push_app_name);
 
         try {
             PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-            mPusherAppName = "Caritas Messenger (Android)";
             mPusherLang = mContext.getResources().getConfiguration().locale.getLanguage();
         } catch (Exception e) {
-            mPusherAppName = "VectorApp";
             mPusherLang = "en";
         }
 

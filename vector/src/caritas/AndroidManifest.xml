@@ -4,11 +4,10 @@
 
     <application
         android:icon="@mipmap/ic_caritas"
-        android:label="Caritas Messenger"
         android:logo="@mipmap/ic_caritas"
         android:roundIcon="@mipmap/ic_caritas_round"
         android:theme="@style/CaritasTheme.Light"
-        tools:replace="icon,label,logo,roundIcon,theme">
+        tools:replace="icon,logo,roundIcon,theme">
 
         <!-- Firebase components -->
         <meta-data
