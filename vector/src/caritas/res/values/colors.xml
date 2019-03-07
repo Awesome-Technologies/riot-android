@@ -2,11 +2,10 @@
 <resources>
 
     <!-- Error color -->
-    <color name="vector_warning_color">#FFF56679</color>
+    <color name="vector_warning_color">#FFFF9800</color>
     <color name="vector_error_color">#FFF56679</color>
 
     <!-- main app colors -->
-    <color name="caritas_pink_color">#FF0064</color>
     <color name="caritas_red_color">#CC1E1C</color>
     <color name="caritas_dark_red_color">#5F0B0B</color>
     <color name="caritas_silver_color">#C7C7CC</color>
@@ -83,8 +82,8 @@
     <color name="quote_background_color">@android:color/transparent</color>
 
     <!-- Notification view colors -->
-    <color name="soft_resource_limit_exceeded">#2f9edb</color>
-    <color name="hard_resource_limit_exceeded">@color/caritas_pink_color</color>
+    <color name="soft_resource_limit_exceeded">@color/vector_warning_color</color>
+    <color name="hard_resource_limit_exceeded">@color/vector_error_color</color>
 
     <!-- Avatar colors -->
     <color name="avatar_color_1">#03b381</color>
