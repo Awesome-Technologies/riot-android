@@ -45,15 +45,14 @@
 
     </PreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider
-        android:key="SETTINGS_CONTACTS_DIVIDER_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CONTACTS_DIVIDER_KEY" />
 
     <PreferenceCategory
         android:key="SETTINGS_CONTACT_PREFERENCE_KEYS"
         android:title="@string/settings_contact">
 
         <im.vector.preference.VectorSwitchPreference
-            android:key="SETTINGS_CONTACT_BOOK_ACCESS_KEY"
+            android:key="CONTACT_BOOK_ACCESS_KEY"
             android:title="@string/settings_contacts_app_permission" />
 
         <im.vector.preference.VectorPreference
@@ -131,12 +130,19 @@
             android:title="@string/settings_show_avatar_display_name_changes_messages" />
 
         <im.vector.preference.VectorSwitchPreference
+            android:defaultValue="false"
             android:key="SETTINGS_VIBRATE_ON_MENTION_KEY"
             android:title="@string/settings_vibrate_on_mention" />
 
         <im.vector.preference.VectorSwitchPreference
             android:key="SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY"
             android:title="@string/settings_preview_media_before_sending" />
+
+        <im.vector.preference.VectorSwitchPreference
+            android:defaultValue="false"
+            android:key="SETTINGS_SEND_MESSAGE_WITH_ENTER"
+            android:summary="@string/settings_send_message_with_enter_summary"
+            android:title="@string/settings_send_message_with_enter" />
 
         <ListPreference
             android:defaultValue="messages_and_errors"
@@ -198,46 +204,17 @@
             android:title="@string/settings_notification_privacy" />
 
         <im.vector.preference.VectorPreference
-            android:dialogTitle="@string/settings_notification_ringtone"
-            android:key="SETTINGS_NOTIFICATION_RINGTONE_SELECTION_PREFERENCE_KEY"
-            android:title="@string/settings_notification_ringtone" />
+            android:dependency="SETTINGS_ENABLE_THIS_DEVICE_PREFERENCE_KEY"
+            android:key="SETTINGS_NOTIFICATION_ADVANCED_PREFERENCE_KEY"
+            android:persistent="false"
+            android:summary="@string/settings_notification_advanced_summary"
+            android:title="@string/settings_notification_advanced"
+            app:fragment="im.vector.fragments.VectorSettingsNotificationsAdvancedFragment" />
 
-        <im.vector.preference.BingRulePreference
-            android:dependency="SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY"
-            android:key="SETTINGS_CONTAINING_MY_DISPLAY_NAME_PREFERENCE_KEY_2"
-            android:title="@string/settings_containing_my_display_name" />
-
-        <im.vector.preference.BingRulePreference
-            android:dependency="SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY"
-            android:key="SETTINGS_CONTAINING_MY_USER_NAME_PREFERENCE_KEY_2"
-            android:title="@string/settings_containing_my_user_name" />
-
-        <im.vector.preference.BingRulePreference
-            android:dependency="SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY"
-            android:key="SETTINGS_MESSAGES_IN_ONE_TO_ONE_PREFERENCE_KEY_2"
-            android:title="@string/settings_messages_in_one_to_one" />
-
-        <im.vector.preference.BingRulePreference
-            android:dependency="SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY"
-            android:key="SETTINGS_MESSAGES_IN_GROUP_CHAT_PREFERENCE_KEY_2"
-            android:title="@string/settings_messages_in_group_chat" />
-
-        <im.vector.preference.BingRulePreference
-            android:dependency="SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY"
-            android:key="SETTINGS_INVITED_TO_ROOM_PREFERENCE_KEY_2"
-            android:title="@string/settings_invited_to_room" />
-
-        <im.vector.preference.BingRulePreference
-            android:dependency="SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY"
-            android:key="SETTINGS_CALL_INVITATIONS_PREFERENCE_KEY_2"
-            android:title="@string/settings_call_invitations"
-            android:visibility="gone" />
-
-        <im.vector.preference.BingRulePreference
-            android:dependency="SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY"
-            android:key="SETTINGS_MESSAGES_SENT_BY_BOT_PREFERENCE_KEY_2"
-            android:title="@string/settings_messages_sent_by_bot"
-            android:visibility="gone" />
+        <im.vector.preference.VectorPreference
+            android:key="SETTINGS_NOTIFICATION_TROUBLESHOOT_PREFERENCE_KEY"
+            android:title="@string/settings_notification_troubleshoot"
+            app:fragment="im.vector.fragments.VectorSettingsNotificationsTroubleshootFragment" />
 
     </PreferenceCategory>
 
@@ -276,9 +253,11 @@
         android:key="SETTINGS_NOTIFICATIONS_TARGETS_PREFERENCE_KEY"
         android:title="@string/settings_notifications_targets" />
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CALL_DIVIDER_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CALL_DIVIDER_PREFERENCE_KEY" />
 
-    <PreferenceCategory android:title="@string/settings_call_category" android:key="SETTINGS_CALL_KEY">
+    <PreferenceCategory
+        android:key="SETTINGS_CALL_KEY"
+        android:title="@string/settings_call_category">
 
         <im.vector.preference.VectorSwitchPreference
             android:defaultValue="true"
@@ -299,7 +278,7 @@
         android:key="SETTINGS_IGNORED_USERS_PREFERENCE_KEY"
         android:title="@string/settings_ignored_users" />
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_LABS_PREFERENCE_DIVIDER_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_LABS_DIVIDER_PREFERENCE_KEY" />
 
     <PreferenceCategory
         android:key="SETTINGS_LABS_PREFERENCE_KEY"
@@ -372,9 +351,11 @@
 
     </PreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_KEY_MANAGEMENT_PREFERENCE_DIVIDER_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY" />
 
-    <PreferenceCategory android:key="SETTINGS_CRYPTOHRAPHY_MANAGE_KEYS_PREFERENCE_KEY" android:title="@string/settings_cryptography_manage_keys">
+    <PreferenceCategory
+        android:key="SETTINGS_CRYPTOGRAPHY_MANAGE_PREFERENCE_KEY"
+        android:title="@string/settings_cryptography_manage_keys">
 
         <im.vector.preference.VectorPreference
             android:key="SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY"
@@ -400,7 +381,7 @@
         android:key="SETTINGS_DEVICES_LIST_PREFERENCE_KEY"
         android:title="@string/settings_devices_list" />
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_ADVANCED_PREFERENCE_DIVIDER_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_ADVANCED_DIVIDER_PREFERENCE_KEY" />
 
     <PreferenceCategory
         android:key="SETTINGS_ADVANCED_PREFERENCE_KEY"
@@ -423,7 +404,7 @@
 
     </PreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_ANALYTICS_DIVIDER_PREFERENCE_KEY" />
 
     <PreferenceCategory
         android:key="SETTINGS_ANALYTICS_PREFERENCE_KEY"
@@ -436,6 +417,7 @@
             android:title="@string/settings_opt_in_of_analytics" />
 
         <im.vector.preference.VectorSwitchPreference
+            android:defaultValue="true"
             android:key="SETTINGS_USE_RAGE_SHAKE_KEY"
             android:title="@string/send_bug_report_rage_shake" />
     </PreferenceCategory>
@@ -494,7 +476,7 @@
     <im.vector.preference.VectorPreferenceDivider />
 
     <PreferenceCategory
-        android:key="SETTINGS_OTHERS_PREFERENCE_KEY"
+        android:key="SETTINGS_DEACTIVATE_ACCOUNT_CATEGORY_KEY"
         android:title="@string/settings_deactivate_account_section">
 
         <im.vector.preference.VectorPreference

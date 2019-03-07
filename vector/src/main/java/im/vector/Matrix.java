@@ -48,8 +48,6 @@ import org.matrix.androidsdk.rest.callback.ApiCallback;
 import org.matrix.androidsdk.rest.callback.SimpleApiCallback;
 import org.matrix.androidsdk.rest.model.Event;
 import org.matrix.androidsdk.rest.model.MatrixError;
-import org.matrix.androidsdk.rest.model.bingrules.BingRule;
-import org.matrix.androidsdk.rest.model.bingrules.PushRuleSet;
 import org.matrix.androidsdk.rest.model.login.Credentials;
 import org.matrix.androidsdk.ssl.Fingerprint;
 import org.matrix.androidsdk.ssl.UnrecognizedCertificateException;
@@ -748,30 +746,6 @@ public class Matrix {
             }
         });
         session.setURLPreviewStatus(false, null);
-
-        // Disable certain notifications
-        refreshPushRules();
-        BingRulesManager bingRulesManager = session.getDataHandler().getBingRulesManager();
-        PushRuleSet pushRuleSet = bingRulesManager.pushRules();
-
-        BingRule rule = pushRuleSet.findDefaultRule(BingRule.RULE_ID_CONTAIN_USER_NAME);
-        if (rule != null) {
-            rule.setNotify(false);
-            bingRulesManager.updateEnableRuleStatus(rule, false, null);
-        }
-
-        rule = pushRuleSet.findDefaultRule(BingRule.RULE_ID_CALL);
-        if (rule != null) {
-            rule.setNotify(false);
-            bingRulesManager.updateEnableRuleStatus(rule, false, null);
-        }
-
-        rule = pushRuleSet.findDefaultRule(BingRule.RULE_ID_SUPPRESS_BOTS_NOTIFICATIONS);
-        if (rule != null) {
-            rule.setNotify(false);
-            bingRulesManager.updateEnableRuleStatus(rule, true, null);
-        }
-
 
         return session;
     }

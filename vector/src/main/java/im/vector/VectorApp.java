@@ -337,8 +337,6 @@ public class VectorApp extends MultiDexApplication {
         Matrix.getInstance(this).getPushManager().setNotificationPrivacy(PushManager.NotificationPrivacy.NORMAL, null);
         PreferencesManager.setMarkdownEnabled(this, true);
         PreferencesManager.setShowJoinLeaveMessages(this, false);
-        PreferencesManager.setShowAvatarDisplayNameChangeMessages(this, false);
-        PreferencesManager.setShowInfoArea(this, "messages_and_errors");
         PreferencesManager.enableNotifications(this);
     }
 

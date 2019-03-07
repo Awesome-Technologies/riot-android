@@ -27,8 +27,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import org.matrix.androidsdk.MXSession;
-import org.matrix.androidsdk.rest.model.bingrules.BingRule;
 import org.matrix.androidsdk.util.Log;
 
 import java.io.File;
@@ -51,12 +49,9 @@ public class PreferencesManager {
     public static final String SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY = "SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY";
     public static final String SETTINGS_VERSION_PREFERENCE_KEY = "SETTINGS_VERSION_PREFERENCE_KEY";
     public static final String SETTINGS_OLM_VERSION_PREFERENCE_KEY = "SETTINGS_OLM_VERSION_PREFERENCE_KEY";
-    public static final String SETTINGS_ADVANCED_PREFERENCE_KEY = "SETTINGS_ADVANCED_PREFERENCE_KEY";
-    public static final String SETTINGS_ADVANCED_PREFERENCE_DIVIDER_KEY = "SETTINGS_ADVANCED_PREFERENCE_DIVIDER_KEY";
     public static final String SETTINGS_LOGGED_IN_PREFERENCE_KEY = "SETTINGS_LOGGED_IN_PREFERENCE_KEY";
     public static final String SETTINGS_HOME_SERVER_PREFERENCE_KEY = "SETTINGS_HOME_SERVER_PREFERENCE_KEY";
     public static final String SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY = "SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY";
-    public static final String SETTINGS_KEY_MANAGEMENT_PREFERENCE_DIVIDER_KEY = "SETTINGS_KEY_MANAGEMENT_PREFERENCE_DIVIDER_KEY";
     public static final String SETTINGS_APP_TERM_CONDITIONS_PREFERENCE_KEY = "SETTINGS_APP_TERM_CONDITIONS_PREFERENCE_KEY";
     public static final String SETTINGS_PRIVACY_POLICY_PREFERENCE_KEY = "SETTINGS_PRIVACY_POLICY_PREFERENCE_KEY";
     public static final String SETTINGS_NOTIFICATION_PRIVACY_PREFERENCE_KEY = "SETTINGS_NOTIFICATION_PRIVACY_PREFERENCE_KEY";
@@ -69,16 +64,16 @@ public class PreferencesManager {
     public static final String SETTINGS_USER_SETTINGS_PREFERENCE_KEY = "SETTINGS_USER_SETTINGS_PREFERENCE_KEY";
     public static final String SETTINGS_CONTACT_PREFERENCE_KEYS = "SETTINGS_CONTACT_PREFERENCE_KEYS";
     public static final String SETTINGS_CONTACTS_DIVIDER_KEY = "SETTINGS_CONTACTS_DIVIDER_KEY";
-    public static final String SETTINGS_CONTACT_BOOK_ACCESS_KEY = "SETTINGS_CONTACT_BOOK_ACCESS_KEY";
+    public static final String SETTINGS_CONTACT_BOOK_ACCESS_KEY = "CONTACT_BOOK_ACCESS_KEY";
     public static final String SETTINGS_NOTIFICATIONS_TARGETS_PREFERENCE_KEY = "SETTINGS_NOTIFICATIONS_TARGETS_PREFERENCE_KEY";
-    public static final String SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY = "SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY";
     public static final String SETTINGS_IGNORED_USERS_PREFERENCE_KEY = "SETTINGS_IGNORED_USERS_PREFERENCE_KEY";
     public static final String SETTINGS_IGNORE_USERS_DIVIDER_PREFERENCE_KEY = "SETTINGS_IGNORE_USERS_DIVIDER_PREFERENCE_KEY";
     public static final String SETTINGS_BACKGROUND_SYNC_PREFERENCE_KEY = "SETTINGS_BACKGROUND_SYNC_PREFERENCE_KEY";
     public static final String SETTINGS_BACKGROUND_SYNC_DIVIDER_PREFERENCE_KEY = "SETTINGS_BACKGROUND_SYNC_DIVIDER_PREFERENCE_KEY";
-    public static final String SETTINGS_LABS_PREFERENCE_KEY = "SETTINGS_LABS_PREFERENCE_KEY";
     public static final String SETTINGS_CRYPTOGRAPHY_PREFERENCE_KEY = "SETTINGS_CRYPTOGRAPHY_PREFERENCE_KEY";
     public static final String SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY = "SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY";
+    public static final String SETTINGS_CRYPTOGRAPHY_MANAGE_PREFERENCE_KEY = "SETTINGS_CRYPTOGRAPHY_MANAGE_PREFERENCE_KEY";
+    public static final String SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY = "SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY";
     public static final String SETTINGS_DEVICES_LIST_PREFERENCE_KEY = "SETTINGS_DEVICES_LIST_PREFERENCE_KEY";
     public static final String SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY = "SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY";
     public static final String SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_PREFERENCE_KEY = "SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_PREFERENCE_KEY";
@@ -92,7 +87,6 @@ public class PreferencesManager {
     public static final String SETTINGS_ENCRYPTION_INFORMATION_DEVICE_KEY_PREFERENCE_KEY = "SETTINGS_ENCRYPTION_INFORMATION_DEVICE_KEY_PREFERENCE_KEY";
 
     public static final String SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY = "SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY";
-    public static final String SETTINGS_CRYPTOHRAPHY_MANAGE_KEYS_PREFERENCE_KEY = "SETTINGS_CRYPTOHRAPHY_MANAGE_KEYS_PREFERENCE_KEY";
 
     // user
     public static final String SETTINGS_DISPLAY_NAME_PREFERENCE_KEY = "SETTINGS_DISPLAY_NAME_PREFERENCE_KEY";
@@ -112,9 +106,10 @@ public class PreferencesManager {
     private static final String SETTINGS_SHOW_READ_RECEIPTS_KEY = "SETTINGS_SHOW_READ_RECEIPTS_KEY";
     public static final String SETTINGS_SHOW_JOIN_LEAVE_MESSAGES_KEY = "SETTINGS_SHOW_JOIN_LEAVE_MESSAGES_KEY";
     public static final String SETTINGS_SHOW_AVATAR_DISPLAY_NAME_CHANGES_MESSAGES_KEY = "SETTINGS_SHOW_AVATAR_DISPLAY_NAME_CHANGES_MESSAGES_KEY";
-    private static final String SETTINGS_VIBRATE_ON_MENTION_KEY = "SETTINGS_VIBRATE_ON_MENTION_KEY";
+    public static final String SETTINGS_VIBRATE_ON_MENTION_KEY = "SETTINGS_VIBRATE_ON_MENTION_KEY";
     private static final String SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY = "SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY";
     public static final String SETTINGS_SHOW_INFO_AREA_KEY = "SETTINGS_SHOW_INFO_AREA_KEY";
+    public static final String SETTINGS_SEND_MESSAGE_WITH_ENTER = "SETTINGS_SEND_MESSAGE_WITH_ENTER";
 
     // home
     public static final String SETTINGS_HOME_DISPLAY_DIVIDER_KEY = "SETTINGS_HOME_DISPLAY_DIVIDER_KEY";
@@ -149,23 +144,33 @@ public class PreferencesManager {
     public static final String SETTINGS_SET_SYNC_TIMEOUT_PREFERENCE_KEY = "SETTINGS_SET_SYNC_TIMEOUT_PREFERENCE_KEY";
     public static final String SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY = "SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY";
 
+    // notification targets
+    public static final String SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY = "SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY";
+
     // Calls
+    public static final String SETTINGS_CALL_DIVIDER_PREFERENCE_KEY = "SETTINGS_CALL_DIVIDER_PREFERENCE_KEY";
     public static final String SETTINGS_CALL_KEY = "SETTINGS_CALL_KEY";
-    public static final String SETTINGS_CALL_DIVIDER_KEY = "SETTINGS_CALL_DIVIDER_KEY";
     public static final String SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY = "SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY";
     public static final String SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY = "SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY";
 
     // labs
-    public static final String SETTINGS_LABS_PREFERENCE_DIVIDER_KEY = "SETTINGS_LABS_PREFERENCE_DIVIDER_KEY";
+    public static final String SETTINGS_LABS_DIVIDER_PREFERENCE_KEY = "SETTINGS_LABS_DIVIDER_PREFERENCE_KEY";
+    public static final String SETTINGS_LABS_PREFERENCE_KEY = "SETTINGS_LABS_PREFERENCE_KEY";
+    public static final String SETTINGS_ROOM_SETTINGS_LABS_WARNING_KEY = "SETTINGS_ROOM_SETTINGS_LABS_WARNING_KEY";
     public static final String SETTINGS_LAZY_LOADING_PREFERENCE_KEY = "SETTINGS_LAZY_LOADING_PREFERENCE_KEY";
-    private static final String SETTINGS_USER_REFUSED_LAZY_LOADING_PREFERENCE_KEY = "SETTINGS_USER_REFUSED_LAZY_LOADING_PREFERENCE_KEY";
+    public static final String SETTINGS_USER_REFUSED_LAZY_LOADING_PREFERENCE_KEY = "SETTINGS_USER_REFUSED_LAZY_LOADING_PREFERENCE_KEY";
     public static final String SETTINGS_DATA_SAVE_MODE_PREFERENCE_KEY = "SETTINGS_DATA_SAVE_MODE_PREFERENCE_KEY";
     public static final String SETTINGS_USE_JITSI_CONF_PREFERENCE_KEY = "SETTINGS_USE_JITSI_CONF_PREFERENCE_KEY";
     public static final String SETTINGS_USE_NATIVE_CAMERA_PREFERENCE_KEY = "SETTINGS_USE_NATIVE_CAMERA_PREFERENCE_KEY";
     public static final String SETTINGS_ENABLE_SEND_VOICE_FEATURE_PREFERENCE_KEY = "SETTINGS_ENABLE_SEND_VOICE_FEATURE_PREFERENCE_KEY";
-    public static final String SETTINGS_ROOM_SETTINGS_LABS_WARNING_KEY = "SETTINGS_ROOM_SETTINGS_LABS_WARNING_KEY";
+
+    // advanced
+    public static final String SETTINGS_ADVANCED_DIVIDER_PREFERENCE_KEY = "SETTINGS_ADVANCED_DIVIDER_PREFERENCE_KEY";
+    public static final String SETTINGS_ADVANCED_PREFERENCE_KEY = "SETTINGS_ADVANCED_PREFERENCE_KEY";
 
     // analytics
+    public static final String SETTINGS_ANALYTICS_DIVIDER_PREFERENCE_KEY = "SETTINGS_ANALYTICS_DIVIDER_PREFERENCE_KEY";
+    public static final String SETTINGS_ANALYTICS_PREFERENCE_KEY = "SETTINGS_ANALYTICS_PREFERENCE_KEY";
     public static final String SETTINGS_USE_ANALYTICS_KEY = "SETTINGS_USE_ANALYTICS_KEY";
     public static final String SETTINGS_USE_RAGE_SHAKE_KEY = "SETTINGS_USE_RAGE_SHAKE_KEY";
 
@@ -193,6 +198,7 @@ public class PreferencesManager {
             SETTINGS_MEDIA_SAVING_PERIOD_KEY,
             SETTINGS_MEDIA_SAVING_PERIOD_SELECTED_KEY,
             SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY,
+            SETTINGS_SEND_MESSAGE_WITH_ENTER,
 
             SETTINGS_PIN_UNREAD_MESSAGES_PREFERENCE_KEY,
             SETTINGS_PIN_MISSED_NOTIFICATIONS_PREFERENCE_KEY,
@@ -311,32 +317,6 @@ public class PreferencesManager {
      */
     public static boolean showAvatarDisplayNameChangeMessages(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTINGS_SHOW_AVATAR_DISPLAY_NAME_CHANGES_MESSAGES_KEY, true);
-    }
-
-    /**
-     * Determine when the info area is shown.
-     *
-     * @param context the context
-     * @param newSetting the new setting for when the info area is shown.
-     */
-    public static void setShowInfoArea(Context context, String newSetting) {
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putString(SETTINGS_SHOW_INFO_AREA_KEY, newSetting)
-                .apply();
-    }
-
-    /**
-     * Update if the avatar and display name events should be shown in the messages list.
-     *
-     * @param context the context
-     * @param isEnabled true if the avatar and display name events should be shown in the messages list.
-     */
-    public static void setShowAvatarDisplayNameChangeMessages(Context context, boolean isEnabled) {
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putBoolean(SETTINGS_SHOW_AVATAR_DISPLAY_NAME_CHANGES_MESSAGES_KEY, isEnabled)
-                .apply();
     }
 
     /**
@@ -819,6 +799,16 @@ public class PreferencesManager {
      */
     public static boolean previewMediaWhenSending(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY, false);
+    }
+
+    /**
+     * Tells if message should be send by pressing enter on the soft keyboard
+     *
+     * @param context the context
+     * @return true to send message with enter
+     */
+    public static boolean sendMessageWithEnter(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTINGS_SEND_MESSAGE_WITH_ENTER, false);
     }
 
     /**

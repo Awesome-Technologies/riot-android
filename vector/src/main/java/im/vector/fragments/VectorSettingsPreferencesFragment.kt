@@ -28,7 +28,9 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.Settings
+import android.support.annotation.StringRes
 import android.support.design.widget.TextInputEditText
+import android.support.design.widget.TextInputLayout
 import android.support.v14.preference.SwitchPreference
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.*
@@ -42,6 +44,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.content.edit
+import androidx.core.view.isVisible
 import androidx.core.widget.toast
 import com.bumptech.glide.Glide
 import com.google.i18n.phonenumbers.NumberParseException
@@ -52,6 +55,7 @@ import im.vector.VectorApp
 import im.vector.activity.*
 import im.vector.dialogs.ExportKeysDialog
 import im.vector.extensions.getFingerprintHumanReadable
+import im.vector.extensions.showPassword
 import im.vector.extensions.withArgs
 import im.vector.preference.ProgressBarPreference
 import im.vector.preference.UserAvatarPreference
@@ -60,6 +64,7 @@ import im.vector.preference.VectorPreference
 import im.vector.settings.FontScale
 import im.vector.settings.VectorLocale
 import im.vector.ui.themes.ThemeUtils
+import im.vector.ui.util.SimpleTextWatcher
 import im.vector.util.*
 import org.matrix.androidsdk.MXSession
 import org.matrix.androidsdk.crypto.data.ImportRoomKeysResult
@@ -154,7 +159,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     }
 
     private val mContactPhonebookCountryPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_CONTACTS_PHONEBOOK_COUNTRY_PREFERENCE_KEY) as Preference
+        findPreference(PreferencesManager.SETTINGS_CONTACTS_PHONEBOOK_COUNTRY_PREFERENCE_KEY)
     }
 
     // Group Flairs
@@ -168,6 +173,13 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     }
     private val mCryptographyCategoryDivider by lazy {
         findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY)
+    }
+    // cryptography manage
+    private val mCryptographyManageCategory by lazy {
+        findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_MANAGE_PREFERENCE_KEY) as PreferenceCategory
+    }
+    private val mCryptographyManageCategoryDivider by lazy {
+        findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY)
     }
     // displayed pushers
     private val mPushersSettingsDivider by lazy {
@@ -223,28 +235,32 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         findPreference(PreferencesManager.SETTINGS_NOTIFICATION_PRIVACY_PREFERENCE_KEY)
     }
     private val selectedLanguagePreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_INTERFACE_LANGUAGE_PREFERENCE_KEY) as Preference
+        findPreference(PreferencesManager.SETTINGS_INTERFACE_LANGUAGE_PREFERENCE_KEY)
     }
     private val textSizePreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_INTERFACE_TEXT_SIZE_KEY) as Preference
+        findPreference(PreferencesManager.SETTINGS_INTERFACE_TEXT_SIZE_KEY)
     }
     private val cryptoInfoDeviceNamePreference by lazy {
         findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_NAME_PREFERENCE_KEY) as VectorPreference
     }
     private val cryptoInfoDeviceIdPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_ID_PREFERENCE_KEY) as Preference
+        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_ID_PREFERENCE_KEY)
+    }
+
+    private val manageBackupPref by lazy {
+        findPreference(PreferencesManager.SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY)
     }
 
     private val exportPref by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_EXPORT_E2E_ROOM_KEYS_PREFERENCE_KEY) as Preference
+        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_EXPORT_E2E_ROOM_KEYS_PREFERENCE_KEY)
     }
 
     private val importPref by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_IMPORT_E2E_ROOM_KEYS_PREFERENCE_KEY) as Preference
+        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_IMPORT_E2E_ROOM_KEYS_PREFERENCE_KEY)
     }
 
     private val cryptoInfoTextPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_KEY_PREFERENCE_KEY) as Preference
+        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_KEY_PREFERENCE_KEY)
     }
     // encrypt to unverified devices
     private val sendToUnverifiedDevicesPref by lazy {
@@ -315,7 +331,19 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         findPreference(PreferencesManager.SETTINGS_ENABLE_MARKDOWN_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_12_24_TIMESTAMPS_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ALWAYS_SHOW_TIMESTAMPS_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_VIBRATE_ON_MENTION_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_SEND_MESSAGE_WITH_ENTER).isVisible = false
         findPreference(PreferencesManager.SETTINGS_SHOW_INFO_AREA_KEY).isVisible = false
+
+        // Home
+        findPreference(PreferencesManager.SETTINGS_HOME_DISPLAY_DIVIDER_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_HOME_DISPLAY_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_PIN_MISSED_NOTIFICATIONS_PREFERENCE_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_PIN_UNREAD_MESSAGES_PREFERENCE_KEY).isVisible = false
+
+        // Flair
+        findPreference(PreferencesManager.SETTINGS_GROUPS_FLAIR_DIVIDER_KEY).isVisible = false
+        mGroupsFlairCategory.isVisible = false
 
         // Url preview
         findPreference(PreferencesManager.SETTINGS_SHOW_URL_PREVIEW_KEY).isVisible = false
@@ -335,16 +363,6 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             }
         }
 
-        // Home
-        findPreference(PreferencesManager.SETTINGS_HOME_DISPLAY_DIVIDER_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_HOME_DISPLAY_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_PIN_MISSED_NOTIFICATIONS_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_PIN_UNREAD_MESSAGES_PREFERENCE_KEY).isVisible = false
-
-        // Flair
-        findPreference(PreferencesManager.SETTINGS_GROUPS_FLAIR_DIVIDER_KEY).isVisible = false
-        mGroupsFlairCategory.isVisible = false
-
         // push rules
 
         // Notification privacy
@@ -352,9 +370,6 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         mNotificationPrivacyPreference.isVisible = false
         findPreference(PreferencesManager.SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ENABLE_THIS_DEVICE_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CALL_INVITATIONS_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_MESSAGES_SENT_BY_BOT_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CONTAINING_MY_USER_NAME_PREFERENCE_KEY).isVisible = false
 
         for (preferenceKey in mPrefKeyToBingRuleId.keys) {
             val preference = findPreference(preferenceKey)
@@ -419,7 +434,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         refreshPushersList()
 
         // Calls
-        findPreference(PreferencesManager.SETTINGS_CALL_DIVIDER_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_CALL_DIVIDER_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_CALL_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY).isVisible = false
@@ -428,12 +443,11 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         refreshIgnoredUsersList()
 
         // Lab
+        findPreference(PreferencesManager.SETTINGS_LABS_DIVIDER_PREFERENCE_KEY).isVisible = false
         mLabsCategory.isVisible = false
-        findPreference(PreferencesManager.SETTINGS_LABS_PREFERENCE_DIVIDER_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_WARNING_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_IS_ACTIVE_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_WARNING_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_LAZY_LOADING_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_DATA_SAVE_MODE_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_USE_JITSI_CONF_PREFERENCE_KEY).isVisible = false
@@ -444,17 +458,11 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         findPreference(PreferencesManager.SETTINGS_DEVICES_LIST_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY).isVisible = false
 
-        // Advanced settings
-        findPreference(PreferencesManager.SETTINGS_ADVANCED_PREFERENCE_DIVIDER_KEY).isVisible = false
+        // Advanced
+        findPreference(PreferencesManager.SETTINGS_ADVANCED_DIVIDER_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ADVANCED_PREFERENCE_KEY).isVisible = false
-
-        // user account
         findPreference(PreferencesManager.SETTINGS_LOGGED_IN_PREFERENCE_KEY).isVisible = false
-
-        // home server
         findPreference(PreferencesManager.SETTINGS_HOME_SERVER_PREFERENCE_KEY).isVisible = false
-
-        // identity server
         findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY).isVisible = false
 
         // crypto
@@ -467,12 +475,19 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_NAME_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ENCRYPTION_NEVER_SENT_TO_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_KEY_MANAGEMENT_PREFERENCE_DIVIDER_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ENCRYPTION_EXPORT_E2E_ROOM_KEYS_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CRYPTOHRAPHY_MANAGE_KEYS_PREFERENCE_KEY).isVisible = false
+
+        // crypto manage
+        mCryptographyManageCategoryDivider.isVisible = false
+        mCryptographyManageCategory.isVisible = false
+        manageBackupPref.isVisible = false
 
         // Analytics
+        findPreference(PreferencesManager.SETTINGS_ANALYTICS_DIVIDER_PREFERENCE_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_ANALYTICS_PREFERENCE_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_USE_ANALYTICS_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_USE_RAGE_SHAKE_KEY).isVisible = false
 
         // Analytics tracking management
         (findPreference(PreferencesManager.SETTINGS_USE_ANALYTICS_KEY) as SwitchPreference).let {
@@ -515,7 +530,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         }
 
         // application version
-        (findPreference(PreferencesManager.SETTINGS_VERSION_PREFERENCE_KEY) as Preference).let {
+        (findPreference(PreferencesManager.SETTINGS_VERSION_PREFERENCE_KEY)).let {
             it.summary = VectorUtils.getApplicationVersion(appContext)
 
             it.setOnPreferenceClickListener {
@@ -588,7 +603,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                 }
             })
 
-            it.onPreferenceClickListener = Preference.OnPreferenceClickListener { it ->
+            it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 displayLoadingView()
 
                 val task = ClearMediaCacheAsyncTask(
@@ -659,15 +674,6 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
             false
         }
-
-        findPreference(PreferencesManager.SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY)
-                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            context?.let {
-                startActivity(KeysBackupManageActivity.intent(it, mSession.myUserId))
-            }
-            false
-        }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -876,78 +882,146 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
      * Update the password.
      */
     private fun onPasswordUpdateClick() {
+        activity?.let { activity ->
+            val view: ViewGroup = activity.layoutInflater.inflate(R.layout.dialog_change_password, null) as ViewGroup
 
-        val thisActivity = activity
-        thisActivity?.let { activity ->
-            val view = activity.layoutInflater.inflate(R.layout.dialog_change_password, null)
-            val oldPasswordText = view.findViewById<EditText>(R.id.change_password_old_pwd_text)
-            val newPasswordText = view.findViewById<EditText>(R.id.change_password_new_pwd_text)
-            val confirmNewPasswordText = view.findViewById<EditText>(R.id.change_password_confirm_new_pwd_text)
+            val showPassword: ImageView = view.findViewById(R.id.change_password_show_passwords)
+            val oldPasswordTil: TextInputLayout = view.findViewById(R.id.change_password_old_pwd_til)
+            val oldPasswordText: TextInputEditText = view.findViewById(R.id.change_password_old_pwd_text)
+            val newPasswordText: TextInputEditText = view.findViewById(R.id.change_password_new_pwd_text)
+            val confirmNewPasswordTil: TextInputLayout = view.findViewById(R.id.change_password_confirm_new_pwd_til)
+            val confirmNewPasswordText: TextInputEditText = view.findViewById(R.id.change_password_confirm_new_pwd_text)
+            val changePasswordLoader: View = view.findViewById(R.id.change_password_loader)
+
+            var passwordShown = false
+
+            showPassword.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    passwordShown = !passwordShown
+
+                    oldPasswordText.showPassword(passwordShown)
+                    newPasswordText.showPassword(passwordShown)
+                    confirmNewPasswordText.showPassword(passwordShown)
+
+                    showPassword.setImageResource(if (passwordShown) R.drawable.ic_eye_closed_black else R.drawable.ic_eye_black)
+                }
+            })
 
             val dialog = AlertDialog.Builder(activity)
-                    .setTitle(R.string.settings_change_password)
                     .setView(view)
-                    .setPositiveButton(R.string.save) { _, _ ->
-
-                        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
-
-                        val oldPwd = oldPasswordText.text.toString().trim()
-                        val newPwd = newPasswordText.text.toString().trim()
-
-                        displayLoadingView()
-
-                        mSession.updatePassword(oldPwd, newPwd, object : ApiCallback<Void> {
-                            private fun onDone(textId: Int) {
-                                activity.runOnUiThread {
-                                    hideLoadingView()
-                                    activity.toast(textId, Toast.LENGTH_LONG)
-                                }
-                            }
-
-                            override fun onSuccess(info: Void?) {
-                                onDone(R.string.settings_password_updated)
-                            }
-
-                            override fun onNetworkError(e: Exception) {
-                                onDone(R.string.settings_fail_to_update_password)
-                            }
-
-                            override fun onMatrixError(e: MatrixError) {
-                                onDone(R.string.settings_fail_to_update_password)
-                            }
-
-                            override fun onUnexpectedError(e: Exception) {
-                                onDone(R.string.settings_fail_to_update_password)
-                            }
-                        })
-                    }
-                    .setNegativeButton(R.string.cancel) { _, _ ->
+                    .setPositiveButton(R.string.settings_change_password_submit, null)
+                    .setNegativeButton(R.string.cancel, null)
+                    .setOnDismissListener {
                         val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
                     }
-                    .setOnCancelListener {
-                        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
-                    }
-                    .show()
+                    .create()
 
-            val saveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            saveButton.isEnabled = false
+            dialog.setOnShowListener {
+                val updateButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                updateButton.isEnabled = false
 
-            confirmNewPasswordText.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                fun updateUi() {
                     val oldPwd = oldPasswordText.text.toString().trim()
                     val newPwd = newPasswordText.text.toString().trim()
                     val newConfirmPwd = confirmNewPasswordText.text.toString().trim()
 
-                    saveButton.isEnabled = oldPwd.isNotEmpty() && newPwd.isNotEmpty() && TextUtils.equals(newPwd, newConfirmPwd)
+                    updateButton.isEnabled = oldPwd.isNotEmpty() && newPwd.isNotEmpty() && TextUtils.equals(newPwd, newConfirmPwd)
+
+                    if (newPwd.isNotEmpty() && newConfirmPwd.isNotEmpty() && !TextUtils.equals(newPwd, newConfirmPwd)) {
+                        confirmNewPasswordTil.error = getString(R.string.passwords_do_not_match)
+                    }
                 }
 
-                override fun afterTextChanged(s: Editable) {}
-            })
+                oldPasswordText.addTextChangedListener(object : SimpleTextWatcher() {
+                    override fun afterTextChanged(s: Editable) {
+                        oldPasswordTil.error = null
+                        updateUi()
+                    }
+                })
+
+                newPasswordText.addTextChangedListener(object : SimpleTextWatcher() {
+                    override fun afterTextChanged(s: Editable) {
+                        confirmNewPasswordTil.error = null
+                        updateUi()
+                    }
+                })
+
+                confirmNewPasswordText.addTextChangedListener(object : SimpleTextWatcher() {
+                    override fun afterTextChanged(s: Editable) {
+                        confirmNewPasswordTil.error = null
+                        updateUi()
+                    }
+                })
+
+                fun showPasswordLoadingView(toShow: Boolean) {
+                    if (toShow) {
+                        showPassword.isEnabled = false
+                        oldPasswordText.isEnabled = false
+                        newPasswordText.isEnabled = false
+                        confirmNewPasswordText.isEnabled = false
+                        changePasswordLoader.isVisible = true
+                        updateButton.isEnabled = false
+                    } else {
+                        showPassword.isEnabled = true
+                        oldPasswordText.isEnabled = true
+                        newPasswordText.isEnabled = true
+                        confirmNewPasswordText.isEnabled = true
+                        changePasswordLoader.isVisible = false
+                        updateButton.isEnabled = true
+                    }
+                }
+
+                updateButton.setOnClickListener {
+                    if (passwordShown) {
+                        // Hide passwords during processing
+                        showPassword.performClick()
+                    }
+
+                    val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
+
+                    val oldPwd = oldPasswordText.text.toString().trim()
+                    val newPwd = newPasswordText.text.toString().trim()
+
+                    showPasswordLoadingView(true)
+
+                    mSession.updatePassword(oldPwd, newPwd, object : ApiCallback<Void> {
+                        private fun onDone(@StringRes textResId: Int) {
+                            showPasswordLoadingView(false)
+
+                            if (textResId == R.string.settings_fail_to_update_password_invalid_current_password) {
+                                oldPasswordTil.error = getString(textResId)
+                            } else {
+                                dialog.dismiss()
+                                activity.toast(textResId, Toast.LENGTH_LONG)
+                            }
+                        }
+
+                        override fun onSuccess(info: Void?) {
+                            onDone(R.string.settings_password_updated)
+                        }
+
+                        override fun onNetworkError(e: Exception) {
+                            onDone(R.string.settings_fail_to_update_password)
+                        }
+
+                        override fun onMatrixError(e: MatrixError) {
+                            if (e.error == "Invalid password") {
+                                onDone(R.string.settings_fail_to_update_password_invalid_current_password)
+                            } else {
+                                dialog.dismiss()
+                                onDone(R.string.settings_fail_to_update_password)
+                            }
+                        }
+
+                        override fun onUnexpectedError(e: Exception) {
+                            onDone(R.string.settings_fail_to_update_password)
+                        }
+                    })
+                }
+            }
+            dialog.show()
         }
     }
 
@@ -1893,9 +1967,13 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     //==============================================================================================================
 
     private fun removeCryptographyPreference() {
-        if (null != preferenceScreen) {
-            preferenceScreen.removePreference(mCryptographyCategory)
-            preferenceScreen.removePreference(mCryptographyCategoryDivider)
+        preferenceScreen.let {
+            it.removePreference(mCryptographyCategory)
+            it.removePreference(mCryptographyCategoryDivider)
+
+            // Also remove keys management section
+            it.removePreference(mCryptographyManageCategory)
+            it.removePreference(mCryptographyManageCategoryDivider)
         }
     }
 
@@ -1932,6 +2010,14 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             cryptoInfoDeviceIdPreference.setOnPreferenceClickListener {
                 activity?.let { copyToClipboard(it, deviceId) }
                 true
+            }
+
+
+            manageBackupPref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                context?.let {
+                    startActivity(KeysBackupManageActivity.intent(it, mSession.myUserId))
+                }
+                false
             }
 
             exportPref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -1992,9 +2078,9 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     //==============================================================================================================
 
     private fun removeDevicesPreference() {
-        if (null != preferenceScreen) {
-            preferenceScreen.removePreference(mDevicesListSettingsCategory)
-            preferenceScreen.removePreference(mDevicesListSettingsCategoryDivider)
+        preferenceScreen.let {
+            it.removePreference(mDevicesListSettingsCategory)
+            it.removePreference(mDevicesListSettingsCategoryDivider)
         }
     }
 
@@ -2203,7 +2289,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                                 val count = mDevicesListSettingsCategory.preferenceCount
 
                                 for (i in 0 until count) {
-                                    val pref = mDevicesListSettingsCategory.getPreference(i) as Preference
+                                    val pref = mDevicesListSettingsCategory.getPreference(i)
 
                                     if (TextUtils.equals(aDeviceInfoToRename.device_id, pref.title)) {
                                         pref.summary = newName
@@ -2432,39 +2518,42 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
                 displayLoadingView()
 
-                mSession.crypto?.importRoomKeys(data, password, object : ApiCallback<ImportRoomKeysResult> {
-                    override fun onSuccess(info: ImportRoomKeysResult?) {
-                        if (!isAdded) {
-                            return
-                        }
+                mSession.crypto?.importRoomKeys(data,
+                        password,
+                        null,
+                        object : ApiCallback<ImportRoomKeysResult> {
+                            override fun onSuccess(info: ImportRoomKeysResult?) {
+                                if (!isAdded) {
+                                    return
+                                }
 
-                        hideLoadingView()
+                                hideLoadingView()
 
-                        info?.let {
-                            AlertDialog.Builder(thisActivity)
-                                    .setMessage(getString(R.string.encryption_import_room_keys_success,
-                                            it.successfullyNumberOfImportedKeys,
-                                            it.totalNumberOfKeys))
-                                    .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
-                                    .show()
-                        }
-                    }
+                                info?.let {
+                                    AlertDialog.Builder(thisActivity)
+                                            .setMessage(getString(R.string.encryption_import_room_keys_success,
+                                                    it.successfullyNumberOfImportedKeys,
+                                                    it.totalNumberOfKeys))
+                                            .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+                                            .show()
+                                }
+                            }
 
-                    override fun onNetworkError(e: Exception) {
-                        appContext.toast(e.localizedMessage)
-                        hideLoadingView()
-                    }
+                            override fun onNetworkError(e: Exception) {
+                                appContext.toast(e.localizedMessage)
+                                hideLoadingView()
+                            }
 
-                    override fun onMatrixError(e: MatrixError) {
-                        appContext.toast(e.localizedMessage)
-                        hideLoadingView()
-                    }
+                            override fun onMatrixError(e: MatrixError) {
+                                appContext.toast(e.localizedMessage)
+                                hideLoadingView()
+                            }
 
-                    override fun onUnexpectedError(e: Exception) {
-                        appContext.toast(e.localizedMessage)
-                        hideLoadingView()
-                    }
-                })
+                            override fun onUnexpectedError(e: Exception) {
+                                appContext.toast(e.localizedMessage)
+                                hideLoadingView()
+                            }
+                        })
 
                 importDialog.dismiss()
             })
@@ -2655,4 +2744,5 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                     putString(ARG_MATRIX_ID, matrixId)
                 }
     }
+
 }

@@ -166,6 +166,12 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
                 }
             }
         }
+
+        // Hide settings
+        findPreference(PreferencesManager.SETTINGS_CONTAINING_MY_USER_NAME_PREFERENCE_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_CALL_INVITATIONS_PREFERENCE_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_MESSAGES_SENT_BY_BOT_PREFERENCE_KEY).isVisible = false
+        callNotificationsSystemOptions.isVisible = false
     }
 
     private fun refreshDisplay() {
