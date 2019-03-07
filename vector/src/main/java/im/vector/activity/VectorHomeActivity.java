@@ -112,8 +112,6 @@ import im.vector.MyPresenceManager;
 import im.vector.PublicRoomsManager;
 import im.vector.R;
 import im.vector.VectorApp;
-import im.vector.activity.signout.SignOutActivity;
-import im.vector.activity.signout.SignOutViewModel;
 import im.vector.activity.util.RequestCodesKt;
 import im.vector.extensions.ViewExtensionsKt;
 import im.vector.fragments.AbsHomeFragment;
@@ -122,6 +120,8 @@ import im.vector.fragments.GroupsFragment;
 import im.vector.fragments.HomeFragment;
 import im.vector.fragments.PeopleFragment;
 import im.vector.fragments.RoomsFragment;
+import im.vector.fragments.signout.SignOutBottomSheetDialogFragment;
+import im.vector.fragments.signout.SignOutViewModel;
 import im.vector.push.PushManager;
 import im.vector.receiver.VectorUniversalLinkReceiver;
 import im.vector.services.EventStreamService;
@@ -1523,7 +1523,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                     }
 
                     case R.id.sliding_menu_sign_out: {
-                        startActivity(new Intent(VectorHomeActivity.this, SignOutActivity.class));
+                        signOut();
                         break;
                     }
 
@@ -1580,6 +1580,52 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_material_menu_white));
         }
+    }
+
+    private void signOut() {
+
+        if (SignOutViewModel.Companion.doYouNeedToBeDisplayed(mSession)) {
+            SignOutBottomSheetDialogFragment signoutDialog = SignOutBottomSheetDialogFragment.Companion.newInstance(mSession.getMyUserId());
+            signoutDialog.setOnSignOut(() -> {
+                showWaitingView();
+                CommonActivityUtils.logout(VectorHomeActivity.this);
+            });
+            signoutDialog.show(getSupportFragmentManager(), "SO");
+        } else {
+            // Display a simple confirmation dialog
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.action_sign_out)
+                    .setMessage(R.string.action_sign_out_confirmation_simple)
+                    .setPositiveButton(R.string.action_sign_out, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            showWaitingView();
+
+                            CommonActivityUtils.logout(VectorHomeActivity.this);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show();
+        }
+
+//        if (SignOutActivity.Companion.doYouNeedToBeDisplayed(mSession)) {
+//            startActivity(new Intent(this, SignOutActivity.class));
+//        } else {
+//            // Display a simple confirmation dialog
+//            new AlertDialog.Builder(this)
+//                    .setTitle(R.string.action_sign_out)
+//                    .setMessage(R.string.action_sign_out_confirmation_simple)
+//                    .setPositiveButton(R.string.action_sign_out, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            showWaitingView();
+//
+//                            CommonActivityUtils.logout(VectorHomeActivity.this);
+//                        }
+//                    })
+//                    .setNegativeButton(R.string.cancel, null)
+//                    .show();
+//        }
     }
 
     private void refreshSlidingMenu() {
@@ -2150,12 +2196,11 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
     @Override
     public void setupKeysBackup() {
-        startActivity(KeysBackupManageActivity.Companion.intent(this, mSession.getMyUserId()));
+        startActivity(KeysBackupSetupActivity.Companion.intent(this, mSession.getMyUserId(), false));
     }
 
     @Override
     public void recoverKeysBackup() {
-        // Same than for setup
-        setupKeysBackup();
+        startActivity(KeysBackupManageActivity.Companion.intent(this, mSession.getMyUserId()));
     }
 }

@@ -252,7 +252,7 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
                             || Event.EVENT_TYPE_STATE_HISTORY_VISIBILITY.equals(eventType)
                             || Event.EVENT_TYPE_STATE_ROOM_JOIN_RULES.equals(eventType)    // room access rules
                             || Event.EVENT_TYPE_STATE_ROOM_GUEST_ACCESS.equals(eventType)  // room access rules
-                            ) {
+                    ) {
                         Log.d(LOG_TAG, "## onLiveEvent() event = " + eventType);
                         updateUi();
                     }
@@ -265,7 +265,7 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
                     if (Event.EVENT_TYPE_STATE_CANONICAL_ALIAS.equals(eventType)
                             || Event.EVENT_TYPE_STATE_ROOM_ALIASES.equals(eventType)
                             || Event.EVENT_TYPE_STATE_ROOM_POWER_LEVELS.equals(eventType)
-                            ) {
+                    ) {
                         Log.d(LOG_TAG, "## onLiveEvent() refresh the addresses list");
                         refreshAddresses();
                     }
@@ -1547,6 +1547,97 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
                     return true;
                 }
             });
+        }
+
+        final String key = PREF_KEY_ENCRYPTION + mRoom.getRoomId();
+
+        // remove the displayed preferences
+        Preference e2ePref = mAdvancedSettingsCategory.findPreference(key);
+
+        if (null != e2ePref) {
+            mAdvancedSettingsCategory.removePreference(e2ePref);
+        }
+
+        // remove the preference because it might switch from a SwitchPreference to  VectorPreference
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .edit()
+                .remove(key)
+                .apply();
+
+        if (mRoom.isEncrypted()) {
+            Preference isEncryptedPreference = new VectorPreference(getActivity());
+            isEncryptedPreference.setTitle(R.string.room_settings_addresses_e2e_enabled);
+            isEncryptedPreference.setKey(key);
+            isEncryptedPreference.setIcon(getResources().getDrawable(R.drawable.e2e_verified));
+            mAdvancedSettingsCategory.addPreference(isEncryptedPreference);
+        } else {
+            PowerLevels powerLevels = mRoom.getState().getPowerLevels();
+            int myPowerLevel = -1;
+            int minimumPowerLevel = 0;
+
+            if (null != powerLevels) {
+                myPowerLevel = powerLevels.getUserPowerLevel(mSession.getMyUserId());
+                minimumPowerLevel = powerLevels.minimumPowerLevelForSendingEventAsStateEvent(Event.EVENT_TYPE_MESSAGE_ENCRYPTION);
+            }
+
+            // Test if the user has enough power levels to enable the crypto is in this room
+            if (myPowerLevel < minimumPowerLevel) {
+                Preference isEncryptedPreference = new VectorPreference(getActivity());
+                isEncryptedPreference.setTitle(R.string.room_settings_addresses_e2e_disabled);
+                isEncryptedPreference.setKey(key);
+                isEncryptedPreference.setIcon(ThemeUtils.INSTANCE.tintDrawable(getActivity(),
+                        getResources().getDrawable(R.drawable.e2e_unencrypted), R.attr.vctr_settings_icon_tint_color));
+                mAdvancedSettingsCategory.addPreference(isEncryptedPreference);
+            } else if (mSession.isCryptoEnabled()) {
+                final SwitchPreference encryptSwitchPreference = new VectorSwitchPreference(getActivity());
+                encryptSwitchPreference.setTitle(R.string.room_settings_addresses_e2e_encryption_warning);
+                encryptSwitchPreference.setKey(key);
+                encryptSwitchPreference.setIcon(ThemeUtils.INSTANCE.tintDrawable(getActivity(),
+                        getResources().getDrawable(R.drawable.e2e_unencrypted), R.attr.vctr_settings_icon_tint_color));
+                encryptSwitchPreference.setChecked(false);
+                mAdvancedSettingsCategory.addPreference(encryptSwitchPreference);
+
+                encryptSwitchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValueAsVoid) {
+                        boolean newValue = (boolean) newValueAsVoid;
+                        if (newValue != mRoom.isEncrypted()) {
+                            displayLoadingView();
+
+                            mRoom.enableEncryptionWithAlgorithm(CryptoConstantsKt.MXCRYPTO_ALGORITHM_MEGOLM, new ApiCallback<Void>() {
+
+                                private void onDone() {
+                                    hideLoadingView(false);
+                                    refreshEndToEnd();
+                                }
+
+                                @Override
+                                public void onSuccess(Void info) {
+                                    onDone();
+                                }
+
+                                @Override
+                                public void onNetworkError(Exception e) {
+                                    onDone();
+                                }
+
+                                @Override
+                                public void onMatrixError(MatrixError e) {
+                                    onDone();
+                                }
+
+                                @Override
+                                public void onUnexpectedError(Exception e) {
+                                    onDone();
+                                }
+                            });
+
+                        }
+                        return true;
+                    }
+                });
+
+            }
         }
     }
 }
