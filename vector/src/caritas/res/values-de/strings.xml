@@ -31,9 +31,12 @@
     <string name="room_info_room_name">Gruppenname</string>
     <string name="room_info_room_topic">Gruppenthema</string>
 
+    <!-- Actions -->
+    <string name="join">Akzeptieren</string>
+
     <!-- Room Preview -->
     <string name="room_preview_invitation_format">Du wurdest von %s in diese Gruppe eingeladen</string>
-    <string name="room_preview_try_join_an_unknown_room">Du möchtest auf %s zugreifen. Möchtest du die Gruppe betreten, um an der Diskussion teilzunehmen?</string>
+    <string name="room_preview_try_join_an_unknown_room">Du möchtest auf %s zugreifen. Möchtest du der Gruppe beitreten, um an der Diskussion teilzunehmen?</string>
     <string name="room_preview_try_join_an_unknown_room_default">eine Gruppe</string>
     <string name="room_preview_room_interactions_disabled">Dies ist eine Vorschau dieser Gruppe. Gruppen-Interaktionen wurden deaktiviert.</string>
 
