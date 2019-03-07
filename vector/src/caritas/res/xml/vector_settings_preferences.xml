@@ -346,7 +346,7 @@
 
     </PreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY" />
 
     <!-- ************ Cryptography section ************ -->
     <PreferenceCategory
@@ -374,7 +374,7 @@
 
     <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_KEY_MANAGEMENT_PREFERENCE_DIVIDER_KEY" />
 
-    <PreferenceCategory android:title="@string/settings_cryptography_manage_keys">
+    <PreferenceCategory android:key="SETTINGS_CRYPTOHRAPHY_MANAGE_KEYS_PREFERENCE_KEY" android:title="@string/settings_cryptography_manage_keys">
 
         <im.vector.preference.VectorPreference
             android:key="SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY"
@@ -393,14 +393,14 @@
 
     </PreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY" />
 
     <!-- devices list: device ids + device names -->
     <PreferenceCategory
         android:key="SETTINGS_DEVICES_LIST_PREFERENCE_KEY"
         android:title="@string/settings_devices_list" />
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_ADVANCED_PREFERENCE_DIVIDER_KEY" />
 
     <PreferenceCategory
         android:key="SETTINGS_ADVANCED_PREFERENCE_KEY"

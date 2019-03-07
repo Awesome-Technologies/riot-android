@@ -445,6 +445,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         findPreference(PreferencesManager.SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY).isVisible = false
 
         // Advanced settings
+        findPreference(PreferencesManager.SETTINGS_ADVANCED_PREFERENCE_DIVIDER_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ADVANCED_PREFERENCE_KEY).isVisible = false
 
         // user account
@@ -467,6 +468,9 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         findPreference(PreferencesManager.SETTINGS_ENCRYPTION_NEVER_SENT_TO_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_KEY_MANAGEMENT_PREFERENCE_DIVIDER_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_EXPORT_E2E_ROOM_KEYS_PREFERENCE_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_CRYPTOHRAPHY_MANAGE_KEYS_PREFERENCE_KEY).isVisible = false
 
         // Analytics
 
