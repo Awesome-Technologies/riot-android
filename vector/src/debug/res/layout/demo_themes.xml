@@ -31,24 +31,4 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:theme="@style/AppTheme.Black">
-
-        <include layout="@layout/demo_theme_sample" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:theme="@style/AppTheme.Status">
-
-        <include layout="@layout/demo_theme_sample" />
-
-    </FrameLayout>
-
 </LinearLayout>

@@ -734,7 +734,6 @@ Unbekannte Geräte:</string>
     <string name="widget_integration_missing_user_id">Anfrage enthält keine user_id.</string>
     <string name="light_theme">Helles Thema</string>
     <string name="dark_theme">Dunkles Thema</string>
-    <string name="black_them">Schwarzes Thema</string>
 
     <string name="login_mobile_device">Mobilgerät</string>
 
