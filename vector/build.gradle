@@ -136,6 +136,7 @@ android {
             buildConfigField "boolean", "ALLOW_FCM_USE", "true"
             buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"C\""
             buildConfigField "String", "FLAVOR_DESCRIPTION", "\"Caritas\""
+            resValue "string", "bug_report_url", "https://caritas.amp.care/bugreports/submit"
         }
     }
 
