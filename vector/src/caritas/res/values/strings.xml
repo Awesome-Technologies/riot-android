@@ -83,6 +83,7 @@
     <string name="room_settings_room_photo">Group Photo</string>
     <string name="room_settings_room_name">Group Name</string>
     <string name="room_settings_room_tag">Group Tag</string>
+    <string name="room_settings_leave_conversation">Leave group</string>
 
     <!-- room settings : access and visibility -->
     <string name="room_settings_directory_visibility">List this group in group directory</string>

@@ -75,6 +75,7 @@
     <string name="room_settings_room_photo">Gruppenbild</string>
     <string name="room_settings_room_name">Gruppenname</string>
     <string name="room_settings_room_tag">Gruppen-Markierung</string>
+    <string name="room_settings_leave_conversation">Gruppe verlassen</string>
 
     <!-- room settings : access and visibility -->
     <string name="room_settings_directory_visibility">Diese Gruppe im Gruppen-Verzeichnis anzeigen</string>
