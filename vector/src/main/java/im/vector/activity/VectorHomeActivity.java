@@ -124,7 +124,7 @@ import im.vector.fragments.signout.SignOutBottomSheetDialogFragment;
 import im.vector.fragments.signout.SignOutViewModel;
 import im.vector.push.PushManager;
 import im.vector.receiver.VectorUniversalLinkReceiver;
-import im.vector.services.EventStreamService;
+import im.vector.services.EventStreamServiceX;
 import im.vector.tools.VectorUncaughtExceptionHandler;
 import im.vector.ui.themes.ActivityOtherThemes;
 import im.vector.ui.themes.ThemeUtils;
@@ -171,6 +171,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     public static final String EXTRA_CALL_SESSION_ID = "VectorHomeActivity.EXTRA_CALL_SESSION_ID";
     public static final String EXTRA_CALL_ID = "VectorHomeActivity.EXTRA_CALL_ID";
     public static final String EXTRA_CALL_UNKNOWN_DEVICES = "VectorHomeActivity.EXTRA_CALL_UNKNOWN_DEVICES";
+
+    public static final String EXTRA_CLEAR_EXISTING_NOTIFICATION = "VectorHomeActivity.EXTRA_CLEAR_EXISTING_NOTIFICATION";
 
     // the home activity is launched in shared files mode
     // i.e the user tries to send several files with VECTOR
@@ -335,6 +337,11 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
         // process intent parameters
         final Intent intent = getIntent();
+
+        if (intent.hasExtra(EXTRA_CLEAR_EXISTING_NOTIFICATION)) {
+            VectorApp.getInstance().getNotificationDrawerManager().clearAllEvents();
+            intent.removeExtra(EXTRA_CLEAR_EXISTING_NOTIFICATION);
+        }
 
         if (!isFirstCreation()) {
             // fix issue #1276
@@ -513,6 +520,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         MyPresenceManager.createPresenceManager(this, Matrix.getInstance(this).getSessions());
         MyPresenceManager.advertiseAllOnline();
 
+        VectorApp.getInstance().getNotificationDrawerManager().homeActivityDidResume(mSession != null ? mSession.getMyUserId() : null);
+
         // Broadcast receiver to stop waiting screen
         registerReceiver(mBrdRcvStopWaitingView, new IntentFilter(BROADCAST_ACTION_STOP_WAITING_VIEW));
 
@@ -609,72 +618,39 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == RequestCodesKt.BATTERY_OPTIMIZATION_FCM_REQUEST_CODE) {
-                // Ok, we can set the NORMAL privacy setting
-                Matrix.getInstance(this)
-                        .getPushManager()
-                        .setNotificationPrivacy(PushManager.NotificationPrivacy.NORMAL, null);
-            }
-        }
-    }
-
     /**
      * Ask the user to choose a notification privacy policy.
      */
     private void checkNotificationPrivacySetting() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            // The "Run in background" permission exists from android 6
-            return;
-        }
+
 
         final PushManager pushManager = Matrix.getInstance(VectorHomeActivity.this).getPushManager();
 
         if (pushManager.useFcm()) {
-            // ask user what notification privacy they want. Ask it once
-            if (!PreferencesManager.didAskUserToIgnoreBatteryOptimizations(this)) {
-                PreferencesManager.setDidAskUserToIgnoreBatteryOptimizations(this);
+            if (!PreferencesManager.didMigrateToNotificationRework(this)) {
+                PreferencesManager.setDidMigrateToNotificationRework(this);
+                //By default we want to move users to NORMAL privacy, but if they were in reduced privacy we let them as is
+                boolean backgroundSyncAllowed = pushManager.isBackgroundSyncAllowed();
+                boolean contentSendingAllowed = pushManager.isContentSendingAllowed();
 
-                if (SystemUtilsKt.isIgnoringBatteryOptimizations(this)) {
-                    // No need to ask permission, we already have it
-                    // Set the NORMAL privacy setting
-                    pushManager.setNotificationPrivacy(PushManager.NotificationPrivacy.NORMAL, null);
+                if (contentSendingAllowed && !backgroundSyncAllowed) {
+                    //former reduced, so stick with it (call to enforce)
+                    pushManager.setNotificationPrivacy(PushManager.NotificationPrivacy.REDUCED, null);
                 } else {
-                    // by default, use FCM and low detail notifications
-                    pushManager.setNotificationPrivacy(PushManager.NotificationPrivacy.LOW_DETAIL, null);
-
-                    new AlertDialog.Builder(this)
-                            .setCancelable(false)
-                            .setTitle(R.string.startup_notification_privacy_title)
-                            .setMessage(R.string.startup_notification_privacy_message)
-                            .setPositiveButton(R.string.startup_notification_privacy_button_grant, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Log.d(LOG_TAG, "checkNotificationPrivacySetting: user wants to grant the IgnoreBatteryOptimizations permission");
-
-                                    // Request the battery optimization cancellation to the user
-                                    SystemUtilsKt.requestDisablingBatteryOptimization(VectorHomeActivity.this,
-                                            RequestCodesKt.BATTERY_OPTIMIZATION_FCM_REQUEST_CODE);
-                                }
-                            })
-                            .setNegativeButton(R.string.startup_notification_privacy_button_other, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Log.d(LOG_TAG, "checkNotificationPrivacySetting: user opens notification policy setting screen");
-
-                                    // open the notification policy setting screen
-                                    startActivity(NotificationPrivacyActivity.getIntent(VectorHomeActivity.this));
-                                }
-                            })
-                            .show();
+                    // default force to normal
+                    pushManager.setNotificationPrivacy(PushManager.NotificationPrivacy.NORMAL, null);
                 }
+
             }
         } else {
-            if (!PreferencesManager.didAskUserToIgnoreBatteryOptimizations(this)) {
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                // The "Run in background" permission exists from android 6
+                return;
+            }
+
+            /*
+            if (pushManager.isBackgroundSyncAllowed() && !PreferencesManager.didAskUserToIgnoreBatteryOptimizations(this)) {
                 PreferencesManager.setDidAskUserToIgnoreBatteryOptimizations(this);
 
                 if (!SystemUtilsKt.isIgnoringBatteryOptimizations(this)) {
@@ -689,12 +665,14 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
                                     // Request the battery optimization cancellation to the user
                                     SystemUtilsKt.requestDisablingBatteryOptimization(VectorHomeActivity.this,
+                                            null,
                                             RequestCodesKt.BATTERY_OPTIMIZATION_FDROID_REQUEST_CODE);
                                 }
                             })
                             .show();
                 }
             }
+            */
         }
     }
 
@@ -834,6 +812,11 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             hideWaitingView();
         }
         intent.removeExtra(EXTRA_WAITING_VIEW_STATUS);
+
+        if (intent.hasExtra(EXTRA_CLEAR_EXISTING_NOTIFICATION)) {
+            VectorApp.getInstance().getNotificationDrawerManager().clearAllEvents();
+            intent.removeExtra(EXTRA_CLEAR_EXISTING_NOTIFICATION);
+        }
 
     }
 
@@ -1400,7 +1383,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             @Override
             public void onSuccess(Void info) {
                 // clear any pending notification for this room
-                EventStreamService.cancelNotificationsForRoomId(mSession.getMyUserId(), roomId);
+                VectorApp.getInstance().getNotificationDrawerManager().clearMessageEventOfRoom(roomId);
                 hideWaitingView();
 
                 if (null != onSuccessCallback) {
@@ -1508,9 +1491,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                     }
 
                     case R.id.sliding_menu_exit: {
-                        if (EventStreamService.getInstance() != null) {
-                            EventStreamService.getInstance().stopNow();
-                        }
+                        EventStreamServiceX.Companion.onApplicationStopped(VectorHomeActivity.this);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -1787,29 +1768,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     }
 
     /**
-     * Remove the BottomNavigationView menu shift
-     */
-    private void removeMenuShiftMode() {
-        int childCount = mBottomNavigationView.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-            if (mBottomNavigationView.getChildAt(i) instanceof BottomNavigationMenuView) {
-                BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(i);
-
-                try {
-                    Field shiftingMode = bottomNavigationMenuView.getClass().getDeclaredField("mShiftingMode");
-                    shiftingMode.setAccessible(true);
-                    shiftingMode.setBoolean(bottomNavigationMenuView, false);
-                    shiftingMode.setAccessible(false);
-
-                } catch (Exception e) {
-                    Log.e(LOG_TAG, "## removeMenuShiftMode failed " + e.getMessage(), e);
-                }
-            }
-        }
-    }
-
-    /**
      * Add the unread messages badges.
      */
     @SuppressLint("RestrictedApi")
@@ -1818,8 +1776,6 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         int badgeOffsetX = (int) (18 * scale + 0.5f);
         int badgeOffsetY = (int) (7 * scale + 0.5f);
 
-        removeMenuShiftMode();
-
         int largeTextHeight = getResources().getDimensionPixelSize(android.support.design.R.dimen.design_bottom_navigation_active_text_size);
 
         for (int menuIndex = 0; menuIndex < mBottomNavigationView.getMenu().size(); menuIndex++) {
@@ -1827,15 +1783,12 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                 int itemId = mBottomNavigationView.getMenu().getItem(menuIndex).getItemId();
                 BottomNavigationItemView navigationItemView = mBottomNavigationView.findViewById(itemId);
 
-
-                navigationItemView.setShiftingMode(false);
-
-                Field marginField = navigationItemView.getClass().getDeclaredField("mDefaultMargin");
+                Field marginField = navigationItemView.getClass().getDeclaredField("defaultMargin");
                 marginField.setAccessible(true);
                 marginField.setInt(navigationItemView, marginField.getInt(navigationItemView) + (largeTextHeight / 2));
                 marginField.setAccessible(false);
 
-                Field shiftAmountField = navigationItemView.getClass().getDeclaredField("mShiftAmount");
+                Field shiftAmountField = navigationItemView.getClass().getDeclaredField("shiftAmount");
                 shiftAmountField.setAccessible(true);
                 shiftAmountField.setInt(navigationItemView, 0);
                 shiftAmountField.setAccessible(false);
@@ -2114,7 +2067,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             @Override
             public void onLeaveRoom(final String roomId) {
                 // clear any pending notification for this room
-                EventStreamService.cancelNotificationsForRoomId(mSession.getMyUserId(), roomId);
+                VectorApp.getInstance().getNotificationDrawerManager().clearMessageEventOfRoom(roomId);
                 onForceRefresh();
             }
 

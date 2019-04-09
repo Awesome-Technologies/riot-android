@@ -107,9 +107,8 @@ public class PreferencesManager {
     public static final String SETTINGS_SHOW_JOIN_LEAVE_MESSAGES_KEY = "SETTINGS_SHOW_JOIN_LEAVE_MESSAGES_KEY";
     public static final String SETTINGS_SHOW_AVATAR_DISPLAY_NAME_CHANGES_MESSAGES_KEY = "SETTINGS_SHOW_AVATAR_DISPLAY_NAME_CHANGES_MESSAGES_KEY";
     public static final String SETTINGS_VIBRATE_ON_MENTION_KEY = "SETTINGS_VIBRATE_ON_MENTION_KEY";
-    private static final String SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY = "SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY";
-    public static final String SETTINGS_SHOW_INFO_AREA_KEY = "SETTINGS_SHOW_INFO_AREA_KEY";
     public static final String SETTINGS_SEND_MESSAGE_WITH_ENTER = "SETTINGS_SEND_MESSAGE_WITH_ENTER";
+    public static final String SETTINGS_SHOW_INFO_AREA_KEY = "SETTINGS_SHOW_INFO_AREA_KEY";
 
     // home
     public static final String SETTINGS_HOME_DISPLAY_DIVIDER_KEY = "SETTINGS_HOME_DISPLAY_DIVIDER_KEY";
@@ -138,6 +137,14 @@ public class PreferencesManager {
     public static final String SETTINGS_INVITED_TO_ROOM_PREFERENCE_KEY = "SETTINGS_INVITED_TO_ROOM_PREFERENCE_KEY_2";
     public static final String SETTINGS_CALL_INVITATIONS_PREFERENCE_KEY = "SETTINGS_CALL_INVITATIONS_PREFERENCE_KEY_2";
 
+    // media
+    public static final String SETTINGS_MEDIA_DIVIDER_KEY = "SETTINGS_MEDIA_DIVIDER_KEY";
+    public static final String SETTINGS_MEDIA_KEY = "SETTINGS_MEDIA_KEY";
+    private static final String SETTINGS_DEFAULT_MEDIA_COMPRESSION_KEY = "SETTINGS_DEFAULT_MEDIA_COMPRESSION_KEY";
+    private static final String SETTINGS_DEFAULT_MEDIA_SOURCE_KEY = "SETTINGS_DEFAULT_MEDIA_SOURCE_KEY";
+    private static final String SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY = "SETTINGS_PREVIEW_MEDIA_BEFORE_SENDING_KEY";
+    private static final String SETTINGS_PLAY_SHUTTER_SOUND_KEY = "SETTINGS_PLAY_SHUTTER_SOUND_KEY";
+
     // background sync
     public static final String SETTINGS_START_ON_BOOT_PREFERENCE_KEY = "SETTINGS_START_ON_BOOT_PREFERENCE_KEY";
     public static final String SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY = "SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY";
@@ -161,7 +168,7 @@ public class PreferencesManager {
     public static final String SETTINGS_USER_REFUSED_LAZY_LOADING_PREFERENCE_KEY = "SETTINGS_USER_REFUSED_LAZY_LOADING_PREFERENCE_KEY";
     public static final String SETTINGS_DATA_SAVE_MODE_PREFERENCE_KEY = "SETTINGS_DATA_SAVE_MODE_PREFERENCE_KEY";
     public static final String SETTINGS_USE_JITSI_CONF_PREFERENCE_KEY = "SETTINGS_USE_JITSI_CONF_PREFERENCE_KEY";
-    public static final String SETTINGS_USE_NATIVE_CAMERA_PREFERENCE_KEY = "SETTINGS_USE_NATIVE_CAMERA_PREFERENCE_KEY";
+    private static final String SETTINGS_USE_NATIVE_CAMERA_PREFERENCE_KEY = "SETTINGS_USE_NATIVE_CAMERA_PREFERENCE_KEY";
     public static final String SETTINGS_ENABLE_SEND_VOICE_FEATURE_PREFERENCE_KEY = "SETTINGS_ENABLE_SEND_VOICE_FEATURE_PREFERENCE_KEY";
 
     // advanced
@@ -178,6 +185,7 @@ public class PreferencesManager {
     public static final String SETTINGS_MEDIA_SAVING_PERIOD_KEY = "SETTINGS_MEDIA_SAVING_PERIOD_KEY";
     private static final String SETTINGS_MEDIA_SAVING_PERIOD_SELECTED_KEY = "SETTINGS_MEDIA_SAVING_PERIOD_SELECTED_KEY";
     private static final String DID_ASK_TO_IGNORE_BATTERY_OPTIMIZATIONS_KEY = "DID_ASK_TO_IGNORE_BATTERY_OPTIMIZATIONS_KEY";
+    private static final String DID_MIGRATE_TO_NOTIFICATION_REWORK = "DID_MIGRATE_TO_NOTIFICATION_REWORK";
     private static final String DID_ASK_TO_USE_ANALYTICS_TRACKING_KEY = "DID_ASK_TO_USE_ANALYTICS_TRACKING_KEY";
     public static final String SETTINGS_DEACTIVATE_ACCOUNT_KEY = "SETTINGS_DEACTIVATE_ACCOUNT_KEY";
     private static final String SETTINGS_DISPLAY_ALL_EVENTS_KEY = "SETTINGS_DISPLAY_ALL_EVENTS_KEY";
@@ -189,6 +197,10 @@ public class PreferencesManager {
 
     // some preferences keys must be kept after a logout
     private static final List<String> mKeysToKeepAfterLogout = Arrays.asList(
+            SETTINGS_DEFAULT_MEDIA_COMPRESSION_KEY,
+            SETTINGS_DEFAULT_MEDIA_SOURCE_KEY,
+            SETTINGS_PLAY_SHUTTER_SOUND_KEY,
+
             SETTINGS_SEND_TYPING_NOTIF_KEY,
             SETTINGS_ALWAYS_SHOW_TIMESTAMPS_KEY,
             SETTINGS_12_24_TIMESTAMPS_KEY,
@@ -210,8 +222,6 @@ public class PreferencesManager {
             SETTINGS_NOTIFICATION_RINGTONE_PREFERENCE_KEY,
             SETTINGS_NOTIFICATION_RINGTONE_SELECTION_PREFERENCE_KEY,
 
-            SETTINGS_SET_SYNC_TIMEOUT_PREFERENCE_KEY,
-            SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY,
             SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_PREFERENCE_KEY,
             SETTINGS_CONTACTS_PHONEBOOK_COUNTRY_PREFERENCE_KEY,
             SETTINGS_INTERFACE_LANGUAGE_PREFERENCE_KEY,
@@ -276,6 +286,16 @@ public class PreferencesManager {
                 .apply();
     }
 
+    public static boolean didMigrateToNotificationRework(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(DID_MIGRATE_TO_NOTIFICATION_REWORK, false);
+    }
+    public static void setDidMigrateToNotificationRework(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(DID_MIGRATE_TO_NOTIFICATION_REWORK, true)
+                .apply();
+    }
+
     /**
      * Tells if the timestamp must be displayed in 12h format
      *
@@ -337,6 +357,36 @@ public class PreferencesManager {
      */
     public static boolean isSendVoiceFeatureEnabled(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTINGS_ENABLE_SEND_VOICE_FEATURE_PREFERENCE_KEY, false);
+    }
+
+    /**
+     * Tells which compression level to use by default
+     *
+     * @param context the context
+     * @return the selected compression level
+     */
+    public static int getSelectedDefaultMediaCompressionLevel(Context context) {
+        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(SETTINGS_DEFAULT_MEDIA_COMPRESSION_KEY, "0"));
+    }
+
+    /**
+     * Tells which media source to use by default
+     *
+     * @param context the context
+     * @return the selected media source
+     */
+    public static int getSelectedDefaultMediaSource(Context context) {
+        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(SETTINGS_DEFAULT_MEDIA_SOURCE_KEY, "0"));
+    }
+
+    /**
+     * Tells whether to use shutter sound.
+     *
+     * @param context the context
+     * @return true if shutter sound should play
+     */
+    public static boolean useShutterSound(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTINGS_PLAY_SHUTTER_SOUND_KEY, true);
     }
 
     /**

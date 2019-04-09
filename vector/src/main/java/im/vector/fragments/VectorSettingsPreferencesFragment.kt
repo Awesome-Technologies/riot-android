@@ -433,6 +433,10 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         // Push target
         refreshPushersList()
 
+        // Media
+        findPreference(PreferencesManager.SETTINGS_MEDIA_DIVIDER_KEY).isVisible = false
+        findPreference(PreferencesManager.SETTINGS_MEDIA_KEY).isVisible = false
+
         // Calls
         findPreference(PreferencesManager.SETTINGS_CALL_DIVIDER_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_CALL_KEY).isVisible = false
@@ -451,7 +455,6 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         findPreference(PreferencesManager.SETTINGS_LAZY_LOADING_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_DATA_SAVE_MODE_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_USE_JITSI_CONF_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_USE_NATIVE_CAMERA_PREFERENCE_KEY).isVisible = false
         findPreference(PreferencesManager.SETTINGS_ENABLE_SEND_VOICE_FEATURE_PREFERENCE_KEY).isVisible = false
 
         // Device list

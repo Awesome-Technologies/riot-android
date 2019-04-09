@@ -106,9 +106,16 @@
     <!-- jitsi -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <!-- Jitsi libs require min API 21 and min is set to 16 -->
+    <uses-sdk tools:overrideLibrary="org.jitsi.meet.sdk,com.oney.WebRTCModule,co.apptailor.googlesignin,com.BV.LinearGradient,com.calendarevents,com.corbt.keepawake,com.dylanvann.fastimage,com.oblador.vectoricons,com.ocetnik.timer,com.rnimmersive,com.zmxv.RNSound,com.i18n.reactnativei18n,org.webkit.androidjsc" />
+
+
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
+
+    <!-- New when targeting API 28 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".VectorApp"
@@ -130,7 +137,7 @@
 
         <!-- activities list starts here -->
         <activity
-            android:name=".activity.LauncherActivity"
+            android:name=".activity.VectorLauncherActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -480,7 +487,13 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.DismissNotificationReceiver" />
+
+        <!-- Exported false, should only be accessible from this app!! -->
+        <receiver
+            android:name=".receiver.NotificationBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
         <receiver
             android:name=".receiver.VectorReferrerReceiver"
             android:enabled="true"
@@ -510,7 +523,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".services.EventStreamService" />
+        <service
+            android:name=".services.EventStreamServiceX"
+            android:exported="false" />
+
+        <service
+            android:name=".services.CallService"
+            android:exported="false" />
 
         <provider
             android:name=".db.VectorContentProvider"

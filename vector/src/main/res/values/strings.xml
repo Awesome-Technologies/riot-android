@@ -11,7 +11,8 @@
     <string name="dark_theme">Dark Theme</string>
 
     <!-- permanent notification subtitle -->
-    <string name="notification_sync_in_progress">Synchronising</string>
+    <string name="notification_sync_init">Initializing service</string>
+    <string name="notification_sync_in_progress">Synchronising…</string>
     <string name="notification_listening_for_events">Listening for events</string>
     <string name="notification_noisy_notifications">Noisy notifications</string>
     <string name="notification_silent_notifications">Silent notifications</string>
@@ -103,6 +104,7 @@
     <string name="action_mark_all_as_read">Mark all as read</string>
     <string name="action_historical">Historical</string>
     <string name="action_quick_reply">Quick reply</string>
+    <string name="action_mark_room_read">Mark as read</string>
     <string name="action_open">Open</string>
     <string name="action_close">Close</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
@@ -687,14 +689,11 @@
     <string name="settings_troubleshoot_test_battery_failed">If a user leaves a device unplugged and stationary for a period of time, with the screen off, the device enters Doze mode. This prevents apps from accessing the network and defers their jobs, syncs, and standard alarms. </string>
     <string name="settings_troubleshoot_test_battery_quickfix">Ignore Optimization</string>
 
-    <string name="settings_notification_privacy_warning">Riot.im runs in the background to keep your notification message content private. You can change this option to reduce battery usage.</string>
     <string name="settings_notification_privacy_normal">Normal</string>
-    <string name="settings_notification_privacy_power_saving">Power-saving Options</string>
-    <string name="settings_notification_privacy_low_detail">Low detail notifications</string>
     <string name="settings_notification_privacy_reduced">Reduced privacy</string>
     <string name="settings_notification_privacy_need_permission">The app needs permission to run in the background</string>
-    <string name="settings_notification_privacy_no_permission">The apps does <b>not</b> need permission to run in the background</string>
-    <string name="settings_notification_privacy_fcm">• Notifications are sent via Google Cloud Messaging</string>
+    <string name="settings_notification_privacy_no_background_sync">The apps does <b>not</b> need to connect to the HomeServer in the background, it should reduce battery usage</string>
+    <string name="settings_notification_privacy_fcm">• Notifications are sent via Firebase Cloud Messaging</string>
     <string name="settings_notification_privacy_metadata">• Notifications only contain meta data</string>
     <string name="settings_notification_privacy_secure_message_content">• Message content of the notification is <b>located securely direct from the Matrix homeserver</b></string>
     <string name="settings_notification_privacy_nosecure_message_content">• Notifications contain <b>meta and message data</b></string>
@@ -849,6 +848,14 @@
     <string name="settings_phone_number_code">Code</string>
     <string name="account_phone_number_error">An error occurred while verifying your phone number.</string>
     <string name="account_additional_info">Additional info: %s</string>
+
+    <!-- Media settings -->
+    <string name="settings_media">Media</string>
+    <string name="settings_default_compression">Default compression</string>
+    <string name="compression_opt_list_choose">Choose</string>
+    <string name="settings_default_media_source">Default media source</string>
+    <string name="media_source_choose">Choose</string>
+    <string name="settings_play_shutter_sound">Play shutter sound</string>
 
     <string name="settings_flair">Flair</string>
     <string name="settings_without_flair">You are not currently a member of any communities.</string>
@@ -1024,7 +1031,23 @@
         <item quantity="one">1 room</item>
         <item quantity="other">%d rooms</item>
     </plurals>
+
+    <plurals name="notification_compat_summary_line_for_room">
+        <item quantity="one">%1$s: 1 message</item>
+        <item quantity="other">%1$s: %2$d messages</item>
+    </plurals>
+    <plurals name="notification_compat_summary_title">
+        <item quantity="one">%d notification</item>
+        <item quantity="other">%d notifications</item>
+    </plurals>
+
     <string name="notification_unread_notified_messages_in_room">%1$s in %2$s"</string>
+    <string name="notification_unknown_new_event">New Event</string>
+    <string name="notification_unknown_room_name">Room</string>
+    <string name="notification_new_messages">New Messages</string>
+    <string name="notification_new_invitation">New Invitation</string>
+    <string name="notification_sender_me">Me</string>
+    <string name="notification_inline_reply_failed">** Failed to send - please open room</string>
 
     <!-- historical -->
     <string name="historical_placeholder">Search for historical</string>
@@ -1050,6 +1073,8 @@
         <item quantity="one">1 active widget</item>
         <item quantity="other">%d active widgets</item>
     </plurals>
+
+    <string name="error_jitsi_not_supported_on_old_device">Sorry, conference calls with Jitsi are not supported on old devices (devices with Android OS below 5.0)</string>
 
     <!-- Widget Integration Manager -->
     <string name="widget_integration_unable_to_create">Unable to create widget.</string>
@@ -1210,7 +1235,7 @@
     <string name="no_valid_google_play_services_apk">No valid Google Play Services APK found. Notifications may not work properly.</string>
 
     <!-- String for Play Store -->
-    <string name="store_title">Riot.im - Communicate, your way.</string>
+    <string name="store_title">Riot.im - Communicate, your way</string>
     <string name="store_whats_new">"We’re always making changes and improvements to Riot.im.
 The complete changelog can be found here: %1$s.
 To make sure you don’t miss a thing, just keep your updates turned on."</string>

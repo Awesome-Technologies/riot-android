@@ -1,3 +1,59 @@
+Changes in Riot 0.8.29 (2019-04-04)
+===================================================
+
+MatrixSdk:
+ - Upgrade MatrixSdk to version 0.9.20.
+ - Changelog: https://github.com/matrix-org/matrix-android-sdk/releases/tag/v0.9.20
+
+Improvements:
+ - Fix crash on Jitsi conference by upgrading the lib to version 1.21.0 (#2412)
+ - Finally upgrade Jitsi lib to version 2.0.0 (https://github.com/jitsi/jitsi-meet/releases/tag/android-sdk-2.0.0)
+
+Changes in Riot 0.8.28 (2019-04-01)
+===================================================
+
+Bugfix:
+ - Ensure EventStreamServiceX call startForeground(), even if there is no session, and do not simulate push in this case
+
+Changes in Riot 0.8.27 (2019-04-01)
+===================================================
+
+Improvements:
+ - Deprecate EventStreamService, replaced by EventStreamServiceX and CallService (#2782, #3065)
+
+Other changes:
+ - Scalar URL: Use prod urls in Riot mobile apps (#3077)
+
+Changes in Riot 0.8.26 (2019-03-25)
+===================================================
+
+MatrixSdk:
+ - Upgrade MatrixSdk to version 0.9.19.
+ - Changelog: https://github.com/matrix-org/matrix-android-sdk/releases/tag/v0.9.19
+
+Features:
+ - Notification rework: inline reply/mark as read actions, one notification per room (#3068 and others)
+
+Other changes:
+ - Disable usage of library ShortcutBadger on device running API 26+
+
+Bugfix:
+ - Fix expand and collapse color (#3035)
+ - Fix LED not flashing on noisy messages
+
+Changes in Riot 0.8.25 (2019-03-13)
+===================================================
+
+Improvements:
+ - Add option to choose default media source (#2763)
+ - Add option to choose default photo compression (#2763)
+ - Add option to disable camera shutter sound
+ - Auto-refresh scalar token when a 403 error is detected (#3051)
+ - Open each links with the browser in a new Tab (#381)
+
+Translations:
+ - New partial translations in Bengali-India
+
 Changes in Riot 0.8.24 (2019-03-07)
 ===================================================
 
@@ -77,6 +133,7 @@ Improvements:
  - Better wording in notification for video call (#1421)
  - Improve widget banner (#2129)
  - Icon for Oreo (#2169)
+ - Notification reliability and Messaging Style, with inlined reply (#2823, #1016).
  - Notification settings re-organization, added bing rule troubleshoot
  - Kotlin Code Improvement in VectorSettingsPreferencesFragment.kt
  - Remove redundant !! , Replace it with null safe operators in VectorSettingsPreferencesFragment.kt
@@ -1238,6 +1295,7 @@ Changes in Riot 0.8.XX (2019-XX-XX)
 
 MatrixSdk:
  - Upgrade MatrixSdk to version 0.X.Y.
+ - Changelog: https://github.com/matrix-org/matrix-android-sdk/releases/tag/v0.X.Y
 
 Features:
  -

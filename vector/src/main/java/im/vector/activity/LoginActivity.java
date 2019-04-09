@@ -98,7 +98,7 @@ import im.vector.push.fcm.FcmHelper;
 import im.vector.receiver.VectorRegistrationReceiver;
 import im.vector.receiver.VectorUniversalLinkReceiver;
 import im.vector.repositories.ServerUrlsRepository;
-import im.vector.services.EventStreamService;
+import im.vector.ui.badge.BadgeProxy;
 import im.vector.util.PhoneNumberUtils;
 import im.vector.util.ViewUtilKt;
 
@@ -461,6 +461,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
         // already registered
         if (hasCredentials()) {
+            /*
             if (null != intent && (intent.getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) == 0) {
                 Log.d(LOG_TAG, "## onCreate(): goToSplash because the credentials are already provided.");
                 goToSplash();
@@ -473,6 +474,9 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                     Log.d(LOG_TAG, "## onCreate(): close the login screen because it is a temporary task");
                 }
             }
+            */
+            Log.d(LOG_TAG, "## onCreate(): goToSplash because the credentials are already provided.");
+            goToSplash();
 
             finish();
             return;
@@ -579,7 +583,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         });
 
         // reset the badge counter
-        CommonActivityUtils.updateBadgeCount(this, 0);
+        BadgeProxy.INSTANCE.updateBadgeCount(this, 0);
 
         mHomeServerText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -2171,7 +2175,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         switch (mMode) {
             case MODE_LOGIN:
                 mLoginLayout.setVisibility(View.VISIBLE);
-                mPasswordForgottenTxtView.setVisibility(View.VISIBLE);
+                mPasswordForgottenTxtView.setVisibility(View.GONE);
                 mLoginButton.setVisibility(View.VISIBLE);
                 break;
             case MODE_LOGIN_SSO:
