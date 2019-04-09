@@ -380,6 +380,18 @@ public class PreferencesManager {
     }
 
     /**
+     * Tells which media source to use by default
+     *
+     * @param context the context
+     * @param source the selected media source
+     */
+    public static void setDefaultMediaSource(Context context, int source) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString(SETTINGS_DEFAULT_MEDIA_SOURCE_KEY, String.valueOf(source));
+        editor.apply();
+    }
+
+    /**
      * Tells whether to use shutter sound.
      *
      * @param context the context

@@ -345,6 +345,7 @@ public class VectorApp extends MultiDexApplication {
         PreferencesManager.setMarkdownEnabled(this, true);
         PreferencesManager.setShowJoinLeaveMessages(this, false);
         PreferencesManager.enableNotifications(this);
+        PreferencesManager.setDefaultMediaSource(this, 4); // send photo
     }
 
     @Override
