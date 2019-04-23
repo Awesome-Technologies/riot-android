@@ -32,7 +32,9 @@ class PiwikAnalytics(context: Context) : Analytics {
     private val tracker: Tracker
 
     init {
-        val config = TrackerConfig(context.getString(R.string.piwik_server_url), 1, " AndroidPiwikTracker")
+        val config = TrackerConfig(context.getString(R.string.piwik_server_url),
+                context.getString(R.string.piwik_site_id).toInt(),
+                context.getString(R.string.piwik_tracker_name))
         tracker = Piwik.getInstance(context).newTracker(config)
     }
 
