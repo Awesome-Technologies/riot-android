@@ -300,7 +300,7 @@
                     android:layout_gravity="center_vertical"
                     android:scaleType="fitCenter"
                     android:src="@drawable/e2e_verified"
-                    android:tint="?attr/colorAccent" />
+                    android:tint="@color/vector_success_color" />
 
                 <im.vector.view.VectorAutoCompleteTextView
                     android:id="@+id/editText_messageBox"

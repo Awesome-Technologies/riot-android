@@ -42,7 +42,7 @@
             android:layout_alignRight="@+id/room_avatar_direct_chat_icon"
             android:layout_alignBottom="@+id/room_avatar"
             android:src="@drawable/e2e_verified"
-            android:tint="?attr/colorAccent"
+            android:tint="@color/vector_success_color"
             android:visibility="invisible"
             tools:visibility="visible" />
 
