@@ -77,6 +77,9 @@
     <string name="settings_pin_missed_notifications">Pin groups with missed notifications</string>
     <string name="settings_pin_unread_messages">Pin groups with unread messages</string>
 
+    <string name="settings_opt_in_of_analytics_summary">Awesome Technologies collects anonymous statistics to allow us to improve the application.</string>
+    <string name="settings_opt_in_of_analytics_prompt">Please enable analytics to help us improve the messenger.</string>
+
     <!-- Room Settings -->
 
     <!-- room global settings-->

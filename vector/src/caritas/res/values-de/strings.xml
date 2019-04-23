@@ -71,6 +71,9 @@
     <string name="settings_pin_missed_notifications">Gruppen mit ungelesenen Benachrichtigungen anheften</string>
     <string name="settings_pin_unread_messages">Gruppen mit ungelesenen Nachrichten anheften</string>
 
+    <string name="settings_opt_in_of_analytics_summary">Awesome Technologies sammelt anonyme Analysedaten um zu verstehen, wie die App genutzt wird.</string>
+    <string name="settings_opt_in_of_analytics_prompt">Bitte aktiviere die Analysedaten um uns zu helfen den Messenger zu verbessern.</string>
+
     <!-- room global settings-->
     <string name="room_settings_room_photo">Gruppenbild</string>
     <string name="room_settings_room_name">Gruppenname</string>
