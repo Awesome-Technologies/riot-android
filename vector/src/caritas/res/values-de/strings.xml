@@ -19,7 +19,7 @@
     <string name="home_filter_placeholder_rooms">Nach Gruppen suchen</string>
 
     <!-- Rooms fragment -->
-    <string name="rooms_header">Gruppen</string>
+    <string name="rooms_header">Deine Gruppen</string>
     <string name="rooms_directory_header">Öffentliche Gruppen</string>
     <string name="no_room_placeholder">Keine Gruppen</string>
     <string name="no_public_room_placeholder">Keine öffentlichen Gruppen vorhanden</string>
