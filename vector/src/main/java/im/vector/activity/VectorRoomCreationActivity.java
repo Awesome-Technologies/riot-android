@@ -258,6 +258,14 @@ public class VectorRoomCreationActivity extends MXCActionBarActivity {
                 mParticipants.addAll(items);
                 mAdapter.addAll(items);
                 mAdapter.sort(mAlphaComparator);
+                if (!mParticipants.isEmpty()) {
+                    // the first entry is self so ignore
+                    mParticipants.remove(0);
+                    if (mParticipants.size() == 1) {
+                        // 1 other participant
+                        openOrCreateDirectChatRoom(mParticipants.get(0).mUserId);
+                    }
+                }
             } else if (1 == mParticipants.size()) {
                 // the user cancels the first user selection so assume he wants to cancel the room creation.
                 finish();
