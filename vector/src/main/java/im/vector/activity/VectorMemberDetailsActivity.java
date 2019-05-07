@@ -37,6 +37,7 @@ import android.widget.Toast;
 import org.matrix.androidsdk.MXPatterns;
 import org.matrix.androidsdk.MXSession;
 import org.matrix.androidsdk.call.IMXCall;
+import org.matrix.androidsdk.crypto.CryptoConstantsKt;
 import org.matrix.androidsdk.crypto.MXCryptoError;
 import org.matrix.androidsdk.crypto.data.MXDeviceInfo;
 import org.matrix.androidsdk.crypto.data.MXUsersDevicesMap;
@@ -154,13 +155,42 @@ public class VectorMemberDetailsActivity extends MXCActionBarActivity implements
     private final ApiCallback<String> mCreateDirectMessageCallBack = new ApiCallback<String>() {
         @Override
         public void onSuccess(String roomId) {
-            Map<String, Object> params = new HashMap<>();
-            params.put(VectorRoomActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
-            params.put(VectorRoomActivity.EXTRA_ROOM_ID, roomId);
-            params.put(VectorRoomActivity.EXTRA_EXPAND_ROOM_HEADER, true);
 
-            Log.d(LOG_TAG, "## mCreateDirectMessageCallBack: onSuccess - start goToRoomPage");
-            CommonActivityUtils.goToRoomPage(VectorMemberDetailsActivity.this, mSession, params);
+            Room room = mSession.getDataHandler().getRoom(roomId);
+            room.enableEncryptionWithAlgorithm(CryptoConstantsKt.MXCRYPTO_ALGORITHM_MEGOLM, new ApiCallback<Void>() {
+
+                private void onDone() {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put(VectorRoomActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
+                    params.put(VectorRoomActivity.EXTRA_ROOM_ID, roomId);
+                    params.put(VectorRoomActivity.EXTRA_EXPAND_ROOM_HEADER, true);
+
+                    Log.d(LOG_TAG, "## mCreateDirectMessageCallBack: onSuccess - start goToRoomPage");
+                    CommonActivityUtils.goToRoomPage(VectorMemberDetailsActivity.this, mSession, params);
+                }
+
+                @Override
+                public void onSuccess(Void info) {
+                    onDone();
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    onDone();
+                }
+
+                @Override
+                public void onMatrixError(MatrixError e) {
+                    onDone();
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    onDone();
+                }
+            });
+
+
         }
 
         @Override
@@ -1146,9 +1176,11 @@ public class VectorMemberDetailsActivity extends MXCActionBarActivity implements
                     }
                 }
 
-                imageResource = R.drawable.ic_add_black;
-                actionText = getString(R.string.start_new_chat);
-                directMessagesActions.add(new VectorMemberDetailsAdapter.AdapterMemberActionItems(imageResource, actionText, ITEM_ACTION_START_CHAT));
+                if (roomIds.isEmpty()) {
+                    imageResource = R.drawable.ic_add_black;
+                    actionText = getString(R.string.start_new_chat);
+                    directMessagesActions.add(new VectorMemberDetailsAdapter.AdapterMemberActionItems(imageResource, actionText, ITEM_ACTION_START_CHAT));
+                }
 
                 mListViewAdapter.setDirectCallsActionsList(directMessagesActions);
             }
