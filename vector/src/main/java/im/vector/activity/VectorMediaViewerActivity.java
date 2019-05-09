@@ -43,7 +43,6 @@ import im.vector.Matrix;
 import im.vector.R;
 import im.vector.VectorApp;
 import im.vector.adapters.VectorMediaViewerAdapter;
-import im.vector.db.VectorContentProvider;
 import im.vector.util.PermissionsToolsKt;
 import im.vector.util.SlidableMediaInfo;
 
