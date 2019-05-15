@@ -123,6 +123,16 @@ android {
             buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"C\""
             buildConfigField "String", "FLAVOR_DESCRIPTION", "\"Caritas\""
         }
+
+        amp {
+            applicationId 'chat.amp.messenger'
+            // use the version name
+            versionCode rootProject.ext.versionCodeProp
+            versionName rootProject.ext.versionNameProp
+            buildConfigField "boolean", "ALLOW_FCM_USE", "true"
+            buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"A\""
+            buildConfigField "String", "FLAVOR_DESCRIPTION", "\"AMPchat\""
+        }
     }
 
     lintOptions {
@@ -267,9 +277,19 @@ dependencies {
 
     // appfdroid flavor only
 
+    // amp flavor only
+    ampImplementation('com.google.firebase:firebase-messaging:17.4.0') {
+        exclude group: 'com.google.firebase', module: 'firebase-core'
+        exclude group: 'com.google.firebase', module: 'firebase-analytics'
+        exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
+    }
+
     // caritas flavor only
-    caritasImplementation 'com.google.firebase:firebase-core:16.0.4'
-    caritasImplementation 'com.google.firebase:firebase-messaging:17.3.4'
+    caritasImplementation('com.google.firebase:firebase-messaging:17.4.0') {
+        exclude group: 'com.google.firebase', module: 'firebase-core'
+        exclude group: 'com.google.firebase', module: 'firebase-analytics'
+        exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
+    }
 
     // Test
     testImplementation 'junit:junit:4.12' // Test
