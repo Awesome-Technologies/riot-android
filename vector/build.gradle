@@ -61,6 +61,22 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        amp {
+            storeFile file(AMP_STORE_FILE)
+            storePassword AMP_STORE_PASSWORD
+            keyAlias = AMP_KEY_ALIAS
+            keyPassword AMP_KEY_PASSWORD
+        }
+
+        caritas {
+            storeFile file(AMP_STORE_FILE)
+            storePassword AMP_STORE_PASSWORD
+            keyAlias = CARITAS_KEY_ALIAS
+            keyPassword CARITAS_KEY_PASSWORD
+        }
+    }
+
     dexOptions {
         jumboMode true
         javaMaxHeapSize "2g"
@@ -122,6 +138,7 @@ android {
             buildConfigField "boolean", "ALLOW_FCM_USE", "true"
             buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"C\""
             buildConfigField "String", "FLAVOR_DESCRIPTION", "\"Caritas\""
+            signingConfig signingConfigs.caritas
         }
 
         amp {
@@ -132,6 +149,7 @@ android {
             buildConfigField "boolean", "ALLOW_FCM_USE", "true"
             buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"A\""
             buildConfigField "String", "FLAVOR_DESCRIPTION", "\"AMPchat\""
+            signingConfig signingConfigs.amp
         }
     }
 
