@@ -880,7 +880,6 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
             // invalidate the current homeserver config
             mHomeserverConnectionConfig = null;
-
             // the account creation is not always supported so ensure that the dedicated button is always displayed.
             if (mMode == MODE_ACCOUNT_CREATION) {
                 mRegisterButton.setVisibility(View.VISIBLE);
@@ -916,7 +915,6 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
             // invalidate the current homeserver config
             mHomeserverConnectionConfig = null;
-
             // the account creation is not always supported so ensure that the dedicated button is always displayed.
             if (mMode == MODE_ACCOUNT_CREATION) {
                 mRegisterButton.setVisibility(View.VISIBLE);
@@ -1073,6 +1071,9 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                 || mMode == MODE_FORGOT_PASSWORD
                 || mMode == MODE_FORGOT_PASSWORD_WAITING_VALIDATION) {
             checkLoginFlows();
+            if (mMode == MODE_LOGIN && !mHomeServerUrl.isEmpty()) {
+                checkRegistrationFlows();
+            }
         } else {
             checkRegistrationFlows();
         }
@@ -1599,7 +1600,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
     private void checkRegistrationFlows() {
         Log.d(LOG_TAG, "## checkRegistrationFlows(): IN");
         // should only check registration flows
-        if (mMode != MODE_ACCOUNT_CREATION) {
+        if (mMode != MODE_LOGIN && mMode != MODE_ACCOUNT_CREATION) {
             return;
         }
 
@@ -1655,7 +1656,16 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                         public void onMatrixError(MatrixError e) {
                             removeNetworkStateNotificationListener();
 
-                            if (mMode == MODE_ACCOUNT_CREATION) {
+                            if (mMode == MODE_LOGIN) {
+                                Log.d(LOG_TAG, "## checkRegistrationFlows(): onMatrixError - Resp=" + e.getLocalizedMessage());
+
+                                // when a response is not completed the server returns an error message
+                                if (null != e.mStatus) {
+                                    if (e.mStatus == 403) {
+                                        onRegistrationNotAllowed();
+                                    }
+                                }
+                            } else if (mMode == MODE_ACCOUNT_CREATION) {
                                 Log.d(LOG_TAG, "## checkRegistrationFlows(): onMatrixError - Resp=" + e.getLocalizedMessage());
                                 RegistrationFlowResponse registrationFlowResponse = null;
 
@@ -1696,8 +1706,10 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
     private void onRegistrationNotAllowed() {
         // Registration not supported by the server
-        mMode = MODE_LOGIN;
-        refreshDisplay();
+        if (mMode != MODE_LOGIN) {
+            mMode = MODE_LOGIN;
+            refreshDisplay();
+        }
 
         mSwitchToRegisterButton.setVisibility(View.GONE);
     }
@@ -2159,8 +2171,10 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         mForgetPasswordLayout.setVisibility(View.GONE);
         mThreePidLayout.setVisibility(View.GONE);
 
-        // Hide all buttons
+        // Hide text
         mPasswordForgottenTxtView.setVisibility(View.GONE);
+
+        // Hide all buttons
         mLoginButton.setVisibility(View.GONE);
         mSwitchToRegisterButton.setVisibility(View.GONE);
         mLoginSsoButton.setVisibility(View.GONE);
@@ -2177,6 +2191,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                 mLoginLayout.setVisibility(View.VISIBLE);
                 mPasswordForgottenTxtView.setVisibility(View.GONE);
                 mLoginButton.setVisibility(View.VISIBLE);
+                mSwitchToRegisterButton.setVisibility(View.VISIBLE);
                 break;
             case MODE_LOGIN_SSO:
                 mLoginSsoButton.setVisibility(View.VISIBLE);
@@ -2197,6 +2212,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                 mHomeServerOptionLayout.setVisibility(View.GONE);
                 break;
         }
+
 
         // update the button text to the current status
         // 1 - the user does not warn that he clicks on the email validation
@@ -2676,16 +2692,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
             showMainLayout();
             mCreationUsernameTextViewTil.setError(getString(R.string.auth_username_in_use));
         } else {
-            if (mRegistrationManager.canAddThreePid()) {
-                // Show next screen with email/phone number
-                showMainLayout();
-                mMode = MODE_ACCOUNT_CREATION_THREE_PID;
-                initThreePidView();
-                refreshDisplay();
-            } else {
-                // Start registration
-                createAccount();
-            }
+            // Start registration
+            createAccount();
         }
     }
 
