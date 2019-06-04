@@ -2,6 +2,7 @@
 <resources>
 
     <string name="riot_app_name" translatable="false">Riot.im</string>
+    <bool name="login_with_barcode">false</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>

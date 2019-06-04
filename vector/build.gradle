@@ -263,6 +263,9 @@ dependencies {
 
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.9.12'
 
+    // QR code scanner
+    implementation 'com.google.android.gms:play-services-vision:17.0.2'
+
     //Alerter
     implementation 'com.tapadoo.android:alerter:3.0.2'
 

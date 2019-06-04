@@ -2,6 +2,7 @@
 <resources>
 
     <string name="riot_app_name" translatable="false">Caritas Messenger</string>
+    <bool name="login_with_barcode">true</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>
@@ -12,6 +13,7 @@
     <string name="piwik_site_id" translatable="false">2</string>
     <string name="piwik_tracker_name" translatable="false">Caritas Messenger Android</string>
     <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
+    <string name="login_intent_hostname">caritas.amp.care</string>
 
     <!-- Widget urls -->
     <string name="integrations_ui_url" translatable="false">"https://caritas.amp.care/scalar-web/"</string>

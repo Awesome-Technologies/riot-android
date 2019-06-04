@@ -80,6 +80,9 @@
         <item quantity="other">%1$s groups found for %2$s</item>
     </plurals>
 
+    <!-- permissions Android M -->
+    <string name="permissions_rationale_msg_qr_code_login">AMP.chat needs permission to access your camera to log in via QR-Code.</string>
+
     <!-- Vector Settings -->
     <string name="settings_invited_to_room">When I\'m invited to a group</string>
     <string name="settings_pin_missed_notifications">Pin groups with missed notifications</string>
@@ -189,4 +192,5 @@
     <string name="settings_lazy_loading_description">Increase performance by only loading group members on first view.</string>
     <string name="error_lazy_loading_not_supported_by_home_server">Your homeserver does not support lazy loading of group members yet. Try later.</string>
 
+    <string name="filter_view_https_amp">Login with AMP.chat</string>
 </resources>

@@ -19,6 +19,7 @@ package im.vector.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import im.vector.R
 
 /**
  * This Activity is here only to display a logo when waiting for Riot Application to start
@@ -28,7 +29,10 @@ class VectorLauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startActivity(Intent(this, LoginActivity::class.java))
+        if (resources.getBoolean(R.bool.login_with_barcode))
+            startActivity(Intent(this, BarcodeLoginActivity::class.java))
+        else
+            startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 }

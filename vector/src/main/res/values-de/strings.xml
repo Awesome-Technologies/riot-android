@@ -131,6 +131,8 @@
 
     <!-- Authentication -->
     <string name="auth_login">Anmelden</string>
+    <string name="auth_switch_to_login_activity">Anmelden mit Benutzername</string>
+    <string name="auth_login_qr_code">QR Code scannen um einzuloggen</string>
     <string name="auth_register">Konto erstellen</string>
     <string name="auth_submit">Absenden</string>
     <string name="auth_skip">Überspringen</string>
@@ -275,6 +277,8 @@ Bitte erlaube den Zugriff im nächsten Dialog, um Kontakte im Adressbuch zu find
 Soll Riot der Zugriff auf deine Kontakte erlaubt werden?</string>
 
     <string name="permissions_action_not_performed_missing_permissions">Entschuldige. Die Aktion wurde aufgrund fehlender Berechtigungen nicht ausgeführt</string>
+    <string name="permissions_rationale_msg_qr_code_login">Riot benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um mit einem QR Code einzuloggen.</string>
+    <string name="permissions_rationale_msg_qr_code_login_explanation">\n\nBitte erlaube den Zugriff im nächsten Dialog, um einen QR Code zu scannen.</string>
 
     <!-- medias slider string -->
     <string name="media_slider_saved">Gespeichert</string>
@@ -1062,7 +1066,6 @@ Beachte: Diese Aktion wird die App neu starten und einige Zeit brauchen.</string
     <string name="unknown_error">Entschuldige, ein Fehler trat auf</string>
 
     <string name="room_sliding_menu_version_x">Version %s</string>
-    <string name="status_theme">Status.im-Thema</string>
 
     <string name="encryption_export_notice">Bitte eine Passphrase erstellen um exportierte Schlüssel zu verschlüsseln. Du musst dieselbe Passphrase eingeben um die Schlüssel importieren zu können.</string>
     <string name="passphrase_create_passphrase">Erzeuge Passphrase</string>
@@ -1458,4 +1461,7 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="notification_inline_reply_failed">** Fehler beim Senden - bitte Raum öffnen</string>
 
     <string name="voice_recording_no_file">Aufgenommene Sprachnachricht konnte nicht gefunden werden.</string>
+
+    <!-- Barcode -->
+    <string name="low_storage_error">Zusätzliche Komponenten konnten nicht geladen werden wegen zu wenig Speicherplatz</string>
 </resources>

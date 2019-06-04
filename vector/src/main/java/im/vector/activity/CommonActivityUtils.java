@@ -365,7 +365,7 @@ public class CommonActivityUtils {
                     Activity activeActivity = VectorApp.getCurrentActivity();
 
                     // go to login page
-                    Intent intent = new Intent(activeActivity, LoginActivity.class);
+                    Intent intent = new Intent(activeActivity, VectorLauncherActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     if (null != activeActivity) {

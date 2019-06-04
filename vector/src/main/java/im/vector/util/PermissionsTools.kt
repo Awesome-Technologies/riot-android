@@ -52,6 +52,7 @@ const val PERMISSIONS_FOR_VOICE_MESSAGE = PERMISSION_RECORD_AUDIO
 const val PERMISSIONS_FOR_ROOM_AVATAR = PERMISSION_CAMERA
 const val PERMISSIONS_FOR_VIDEO_RECORDING = PERMISSION_CAMERA or PERMISSION_RECORD_AUDIO
 const val PERMISSIONS_FOR_WRITING_FILES = PERMISSION_WRITE_EXTERNAL_STORAGE
+const val PERMISSIONS_FOR_QR_CODE_LOGIN = PERMISSION_CAMERA
 
 private const val PERMISSIONS_EMPTY = PERMISSION_BYPASSED
 
@@ -65,6 +66,7 @@ const val PERMISSION_REQUEST_CODE_VIDEO_CALL = 572
 const val PERMISSION_REQUEST_CODE_EXPORT_KEYS = 573
 const val PERMISSION_REQUEST_CODE_CHANGE_AVATAR = 574
 const val PERMISSION_REQUEST_CODE_VOICE_MESSAGE = 575
+const val PERMISSION_REQUEST_CODE_QR_CODE_LOGIN = 600
 
 /**
  * Log the used permissions statuses.
@@ -151,7 +153,8 @@ private fun checkPermissions(permissionsToBeGrantedBitMap: Int,
             && PERMISSIONS_FOR_VOICE_MESSAGE != permissionsToBeGrantedBitMap
             && PERMISSIONS_FOR_ROOM_AVATAR != permissionsToBeGrantedBitMap
             && PERMISSIONS_FOR_VIDEO_RECORDING != permissionsToBeGrantedBitMap
-            && PERMISSIONS_FOR_WRITING_FILES != permissionsToBeGrantedBitMap) {
+            && PERMISSIONS_FOR_WRITING_FILES != permissionsToBeGrantedBitMap
+            && PERMISSIONS_FOR_QR_CODE_LOGIN != permissionsToBeGrantedBitMap) {
         Log.w(LOG_TAG, "## checkPermissions(): permissions to be granted are not supported")
         isPermissionGranted = false
     } else {
@@ -208,7 +211,12 @@ private fun checkPermissions(permissionsToBeGrantedBitMap: Int,
                             if (!TextUtils.isEmpty(explanationMessage)) {
                                 explanationMessage += "\n\n"
                             }
-                            explanationMessage += activity.getString(R.string.permissions_rationale_msg_camera)
+                            if (requestCode == PERMISSION_REQUEST_CODE_QR_CODE_LOGIN) {
+                                explanationMessage += activity.getString(R.string.permissions_rationale_msg_qr_code_login)
+                                explanationMessage += activity.getString(R.string.permissions_rationale_msg_qr_code_login_explanation)
+                            } else {
+                                explanationMessage += activity.getString(R.string.permissions_rationale_msg_camera)
+                            }
                         }
                         Manifest.permission.RECORD_AUDIO -> {
                             if (!TextUtils.isEmpty(explanationMessage)) {

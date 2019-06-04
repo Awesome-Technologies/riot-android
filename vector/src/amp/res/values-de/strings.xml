@@ -73,6 +73,9 @@
     <string name="room_recents_join_room_title">Einer Gruppe beitreten</string>
     <string name="room_recents_join_room_prompt">Gruppen-ID oder Gruppen-Alias eingeben</string>
 
+    <!-- permissions Android M -->
+    <string name="permissions_rationale_msg_qr_code_login">AMP.chat benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um mit einem QR Code einzuloggen.</string>
+
     <!-- Vector Settings -->
 
     <string name="settings_invited_to_room">Wenn ich in eine Gruppe eingeladen werde</string>
@@ -186,4 +189,5 @@ Unbekannte Geräte:</string>
     <string name="settings_lazy_loading_description">Verbessere Performanz, indem Gruppen-Mitglieder erst beim ersten Ansehen geladen werden.</string>
     <string name="error_lazy_loading_not_supported_by_home_server">Dein Heimserver unterstützt nachladen von Gruppen-Mitgliedern noch nicht. Versuche es später.</string>
 
+    <string name="filter_view_https_amp">Anmelden mit AMP.chat</string>
 </resources>

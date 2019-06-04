@@ -2,6 +2,7 @@
 <resources>
 
     <string name="riot_app_name" translatable="false">AMPchat</string>
+    <bool name="login_with_barcode">false</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://test.amp.chat</string>
@@ -12,6 +13,7 @@
     <string name="piwik_site_id" translatable="false">3</string>
     <string name="piwik_tracker_name" translatable="false">AMPchat Android</string>
     <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
+    <string name="login_intent_hostname">test.amp.chat</string>
 
     <!-- Widget urls -->
     <string name="integrations_ui_url" translatable="false">"https://test.amp.chat/scalar-web/"</string>
