@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -1106,6 +1107,11 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
         // to have notifications for this room
         VectorApp.getInstance().getNotificationDrawerManager().setCurrentRoom(null);
+
+        for(MediaPlayer mediaPlayer : mVectorMessageListFragment.getMediaPlayers().values()) {
+            mediaPlayer.pause();
+        }
+
     }
 
     @Override

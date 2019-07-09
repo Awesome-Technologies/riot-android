@@ -18,10 +18,14 @@
 
 package im.vector.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +34,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,18 +42,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 import org.matrix.androidsdk.MXSession;
 import org.matrix.androidsdk.adapters.AbstractMessagesAdapter;
 import org.matrix.androidsdk.adapters.MessageRow;
-import org.matrix.androidsdk.crypto.data.MXDeviceInfo;
-import org.matrix.androidsdk.crypto.data.MXUsersDevicesMap;
 import org.matrix.androidsdk.data.RoomState;
 import org.matrix.androidsdk.db.MXMediaCache;
 import org.matrix.androidsdk.fragments.MatrixMessageListFragment;
@@ -58,7 +58,6 @@ import org.matrix.androidsdk.rest.callback.ApiCallback;
 import org.matrix.androidsdk.rest.callback.SimpleApiCallback;
 import org.matrix.androidsdk.rest.model.Event;
 import org.matrix.androidsdk.rest.model.MatrixError;
-import org.matrix.androidsdk.rest.model.crypto.EncryptedEventContent;
 import org.matrix.androidsdk.rest.model.crypto.EncryptedFileInfo;
 import org.matrix.androidsdk.rest.model.message.FileMessage;
 import org.matrix.androidsdk.rest.model.message.ImageMessage;
@@ -68,9 +67,11 @@ import org.matrix.androidsdk.util.JsonUtils;
 import org.matrix.androidsdk.util.Log;
 import org.matrix.androidsdk.util.PermalinkUtils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,6 @@ import im.vector.activity.VectorMediaViewerActivity;
 import im.vector.activity.VectorMemberDetailsActivity;
 import im.vector.activity.VectorRoomActivity;
 import im.vector.adapters.VectorMessagesAdapter;
-import im.vector.extensions.MatrixSdkExtensionsKt;
 import im.vector.listeners.IMessagesAdapterActionsListener;
 import im.vector.receiver.VectorUniversalLinkReceiver;
 import im.vector.ui.themes.ThemeUtils;
@@ -108,7 +108,21 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
     private String mPendingFilename;
     private EncryptedFileInfo mPendingEncryptedFileInfo;
 
+    private IntentFilter mBecomingNoisyIntentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+    private BroadcastReceiver mBecomingNoisyReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
+                for (MediaPlayer mp : mMediaPlayers.values()) {
+                    mp.pause();
+                }
+            }
+        }
+    };
+
     private static int VERIF_REQ_CODE = 12;
+
+    private HashMap<String, MediaPlayer> mMediaPlayers;
 
     public interface VectorMessageListFragmentListener {
         /**
@@ -214,6 +228,8 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
             }
         });
 
+        mMediaPlayers = new HashMap<>();
+
         v.setBackgroundColor(ThemeUtils.INSTANCE.getColor(getActivity(), android.R.attr.colorBackground));
 
         return v;
@@ -245,7 +261,8 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
     public void onPause() {
         super.onPause();
 
-        mAdapter.setVectorMessagesAdapterActionsListener(null);
+        getContext().unregisterReceiver(mBecomingNoisyReceiver);
+        mAdapter.setVectorMessagesAdapterActionsListener(null, mMediaPlayers);
         mAdapter.onPause();
 
         mVectorImageGetter.setListener(null);
@@ -256,7 +273,8 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
     public void onResume() {
         super.onResume();
 
-        mAdapter.setVectorMessagesAdapterActionsListener(this);
+        getContext().registerReceiver(mBecomingNoisyReceiver, mBecomingNoisyIntentFilter);
+        mAdapter.setVectorMessagesAdapterActionsListener(this, mMediaPlayers);
 
         mVectorImageGetter.setListener(new VectorImageGetter.OnImageDownloadListener() {
             @Override
@@ -541,6 +559,20 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
                         }
                     })
                     .show();
+        } else if (action == R.id.ic_action_play_audio) {
+            Message message = JsonUtils.toMessage(event.getContent());
+            FileMessage fileMessage = JsonUtils.toFileMessage(event.getContent());
+
+            if (null != fileMessage.getUrl()) {
+                onMediaAction(ACTION_VECTOR_OPEN, fileMessage.getUrl(), fileMessage.getMimeType(), fileMessage.body, fileMessage.file);
+            }
+        } else if (action == R.id.ic_action_pause_audio) {
+            Message message = JsonUtils.toMessage(event.getContent());
+            FileMessage fileMessage = JsonUtils.toFileMessage(event.getContent());
+
+            if (null != fileMessage.getUrl() && mMediaPlayers.containsKey(fileMessage.getUrl())) {
+                mMediaPlayers.get(fileMessage.getUrl()).pause();
+            }
         }
     }
 
@@ -635,22 +667,55 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
                     }
 
                     if (menuAction == ACTION_VECTOR_OPEN) {
-                        if (PermissionsToolsKt.checkPermissions(PermissionsToolsKt.PERMISSIONS_FOR_WRITING_FILES,
-                                VectorMessageListFragment.this, PermissionsToolsKt.PERMISSION_REQUEST_CODE)) {
-                            CommonActivityUtils.saveMediaIntoDownloads(getActivity(), file, trimmedFileName, mediaMimeType, new SimpleApiCallback<String>() {
-                                @Override
-                                public void onSuccess(String savedMediaPath) {
-                                    if (null != savedMediaPath) {
-                                        ExternalApplicationsUtilKt.openMedia(getActivity(), savedMediaPath, mediaMimeType);
-                                    }
+                        if (mediaMimeType.startsWith("audio/")) {
+                            Log.e(LOG_TAG, "Using Media player " + file.getAbsolutePath());
+
+                            for (MediaPlayer mp : mMediaPlayers.values()) {
+                                mp.pause();
+                            }
+
+                            MediaPlayer mediaPlayer;
+                            if (!mMediaPlayers.containsKey(mediaUrl)) {
+                                mediaPlayer = new MediaPlayer();
+                                mMediaPlayers.put(mediaUrl, mediaPlayer);
+                                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                                try {
+                                    int size = (int) file.length();
+                                    byte[] callData = new byte[size];
+                                    BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                                    buf.read(callData, 0, callData.length);
+                                    buf.close();
+                                    String base64EncodedString = Base64.encodeToString(callData, Base64.DEFAULT);
+
+                                    String url = "data:audio/amr;base64," + base64EncodedString;
+                                    mediaPlayer.setDataSource(url);
+                                    mediaPlayer.prepare();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
-                            });
+                            } else {
+                                mediaPlayer = mMediaPlayers.get(mediaUrl);
+                            }
+                            mediaPlayer.start();
                         } else {
-                            mPendingMenuAction = menuAction;
-                            mPendingMediaUrl = mediaUrl;
-                            mPendingMediaMimeType = mediaMimeType;
-                            mPendingFilename = filename;
-                            mPendingEncryptedFileInfo = encryptedFileInfo;
+                            if (PermissionsToolsKt.checkPermissions(PermissionsToolsKt.PERMISSIONS_FOR_WRITING_FILES,
+                                    VectorMessageListFragment.this, PermissionsToolsKt.PERMISSION_REQUEST_CODE)) {
+
+                                CommonActivityUtils.saveMediaIntoDownloads(getActivity(), file, trimmedFileName, mediaMimeType, new SimpleApiCallback<String>() {
+                                    @Override
+                                    public void onSuccess(String savedMediaPath) {
+                                        if (null != savedMediaPath) {
+                                            ExternalApplicationsUtilKt.openMedia(getActivity(), savedMediaPath, mediaMimeType);
+                                        }
+                                    }
+                                });
+                            } else {
+                                mPendingMenuAction = menuAction;
+                                mPendingMediaUrl = mediaUrl;
+                                mPendingMediaMimeType = mediaMimeType;
+                                mPendingFilename = filename;
+                                mPendingEncryptedFileInfo = encryptedFileInfo;
+                            }
                         }
                     } else {
                         // Move the file to the Share folder, to avoid it to be deleted because the Activity will be paused while the
@@ -888,7 +953,7 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
 
                     getActivity().startActivity(viewImageIntent);
                 }
-            } else if (Message.MSGTYPE_FILE.equals(message.msgtype) || Message.MSGTYPE_AUDIO.equals(message.msgtype)) {
+            } else if (Message.MSGTYPE_FILE.equals(message.msgtype)) {
                 FileMessage fileMessage = JsonUtils.toFileMessage(event.getContent());
 
                 if (null != fileMessage.getUrl()) {
@@ -1123,5 +1188,9 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
         mHighlightStatusByEventId.put(eventId, res);
 
         return res;
+    }
+
+    public HashMap<String, MediaPlayer> getMediaPlayers() {
+        return mMediaPlayers;
     }
 }
