@@ -10,6 +10,13 @@
     <string name="bottom_action_rooms">Gruppen</string>
     <string name="bottom_action_settings">Einstellungen</string>
 
+    <!-- permissions Android M -->
+    <string name="permissions_rationale_msg_storage">Caritas Messenger benötigt die Berechtigung, auf deine Fotos und Videos zugreifen zu können, um Anhänge zu senden und zu speichern.\n\nBitte erlaube den Zugriff im nächsten Dialog, um Dateien von deinem Gerät zu versenden.</string>
+    <string name="permissions_rationale_msg_camera">Caritas Messenger benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um Bilder aufzunehmen und Video-Anrufe durchzuführen.</string>
+    <string name="permissions_rationale_msg_record_audio">Caritas Messenger benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um (Sprach-)Anrufe tätigen zu können.</string>
+    <string name="permissions_rationale_msg_camera_and_audio">Caritas Messenger benötigt die Berechtigung, auf deine Kamera und dein Mikrofon zugreifen zu können, um Video-Anrufe durchführen zu können.\n\nBitte erlaube den Zugriff im nächsten Dialog, um den Anruf durchzuführen.</string>
+    <string name="permissions_rationale_msg_voice_message">Caritas Messenger benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um Sprachnachrichten aufzunehmen.</string>
+
     <!-- home sliding menu -->
     <string name="room_sliding_menu_global_search">Globale Suche</string>
     <string name="room_sliding_menu_historical">Archiv</string>

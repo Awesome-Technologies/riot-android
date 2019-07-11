@@ -364,6 +364,8 @@
     <string name="permissions_rationale_msg_record_audio">Riot needs permission to access your microphone to perform audio calls.</string>
     <string name="permissions_rationale_msg_record_audio_explanation">\n\nPlease allow access on the next pop-up to be able to make the call.</string>
     <string name="permissions_rationale_msg_camera_and_audio">Riot needs permission to access your camera and your microphone to perform video calls.\n\nPlease allow access on the next pop-ups to be able to make the call.</string>
+    <string name="permissions_rationale_msg_voice_message">Riot needs permission to access your microphone to send voice messages.</string>
+    <string name="permissions_rationale_msg_voice_message_explanation">\n\nPlease allow access on the next pop-up to be able to send a voice message.</string>
     <string name="permissions_rationale_msg_contacts">Riot needs permission to access your address book contacts to find other Matrix users based on their email and phone numbers.\n\nPlease allow access on the next pop-up to discover address book users reachable from Riot.</string>
     <string name="permissions_msg_contacts_warning_other_androids">Riot needs permission to access your address book contact to find other Matrix users based on their email and phone numbers.\n\nAllow Riot to access your contacts ?</string>
 
@@ -512,6 +514,7 @@
     <string name="room_delete_unsent_messages">Delete unsent messages</string>
     <string name="room_message_file_not_found">File not found</string>
     <string name="room_do_not_have_permission_to_post">You do not have permission to post to this room</string>
+    <string name="room_message_placeholder_voice">Recording …</string>
     <plurals name="room_new_messages_notification">
         <item quantity="one">1 new message</item>
         <item quantity="other">%d new messages</item>
@@ -1456,4 +1459,6 @@ Why choose Riot.im?
     <string name="sas_error_m_user_error">User mismatch</string>
     <string name="sas_error_unknown">Unknown Error</string>
 
+
+    <string name="voice_recording_no_file">Recorded voice message could not be found.</string>
 </resources>

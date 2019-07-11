@@ -263,6 +263,10 @@ Bitte erlaube den Zugriff im nächsten Dialog, um den Anruf durchzuführen.</str
     <string name="permissions_rationale_msg_camera_and_audio">Riot benötigt die Berechtigung, auf deine Kamera und dein Mikrofon zugreifen zu können, um Video-Anrufe durchführen zu können.
 
 Bitte erlaube den Zugriff im nächsten Dialog, um den Anruf durchzuführen.</string>
+    <string name="permissions_rationale_msg_voice_message">Riot benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um Sprachnachrichten aufzunehmen.</string>
+    <string name="permissions_rationale_msg_voice_message_explanation">
+
+Bitte erlaube den Zugriff im nächsten Dialog, um die Sprachnachricht aufzunehmen.</string>
     <string name="permissions_rationale_msg_contacts">Riot benötigt die Berechtigung, auf deine Kontakte im Adressbuch zugreifen zu können, um andere Matrix-Benutzer mit Hilfe ihrer E-Mail-Adresse oder Telefonnummer zu finden.
 
 Bitte erlaube den Zugriff im nächsten Dialog, um Kontakte im Adressbuch zu finden, die über Riot erreichbar sind.</string>
@@ -359,6 +363,7 @@ Bist du sicher?</string>
     <string name="room_delete_unsent_messages">Nicht gesendete Nachrichten löschen</string>
     <string name="room_message_file_not_found">Datei nicht gefunden</string>
     <string name="room_do_not_have_permission_to_post">Du bist nicht berechtigt, in diesen Raum zu schreiben</string>
+    <string name="room_message_placeholder_voice">Aufnahme …</string>
 
     <!-- unrecognized SSL certificate -->
     <string name="ssl_trust">Vertrauen</string>
@@ -1452,4 +1457,5 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="notification_sender_me">Ich</string>
     <string name="notification_inline_reply_failed">** Fehler beim Senden - bitte Raum öffnen</string>
 
+    <string name="voice_recording_no_file">Aufgenommene Sprachnachricht konnte nicht gefunden werden.</string>
 </resources>
