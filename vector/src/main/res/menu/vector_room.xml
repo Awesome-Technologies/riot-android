@@ -5,10 +5,16 @@
     tools:context="org.matrix.vector.activity.RoomActivity">
 
     <item
+        android:id="@+id/ic_action_start_call"
+        android:icon="@drawable/ic_material_call_white"
+        android:title="@string/call"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/ic_action_search_in_room"
         android:icon="@drawable/ic_material_search_white"
         android:title="@string/room_menu_search"
-        app:showAsAction="always" />
+        app:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/ic_action_room_resend_unsent"

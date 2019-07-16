@@ -241,9 +241,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     ImageView mE2eImageView;
 
     // call
-    @BindView(R.id.room_start_call_image_view)
-    View mStartCallLayout;
-
     @BindView(R.id.room_end_call_image_view)
     View mStopCallLayout;
 
@@ -1468,6 +1465,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem startCallMenuItem = menu.findItem(R.id.ic_action_start_call);
         MenuItem searchInRoomMenuItem = menu.findItem(R.id.ic_action_search_in_room);
         MenuItem resendUnsentMenuItem = menu.findItem(R.id.ic_action_room_resend_unsent);
         MenuItem deleteUnsentMenuItem = menu.findItem(R.id.ic_action_room_delete_unsent);
@@ -1479,6 +1477,9 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         // This is the case in the room preview for public rooms
         if (CommonActivityUtils.shouldRestartApp(this) || null == mSession || null == mRoom) {
             // Hide all items
+            if (startCallMenuItem != null) {
+                startCallMenuItem.setVisible(false);
+            }
             if (searchInRoomMenuItem != null) {
                 searchInRoomMenuItem.setVisible(false);
             }
@@ -1502,6 +1503,10 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         if (TextUtils.isEmpty(mEventId) && (null == sRoomPreviewData)) {
             RoomMember member = mRoom.getMember(mSession.getMyUserId());
 
+            boolean isCallSupported = (mRoom.getNumberOfMembers() == 2) && mSession.isVoipCallSupported();
+            if (startCallMenuItem != null) {
+                startCallMenuItem.setVisible(isCallSupported);
+            }
             // the server search does not work on encrypted rooms.
             if (searchInRoomMenuItem != null) {
                 searchInRoomMenuItem.setVisible(!mRoom.isEncrypted());
@@ -1521,6 +1526,9 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             }
         } else {
             // Hide all items
+            if (startCallMenuItem != null) {
+                startCallMenuItem.setVisible(false);
+            }
             if (searchInRoomMenuItem != null) {
                 searchInRoomMenuItem.setVisible(false);
             }
@@ -1544,6 +1552,9 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.ic_action_start_call:
+                onStartCallClick();
+                return true;
             case R.id.ic_action_search_in_room:
                 try {
                     enableActionBarHeader(HIDE_ACTION_BAR_HEADER);
@@ -2651,16 +2662,12 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         }
 
         if ((null == sRoomPreviewData) && (null == mEventId) && canSendMessages(mRoom.getState())) {
-            boolean isCallSupported = (mRoom.getNumberOfMembers() == 2) && mSession.isVoipCallSupported();
             IMXCall call = CallsManager.getSharedInstance().getActiveCall();
             Widget activeWidget = mVectorOngoingConferenceCallView.getActiveWidget();
 
             if ((null == call) && (null == activeWidget)) {
-                mStartCallLayout.setVisibility((isCallSupported && (mEditText.getText().length() == 0
-                        || PreferencesManager.sendMessageWithEnter(this))) ? View.VISIBLE : View.GONE);
                 mStopCallLayout.setVisibility(View.GONE);
             } else if (null != activeWidget) {
-                mStartCallLayout.setVisibility(View.GONE);
                 mStopCallLayout.setVisibility(View.GONE);
             } else {
                 IMXCall roomCall = mSession.mCallsManager.getCallWithRoomId(mRoom.getRoomId());
@@ -2669,7 +2676,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
                 call.removeListener(mCallListener);
                 call.addListener(mCallListener);
 
-                mStartCallLayout.setVisibility(View.GONE);
                 mStopCallLayout.setVisibility((call == roomCall) ? View.VISIBLE : View.GONE);
             }
 
@@ -3962,7 +3968,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         }
     }
 
-    @OnClick(R.id.room_start_call_image_view)
     void onStartCallClick() {
         if ((null != mRoom) && mRoom.isEncrypted() && (mRoom.getNumberOfMembers() > 2)) {
             // display the dialog with the info text
@@ -4008,8 +4013,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         // to avoid clicking in the void
         if (mStopCallLayout.getVisibility() == View.VISIBLE) {
             mStopCallLayout.performClick();
-        } else if (mStartCallLayout.getVisibility() == View.VISIBLE) {
-            mStartCallLayout.performClick();
         } else if (mSendImageView.getVisibility() == View.VISIBLE) {
             mSendImageView.performClick();
         }
