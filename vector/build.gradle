@@ -20,6 +20,12 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 kapt {
     correctErrorTypes = true
 }
@@ -243,12 +249,11 @@ dependencies {
     /************* Matrix SDK management **************/
     // update settings.gradle
     // use the matrix SDK as external dependency
-    implementation 'com.github.matrix-org:matrix-android-sdk:v0.9.27'
+    //implementation 'com.github.matrix-org:matrix-android-sdk:v0.9.27'
     // use the matrix SDK as a sub project
-    // you have to uncomment some lines in settings.gradle
-    //implementation project(':matrix-sdk')
-    //implementation project(':matrix-sdk-crypto')
-    //implementation project(':matrix-sdk-core')
+    implementation 'com.github.Awesome-Technologies.matrix-android-sdk:matrix-sdk:v0.9.27'
+    implementation 'com.github.Awesome-Technologies.matrix-android-sdk:matrix-sdk-crypto:v0.9.27'
+    implementation 'com.github.Awesome-Technologies.matrix-android-sdk:matrix-sdk-core:v0.9.27'
 
     /************* jitsi **************/
     implementation('org.jitsi.react:jitsi-meet-sdk:2.2.2')
