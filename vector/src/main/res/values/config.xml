@@ -14,14 +14,12 @@
     <string name="bug_report_url" translatable="false">https://riot.im/bugreports/submit</string>
 
     <!-- Widget urls -->
-    <string name="integrations_ui_url" translatable="false">"https://scalar.vector.im/"</string>
-    <string name="integrations_rest_url" translatable="false">"https://scalar.vector.im/api"</string>
-    <string name="integrations_jitsi_widget_url" translatable="false">"https://scalar.vector.im/api/widgets/jitsi.html"</string>
+    <string name="integrations_ui_url" translatable="false">"https://dimension.amp.care/riot"</string>
+    <string name="integrations_rest_url" translatable="false">"https://dimension.amp.care/api/v1/scalar"</string>
+    <string name="integrations_jitsi_widget_url" translatable="false">"https://dimension.amp.care/widgets/jitsi"</string>
 
     <string-array name="integrations_widgets_urls" translatable="false">
-        <item>https://scalar-staging.riot.im/scalar/api</item>
-        <item>https://scalar-staging.vector.im/api</item>
-        <item>https://scalar.vector.im/api</item>
+        <item>https://dimension.amp.care/widgets</item>
     </string-array>
 
     <!-- empty means to use the active HS url -->
