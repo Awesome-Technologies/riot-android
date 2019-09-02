@@ -118,9 +118,9 @@ import im.vector.VectorApp;
 import im.vector.extensions.ViewExtensionsKt;
 import im.vector.features.logout.ProposeLogout;
 import im.vector.fragments.AbsHomeFragment;
+import im.vector.fragments.CasesFragment;
 import im.vector.fragments.FavouritesFragment;
 import im.vector.fragments.GroupsFragment;
-import im.vector.fragments.HomeFragment;
 import im.vector.fragments.PeopleFragment;
 import im.vector.fragments.RoomsFragment;
 import im.vector.fragments.signout.SignOutBottomSheetDialogFragment;
@@ -186,6 +186,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
     public static final String BROADCAST_ACTION_STOP_WAITING_VIEW = "im.vector.activity.ACTION_STOP_WAITING_VIEW";
 
+    private static final String TAG_FRAGMENT_CASES = "TAG_FRAGMENT_CASES";
     private static final String TAG_FRAGMENT_HOME = "TAG_FRAGMENT_HOME";
     private static final String TAG_FRAGMENT_FAVOURITES = "TAG_FRAGMENT_FAVOURITES";
     private static final String TAG_FRAGMENT_PEOPLE = "TAG_FRAGMENT_PEOPLE";
@@ -544,9 +545,9 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
         final View selectedMenu;
         if (isFirstCreation()) {
-            selectedMenu = mBottomNavigationView.findViewById(R.id.bottom_action_home);
+            selectedMenu = mBottomNavigationView.findViewById(R.id.bottom_action_cases);
         } else {
-            selectedMenu = mBottomNavigationView.findViewById(getSavedInstanceState().getInt(CURRENT_MENU_ID, R.id.bottom_action_home));
+            selectedMenu = mBottomNavigationView.findViewById(getSavedInstanceState().getInt(CURRENT_MENU_ID, R.id.bottom_action_cases));
         }
         if (selectedMenu != null) {
             selectedMenu.performClick();
@@ -942,14 +943,14 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         Fragment fragment = null;
 
         switch (item.getItemId()) {
-            case R.id.bottom_action_home:
-                Log.d(LOG_TAG, "onNavigationItemSelected HOME");
-                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_HOME);
+            case R.id.bottom_action_cases:
+                Log.d(LOG_TAG, "onNavigationItemSelected CASES");
+                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_CASES);
                 if (fragment == null) {
-                    fragment = HomeFragment.newInstance();
+                    fragment = CasesFragment.newInstance();
                 }
-                mCurrentFragmentTag = TAG_FRAGMENT_HOME;
-                mSearchView.setQueryHint(getString(R.string.home_filter_placeholder_home));
+                mCurrentFragmentTag = TAG_FRAGMENT_CASES;
+                mSearchView.setQueryHint(getString(R.string.home_filter_placeholder_rooms));
                 break;
             case R.id.bottom_action_favourites:
                 Log.d(LOG_TAG, "onNavigationItemSelected FAVOURITES");
@@ -1232,8 +1233,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     private Fragment getSelectedFragment() {
         Fragment fragment = null;
         switch (mCurrentMenuId) {
-            case R.id.bottom_action_home:
-                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_HOME);
+            case R.id.bottom_action_cases:
+                fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_CASES);
                 break;
             case R.id.bottom_action_favourites:
                 fragment = mFragmentManager.findFragmentByTag(TAG_FRAGMENT_FAVOURITES);
@@ -2155,7 +2156,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         Set<Integer> menuIndexes = new HashSet<>(mBadgeViewByIndex.keySet());
 
         // the badges are not anymore displayed on the home tab
-        menuIndexes.remove(R.id.bottom_action_home);
+        menuIndexes.remove(R.id.bottom_action_cases);
 
         for (Integer id : menuIndexes) {
             int highlightCount = 0;

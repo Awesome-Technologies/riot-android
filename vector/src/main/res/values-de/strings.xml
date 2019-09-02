@@ -64,6 +64,7 @@
     <string name="dialog_title_warning">Warnung</string>
 
     <!-- Bottom navigation buttons -->
+    <string name="bottom_action_cases">Fälle</string>
     <string name="bottom_action_home">Home</string>
     <string name="bottom_action_favourites">Favoriten</string>
     <string name="bottom_action_people">Personen</string>
