@@ -6,12 +6,12 @@
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>
     <string name="matrix_org_server_url" translatable="false">https://matrix.org</string>
-    <string name="default_hs_server_url" translatable="false">https://matrix.org</string>
-    <string name="default_identity_server_url" translatable="false">https://vector.im</string>
-    <string name="matomo_server_url" translatable="false">https://matomo.riot.im</string>
-    <string name="matomo_site_id" translatable="false">1</string>
-    <string name="matomo_tracker_name" translatable="false">AndroidMatomoTracker</string>
-    <string name="bug_report_url" translatable="false">https://riot.im/bugreports/submit</string>
+    <string name="default_hs_server_url" translatable="false">https://test.amp.care</string>
+    <string name="default_identity_server_url" translatable="false">https://test.amp.care</string>
+    <string name="matomo_server_url" translatable="false">https://matomo.awesome-technologies.de</string>
+    <string name="matomo_site_id" translatable="false">4</string>
+    <string name="matomo_tracker_name" translatable="false">AMPCareMatomoTracker</string>
+    <string name="bug_report_url" translatable="false">https://test.amp.care/bugreports/submit</string>
 
     <!-- Widget urls -->
     <string name="integrations_ui_url" translatable="false">"https://dimension.amp.care/riot"</string>
