@@ -1592,7 +1592,7 @@ public class VectorMessagesAdapter extends AbstractMessagesAdapter {
 
             mMediasHelper.managePendingFileDownload(convertView, event, fileMessage, position);
             mMediasHelper.managePendingUpload(convertView, event, ROW_TYPE_FILE, fileMessage.url);
-            mMediasHelper.managePlayback(convertView, event, ROW_TYPE_FILE, fileMessage.url);
+            mMediasHelper.managePlayback(convertView, event, ROW_TYPE_FILE, fileMessage.getUrl());
 
             View fileLayout = convertView.findViewById(R.id.messagesAdapter_file_layout);
             manageSubView(position, convertView, fileLayout, ROW_TYPE_FILE);

@@ -1061,6 +1061,11 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
     @Override
     public void onDestroy() {
+        for (MediaPlayer mp : mVectorMessageListFragment.getMediaPlayers().values()) {
+            mp.stop();
+            mp.release();
+        }
+
         if (null != mVectorMessageListFragment) {
             mVectorMessageListFragment.onDestroy();
         }
@@ -1108,7 +1113,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         // to have notifications for this room
         VectorApp.getInstance().getNotificationDrawerManager().setCurrentRoom(null);
 
-        for(MediaPlayer mediaPlayer : mVectorMessageListFragment.getMediaPlayers().values()) {
+        for (MediaPlayer mediaPlayer : mVectorMessageListFragment.getMediaPlayers().values()) {
             mediaPlayer.pause();
         }
 
