@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import im.vector.R;
-import im.vector.adapters.RoomAdapter;
+import im.vector.adapters.CaseAdapter;
 import im.vector.ui.themes.ThemeUtils;
 import im.vector.util.HomeRoomsViewModel;
 import im.vector.view.EmptyViewItemDecoration;
@@ -46,7 +46,7 @@ public class CasesFragment extends AbsHomeFragment implements AbsHomeFragment.On
     RecyclerView mRecycler;
 
     // rooms management
-    private RoomAdapter mAdapter;
+    private CaseAdapter mAdapter;
 
     // rooms list
     private List<Room> mRooms = new ArrayList<>();
@@ -168,15 +168,10 @@ public class CasesFragment extends AbsHomeFragment implements AbsHomeFragment.On
         mRecycler.addItemDecoration(new SimpleDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, margin));
         mRecycler.addItemDecoration(new EmptyViewItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 40, 16, 14));
 
-        mAdapter = new RoomAdapter(getActivity(), new RoomAdapter.OnSelectItemListener() {
+        mAdapter = new CaseAdapter(getActivity(), new CaseAdapter.OnSelectItemListener() {
             @Override
             public void onSelectItem(Room room, int position) {
                 openRoom(room);
-            }
-
-            @Override
-            public void onSelectItem(PublicRoom publicRoom) {
-
             }
         }, this, this);
         mRecycler.setAdapter(mAdapter);

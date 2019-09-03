@@ -159,6 +159,9 @@
         <item quantity="other">%d users</item>
     </plurals>
 
+    <!-- Cases fragment -->
+    <string name="cases_header">Cases</string>
+
     <!-- Groups fragment -->
     <string name="groups_invite_header">Invite</string>
     <string name="groups_header">Communities</string>

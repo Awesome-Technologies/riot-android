@@ -98,6 +98,9 @@
         <item quantity="other">%d Benutzer</item>
     </plurals>
 
+    <!-- Cases fragment -->
+    <string name="cases_header">Fälle</string>
+
     <string name="send_bug_report_include_logs">Logdateien übermitteln</string>
     <string name="send_bug_report_include_crash_logs">Absturzberichte übermitteln</string>
     <string name="send_bug_report_include_screenshot">Screenshot übermitteln</string>
