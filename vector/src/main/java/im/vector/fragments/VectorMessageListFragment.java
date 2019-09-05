@@ -696,6 +696,10 @@ public class VectorMessageListFragment extends MatrixMessageListFragment<VectorM
                             } else {
                                 mediaPlayer = mMediaPlayers.get(mediaUrl);
                             }
+                            if (getActivity() instanceof VectorRoomActivity) {
+                                VectorRoomActivity roomActivity = (VectorRoomActivity) getActivity();
+                                roomActivity.stopAndDeleteRecording();
+                            }
                             mediaPlayer.start();
                         } else {
                             if (PermissionsToolsKt.checkPermissions(PermissionsToolsKt.PERMISSIONS_FOR_WRITING_FILES,

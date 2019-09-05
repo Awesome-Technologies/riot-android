@@ -2495,6 +2495,11 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             }
         }
         mSendImageView.setImageResource(img);
+        if (mEditText.getText().length() > 0) {
+            mSendVoiceView.setVisibility(View.GONE);
+        } else {
+            mSendVoiceView.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -3984,19 +3989,15 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
                 startAudioRecording();
             }
         } else { // Delete clicked
-            stopAudioRecording();
-            File file = new File(getExternalCacheDir().getAbsolutePath() + VOICE_MESSAGE_FILE);
-            file.delete();
-            mEditText.setHint((mRoom.isEncrypted() && mSession.isCryptoEnabled()) ?
-                    R.string.room_message_placeholder_encrypted : R.string.room_message_placeholder_not_encrypted);
-            mEditText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-            mSendVoiceView.setImageResource(R.drawable.vector_micro_green);
-            manageSendMoreButtons();
+            stopAndDeleteRecording();
         }
     }
 
     private void startAudioRecording() {
         stopAudioRecording();
+        for (MediaPlayer mp : mVectorMessageListFragment.getMediaPlayers().values()) {
+            mp.pause();
+        }
         try {
             final String fileName = getExternalCacheDir().getAbsolutePath() + VOICE_MESSAGE_FILE;
             mRecorder = new MediaRecorder();
@@ -4015,6 +4016,17 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         } catch (IOException e) {
             Log.e(LOG_TAG, "AudioRecorder: " + e.getMessage());
         }
+    }
+
+    public void stopAndDeleteRecording() {
+        stopAudioRecording();
+        File file = new File(getExternalCacheDir().getAbsolutePath() + VOICE_MESSAGE_FILE);
+        file.delete();
+        mEditText.setHint((mRoom.isEncrypted() && mSession.isCryptoEnabled()) ?
+                R.string.room_message_placeholder_encrypted : R.string.room_message_placeholder_not_encrypted);
+        mEditText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        mSendVoiceView.setImageResource(R.drawable.vector_micro_green);
+        manageSendMoreButtons();
     }
 
     private void stopAudioRecording() {

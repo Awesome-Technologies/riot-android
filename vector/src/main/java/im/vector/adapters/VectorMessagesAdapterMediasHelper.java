@@ -236,8 +236,12 @@ class VectorMessagesAdapterMediasHelper {
                 try {
                     MediaPlayer mediaPlayer = mediaPlayers.get(mediaUrl);
 
-                    if(mediaPlayer == null || mediaUrl == null)
+                    if (mediaPlayer == null || mediaUrl == null) {
+                        playImageViews.get(mediaUrl).setImageResource(R.drawable.ic_baseline_play_arrow_24px);
+                        progressBar.setProgress(0);
                         return;
+                    }
+
 
                     progressBar.setProgress((int) ((float) mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration() * progressBar.getMax()));
                     if (mediaPlayer.isPlaying()) {
