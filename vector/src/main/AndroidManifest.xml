@@ -196,6 +196,11 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".activity.DeactivateAccountActivity" />
         <activity
+            android:name=".activity.CaseDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/case_detail_title"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
             android:name=".activity.VectorRoomCreationActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/room_creation_title"

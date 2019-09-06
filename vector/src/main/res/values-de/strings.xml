@@ -1555,4 +1555,39 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="create_room_directory_title">Raumverzeichnis</string>
     <string name="create_room_directory_description">Veröffentliche diesen Raum ins Raumverzeichnis</string>
 
+    <!-- Case Data -->
+    <string name="case_data_note">Notiz</string>
+    <string name="case_data_created">Angelegt</string>
+    <string name="case_data_title">Titel</string>
+    <string name="case_data_patient">Patient</string>
+    <string name="case_data_severity">Dringlichkeit</string>
+    <string name="case_data_requester">Anfragender</string>
+    <string name="case_data_responsiveness">Ansprechbarkeit</string>
+    <string name="case_data_pain">Schmerzen</string>
+    <string name="case_data_misc">Sonstiges</string>
+    <string name="case_data_last_defecation">Letzter Stuhlgang</string>
+    <string name="case_data_body_weight">Körpergewicht</string>
+    <string name="case_data_body_temperature">Körpertemperatur</string>
+    <string name="case_data_glucose">Glukose</string>
+    <string name="case_data_blood_pressure">Blutdruck</string>
+    <string name="case_data_pulse">Puls</string>
+
+    <!-- Case Data Severity -->
+    <string name="case_data_severity_info">Info</string>
+    <string name="case_data_severity_request">Anfrage</string>
+    <string name="case_data_severity_urgent">Dringend</string>
+    <string name="case_data_severity_critical">Kritisch</string>
+
+    <!-- Case Data Error -->
+    <string name="case_data_age_unknown">Alter unbekannt</string>
+
+    <!-- Case Data Section Header -->
+    <string name="case_data_section_header_message">Nachricht</string>
+    <string name="case_data_section_header_anamnesis">Anamnese</string>
+    <string name="case_data_section_header_vitals">Vitaldaten</string>
+    <string name="case_data_section_header_pictures">Bilder</string>
+
+    <!-- Case Detail Activity -->
+    <string name="case_detail_title">Fall</string>
+
 </resources>

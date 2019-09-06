@@ -17,12 +17,12 @@
 
 package im.vector.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Filter;
 
 import org.matrix.androidsdk.core.Log;
 import org.matrix.androidsdk.data.Room;
-import org.matrix.androidsdk.rest.model.publicroom.PublicRoom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import im.vector.R;
+import im.vector.activity.CaseDetailActivity;
 import im.vector.adapters.CaseAdapter;
 import im.vector.ui.themes.ThemeUtils;
 import im.vector.util.HomeRoomsViewModel;
@@ -171,10 +172,17 @@ public class CasesFragment extends AbsHomeFragment implements AbsHomeFragment.On
         mAdapter = new CaseAdapter(getActivity(), new CaseAdapter.OnSelectItemListener() {
             @Override
             public void onSelectItem(Room room, int position) {
-                openRoom(room);
+                openCase(room);
             }
         }, this, this);
         mRecycler.setAdapter(mAdapter);
+    }
+
+    private void openCase(final Room room) {
+        Intent intent = new Intent(getContext(), CaseDetailActivity.class);
+        intent.putExtra(CaseDetailActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
+        intent.putExtra(CaseDetailActivity.EXTRA_ROOM_ID, room.getRoomId());
+        startActivity(intent);
     }
 
     /*

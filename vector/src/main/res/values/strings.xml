@@ -1655,4 +1655,39 @@ Not all features in Riot are implemented in RiotX yet. Main missing (and coming 
     <string name="terms_description_for_identity_server">Be discoverable by others</string>
     <string name="terms_description_for_integration_manager">Use Bots, bridges, widgets and sticker packs</string>
 
+    <!-- Case Data -->
+    <string name="case_data_note">Note</string>
+    <string name="case_data_created">Created</string>
+    <string name="case_data_title">Title</string>
+    <string name="case_data_patient">Patient</string>
+    <string name="case_data_severity">Severity</string>
+    <string name="case_data_requester">Requester</string>
+    <string name="case_data_responsiveness">Responsiveness</string>
+    <string name="case_data_pain">Pain</string>
+    <string name="case_data_misc">Misc</string>
+    <string name="case_data_last_defecation">Last Defecation</string>
+    <string name="case_data_body_weight">Body Weight</string>
+    <string name="case_data_body_temperature">Body Temperature</string>
+    <string name="case_data_glucose">Glucose</string>
+    <string name="case_data_blood_pressure">Blood Pressure</string>
+    <string name="case_data_pulse">Pulse</string>
+
+    <!-- Case Data Severity -->
+    <string name="case_data_severity_info">Info</string>
+    <string name="case_data_severity_request">Request</string>
+    <string name="case_data_severity_urgent">Urgent</string>
+    <string name="case_data_severity_critical">Critical</string>
+
+    <!-- Case Data Error -->
+    <string name="case_data_age_unknown">Age unknown</string>
+
+    <!-- Case Section Header -->
+    <string name="case_data_section_header_message">Message</string>
+    <string name="case_data_section_header_anamnesis">Anamnesis</string>
+    <string name="case_data_section_header_vitals">Vitals</string>
+    <string name="case_data_section_header_pictures">Pictures</string>
+
+    <!-- Case Detail Activity -->
+    <string name="case_detail_title">Case</string>
+
 </resources>

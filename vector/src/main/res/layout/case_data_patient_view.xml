@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="48dp"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif-regular"
+        android:maxLines="1"
+        android:textSize="16sp"
+        tools:text="Patient" />
+
+    <TextView
+        android:id="@+id/patient_name"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end|top"
+        android:fontFamily="sans-serif-regular"
+        android:maxLines="1"
+        android:textSize="16sp"
+        tools:text="Name" />
+
+    <TextView
+        android:id="@+id/patient_info"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end|bottom"
+        android:fontFamily="sans-serif-regular"
+        android:maxLines="1"
+        android:textSize="14sp"
+        tools:text="Info" />
+
+    <ProgressBar
+        android:id="@+id/activity_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        style="?android:attr/progressBarStyleSmall"
+        android:visibility="visible" />
+
+</RelativeLayout>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <im.vector.view.CaseDataPatientView
+            android:id="@+id/case_data_patient_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataPatientView>
+
+        <im.vector.view.CaseDataLabelValueView
+            android:id="@+id/case_data_created_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueView>
+
+        <im.vector.view.CaseDataLabelValueView
+            android:id="@+id/case_data_requester_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueView>
+
+        <im.vector.view.CaseDataLabelValueView
+            android:id="@+id/case_data_severity_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <im.vector.view.CaseDataSectionHeaderView
+            android:id="@+id/case_data_message_section_header"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+        <im.vector.view.CaseDataLabelValueView
+            android:id="@+id/case_data_title_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueView>
+
+        <im.vector.view.CaseDataNoteView
+            android:id="@+id/case_data_note_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <im.vector.view.CaseDataSectionHeaderView
+            android:id="@+id/case_data_anamnesis_section_header"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+        <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_responsiveness_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueDateView>
+
+        <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_pain_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueDateView>
+
+        <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_misc_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueDateView>
+
+        <im.vector.view.CaseDataLabelValueView
+            android:id="@+id/case_data_last_defecation_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <im.vector.view.CaseDataSectionHeaderView
+            android:id="@+id/case_data_vitals_section_header"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+        <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_body_weight_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueDateView>
+
+        <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_body_temperature_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueDateView>
+
+        <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_glucose_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueDateView>
+
+        <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_blood_pressure_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueDateView>
+
+        <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_pulse_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <im.vector.view.CaseDataSectionHeaderView
+            android:id="@+id/case_data_pictures_section_header"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+        <im.vector.view.CaseDataPicturesView
+            android:id="@+id/case_data_pictures_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+    </LinearLayout>
+</ScrollView>
