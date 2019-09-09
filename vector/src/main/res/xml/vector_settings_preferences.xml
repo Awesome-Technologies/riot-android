@@ -9,6 +9,7 @@
 
         <im.vector.preference.UserAvatarPreference
             android:key="SETTINGS_PROFILE_PICTURE_PREFERENCE_KEY"
+            app:isPreferenceVisible="false"
             android:title="@string/settings_profile_picture" />
 
         <im.vector.preference.VectorEditTextPreference
@@ -18,6 +19,7 @@
 
         <im.vector.preference.VectorPreference
             android:key="SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY"
+            app:isPreferenceVisible="false"
             android:summary="@string/password_hint"
             android:title="@string/settings_password" />
 
@@ -26,6 +28,7 @@
         <!-- Note: inputType does not work, it is set also in code, as well as iconTint -->
         <im.vector.preference.VectorEditTextPreference
             android:icon="@drawable/ic_add_black"
+            app:isPreferenceVisible="false"
             android:inputType="textEmailAddress"
             android:key="ADD_EMAIL_PREFERENCE_KEY"
             android:order="100"
@@ -37,6 +40,7 @@
         <!-- Note: iconTint does not work, it is also done in code -->
         <im.vector.preference.VectorPreference
             android:icon="@drawable/ic_add_black"
+            app:isPreferenceVisible="false"
             android:key="ADD_PHONE_NUMBER_PREFERENCE_KEY"
             android:order="200"
             android:title="@string/settings_add_phone_number"
@@ -44,10 +48,11 @@
 
     </im.vector.preference.VectorPreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider app:isPreferenceVisible="false" />
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="SETTINGS_CONTACT_PREFERENCE_KEYS"
+        app:isPreferenceVisible="false"
         android:title="@string/settings_contact">
 
         <im.vector.preference.VectorSwitchPreference
@@ -245,9 +250,11 @@
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="SETTINGS_NOTIFICATIONS_TARGETS_PREFERENCE_KEY"
+        app:isPreferenceVisible="false"
         android:title="@string/settings_notifications_targets" />
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY"
+                                                  app:isPreferenceVisible="false"/>
 
     <im.vector.preference.VectorPreferenceCategory android:title="@string/settings_media">
 
@@ -276,6 +283,7 @@
 
         <im.vector.preference.VectorListPreference
             android:defaultValue="0"
+            app:isPreferenceVisible="false"
             android:entries="@array/media_sources"
             android:entryValues="@array/media_source_values"
             android:key="SETTINGS_DEFAULT_MEDIA_SOURCE_KEY"
@@ -284,9 +292,10 @@
 
     </im.vector.preference.VectorPreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider app:isPreferenceVisible="false" />
 
-    <im.vector.preference.VectorPreferenceCategory android:title="@string/settings_call_category">
+    <im.vector.preference.VectorPreferenceCategory android:title="@string/settings_call_category"
+                                                   app:isPreferenceVisible="false">
 
         <im.vector.preference.VectorSwitchPreference
             android:defaultValue="true"
@@ -301,16 +310,18 @@
 
     </im.vector.preference.VectorPreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider app:isPreferenceVisible="false" />
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="SETTINGS_IGNORED_USERS_PREFERENCE_KEY"
         android:title="@string/settings_ignored_users" />
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_IGNORE_USERS_DIVIDER_PREFERENCE_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_IGNORE_USERS_DIVIDER_PREFERENCE_KEY"
+                                                  app:isPreferenceVisible="false" />
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="SETTINGS_LABS_PREFERENCE_KEY"
+        app:isPreferenceVisible="false"
         android:title="@string/room_settings_labs_pref_title">
 
         <im.vector.preference.VectorPreference
@@ -349,11 +360,12 @@
 
     </im.vector.preference.VectorPreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider />
+    <im.vector.preference.VectorPreferenceDivider app:isPreferenceVisible="false"/>
 
     <!-- ************ Cryptography section ************ -->
     <im.vector.preference.VectorPreferenceCategory
         android:key="SETTINGS_CRYPTOGRAPHY_PREFERENCE_KEY"
+        app:isPreferenceVisible="false"
         android:title="@string/settings_cryptography">
 
         <im.vector.preference.VectorPreference
@@ -375,10 +387,12 @@
 
     </im.vector.preference.VectorPreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY"
+                                                  app:isPreferenceVisible="false"/>
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="SETTINGS_CRYPTOGRAPHY_MANAGE_PREFERENCE_KEY"
+        app:isPreferenceVisible="false"
         android:title="@string/settings_cryptography_manage_keys">
 
         <im.vector.preference.VectorPreference
@@ -398,16 +412,20 @@
 
     </im.vector.preference.VectorPreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY"
+                                                  app:isPreferenceVisible="false"/>
 
     <!-- devices list: device ids + device names -->
     <im.vector.preference.VectorPreferenceCategory
         android:key="SETTINGS_DEVICES_LIST_PREFERENCE_KEY"
+        app:isPreferenceVisible="false"
         android:title="@string/settings_devices_list" />
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY" />
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY"
+                                                  app:isPreferenceVisible="false"/>
 
-    <im.vector.preference.VectorPreferenceCategory android:title="@string/settings_advanced">
+    <im.vector.preference.VectorPreferenceCategory android:title="@string/settings_advanced"
+                                                   app:isPreferenceVisible="false">
 
         <im.vector.preference.VectorPreference
             android:key="SETTINGS_LOGGED_IN_PREFERENCE_KEY"
