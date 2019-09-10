@@ -157,7 +157,16 @@
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter android:label="@string/filter_view_https_amp">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "https://caritas.amp.care” -->
+                <data android:scheme="https"
+                      android:host="@string/intent_url_host" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.AccountCreationCaptchaActivity"
             android:configChanges="orientation|screenSize"
@@ -448,6 +457,8 @@
             android:name=".activity.ReviewTermsActivity"
             android:label="@string/review_terms"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".activity.barcode.BarcodeCaptureActivity"
+              android:label="@string/auth_login_qr_code"/>
 
         <!-- FileProvider -->
         <provider

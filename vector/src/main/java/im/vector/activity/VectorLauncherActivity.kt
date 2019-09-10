@@ -18,6 +18,7 @@ package im.vector.activity
 
 import android.content.Intent
 import android.os.Bundle
+import im.vector.activity.barcode.BarcodeCaptureActivity
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -28,7 +29,9 @@ class VectorLauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startActivity(Intent(this, LoginActivity::class.java))
+        intent = Intent(this, BarcodeCaptureActivity::class.java)
+        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true)
+        startActivity(intent)
         finish()
     }
 }

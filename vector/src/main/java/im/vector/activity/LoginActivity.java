@@ -52,6 +52,7 @@ import androidx.transition.TransitionManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import im.vector.activity.barcode.BarcodeCaptureActivity;
 import org.matrix.androidsdk.HomeServerConnectionConfig;
 import org.matrix.androidsdk.MXSession;
 import org.matrix.androidsdk.core.JsonUtils;
@@ -103,6 +104,8 @@ import im.vector.repositories.ServerUrlsRepository;
 import im.vector.ui.badge.BadgeProxy;
 import im.vector.util.PhoneNumberUtils;
 import im.vector.util.ViewUtilKt;
+
+import static im.vector.activity.barcode.BarcodeCaptureActivity.decode;
 
 /**
  * Displays the login screen.
@@ -504,6 +507,23 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
             return;
         }
 
+        Uri data = intent.getData();
+        if(data != null) {
+            String fragment = data.getFragment();
+            Log.d(LOG_TAG, "URLPath: " + fragment);
+            String text = decode(fragment, BarcodeCaptureActivity.keyText);
+            String[] credentials = text.split("&");
+            String username = credentials[0].split("=")[1];
+            String password = credentials[1].split("=")[1];
+            Log.d("Barcode", username + "  " + password);
+            if (username != null && password != null) {
+                mLoginEmailTextView.setText(username);
+                mLoginPasswordTextView.setText(password);
+            }
+
+
+        }
+
         setWaitingView(mWaitingView);
 
         // login
@@ -531,6 +551,19 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                 onForgotOnEmailValidated(getHsConfig());
             }
         });
+
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            String homeserver = extras.getString("HOMESERVER");
+            String username = extras.getString("USERNAME");
+            String password = extras.getString("PASSWORD");
+            Log.d(LOG_TAG, "username: " + username);
+            if (username != null && password != null) {
+                mHomeServerText.setText(homeserver);
+                mLoginEmailTextView.setText(username);
+                mLoginPasswordTextView.setText(password);
+            }
+        }
 
         // home server input validity: if the user taps on the next / done button
         mHomeServerText.setOnEditorActionListener(new TextView.OnEditorActionListener() {

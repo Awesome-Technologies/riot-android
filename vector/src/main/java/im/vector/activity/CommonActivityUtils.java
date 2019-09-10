@@ -41,6 +41,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import im.vector.activity.barcode.BarcodeCaptureActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -437,7 +438,7 @@ public class CommonActivityUtils {
                     Activity activeActivity = VectorApp.getCurrentActivity();
 
                     // go to login page
-                    Intent intent = new Intent(activeActivity, LoginActivity.class);
+                    Intent intent = new Intent(activeActivity, BarcodeCaptureActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     if (null != activeActivity) {

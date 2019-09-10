@@ -30,4 +30,6 @@
         <item>matrix.org</item>
     </string-array>
 
+    <string name="intent_url_host">test.amp.care</string>
+
 </resources>

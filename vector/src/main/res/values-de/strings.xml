@@ -135,6 +135,8 @@
 
     <!-- Authentication -->
     <string name="auth_login">Anmelden</string>
+    <string name="auth_switch_to_login_activity">Anmelden mit Benutzername</string>
+    <string name="auth_login_qr_code">Anmelden mit QR-Code</string>
     <string name="auth_register">Konto erstellen</string>
     <string name="auth_submit">Absenden</string>
     <string name="auth_skip">Überspringen</string>
@@ -1628,5 +1630,20 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="case_data_anamnesis">Anamnese</string>
     <string name="case_data_vitals">Vitaldaten</string>
     <string name="case_data_pictures">Bilder</string>
+
+    <!-- Barcode -->
+    <string name="permission_camera_rationale">Zugriff auf die Kamera wird benötigt, um QR-Codes zu scannen</string>
+    <string name="no_camera_permission">Die Anwendung funktioniert nicht, weil die Kamera-Berechtigung fehlt. Die App wird beendet.</string>
+    <string name="low_storage_error">Zusätzliche Komponenten konnten nicht geladen werden wegen zu wenig Speicherplatz</string>
+    <string name="title_activity_main">Barcode Scanner Beispiel</string>
+    <string name="barcode_header">Auf &quot;Scanne Barcode&quot; klicken um Barcode zu lesen</string>
+    <string name="read_barcode">Scanne Barcode</string>
+    <string name="auto_focus">Autofokus</string>
+    <string name="use_flash">Blitz eingeschaltet</string>
+    <string name="barcode_success">Barcode wurde erfolgreich gescannt</string>
+    <string name="barcode_failure">Kein Barcode gescannt</string>
+    <string name="barcode_error">"Fehler beim Scannen von Barcode: %1$s"</string>
+
+    <string name="filter_view_https_amp">Anmelden mit AMP.care</string>
 
 </resources>

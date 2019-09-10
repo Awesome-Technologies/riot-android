@@ -243,6 +243,9 @@ dependencies {
 
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.9.12'
 
+    // Important - the CameraSource implementation in this project requires version 8.1 or higher.
+    implementation 'com.google.android.gms:play-services-vision:17.0.2'
+    
     //Alerter
     implementation 'com.tapadoo.android:alerter:4.0.3'
 
