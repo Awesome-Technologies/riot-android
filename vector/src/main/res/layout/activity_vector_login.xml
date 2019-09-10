@@ -68,12 +68,14 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"
                         android:text="@string/or"
+                        android:visibility="gone"
                         android:textSize="16sp" />
 
                     <LinearLayout
                         android:id="@+id/login_phone_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <!-- Add marginTop for better alignment with TextInputLayout. Using baseline does not work -->
@@ -357,6 +359,7 @@
                         android:id="@+id/display_server_url_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="10dp">
 
                         <CheckBox
