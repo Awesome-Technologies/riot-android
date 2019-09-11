@@ -602,7 +602,7 @@
     <string name="room_settings_add_homescreen_shortcut">Add Homescreen Shortcut</string>
 
     <!-- home sliding menu -->
-    <string name="room_sliding_menu_messages">Messages</string>
+    <string name="room_sliding_menu_messages">Cases</string>
     <string name="room_sliding_menu_settings">Settings</string>
     <string name="room_sliding_menu_version">Version</string>
     <string name="room_sliding_menu_version_x">Version %s</string>

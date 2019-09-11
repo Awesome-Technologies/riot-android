@@ -425,7 +425,7 @@ Beachte: Diese Aktion wird die App neu starten und einige Zeit brauchen.</string
     <string name="room_settings_forget">Vergessen</string>
 
     <!-- home sliding menu -->
-    <string name="room_sliding_menu_messages">Nachrichten</string>
+    <string name="room_sliding_menu_messages">Fälle</string>
     <string name="room_sliding_menu_settings">Einstellungen</string>
     <string name="room_sliding_menu_version">Version</string>
     <string name="room_sliding_menu_term_and_conditions">Nutzungsbedingungen</string>
