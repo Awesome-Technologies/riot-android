@@ -1021,6 +1021,21 @@ class VectorMessagesAdapterHelper {
 
         String eventType = event.getType();
 
+        switch (eventType) {
+            case Event.EVENT_TYPE_MESSAGE_ENCRYPTION:
+            case Event.EVENT_TYPE_STATE_ROOM_CREATE:
+            case Event.EVENT_TYPE_STATE_ROOM_NAME:
+            case Event.EVENT_TYPE_STATE_ROOM_AVATAR:
+            case Event.EVENT_TYPE_STATE_ROOM_MEMBER:
+            case Event.EVENT_TYPE_STATE_ROOM_ALIASES:
+            case Event.EVENT_TYPE_STATE_HISTORY_VISIBILITY:
+            case Event.EVENT_TYPE_STATE_ROOM_JOIN_RULES:
+            case Event.EVENT_TYPE_STATE_ROOM_POWER_LEVELS:
+            case Event.EVENT_TYPE_STATE_ROOM_THIRD_PARTY_INVITE:
+            case Event.EVENT_TYPE_STATE_RELATED_GROUPS:
+                return false;
+        }
+
         if (Event.EVENT_TYPE_MESSAGE.equals(eventType)) {
             // Redacted messages are not displayed (for the moment)
             if (event.isRedacted()) {
