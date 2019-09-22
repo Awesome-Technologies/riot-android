@@ -2459,10 +2459,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
      * Refresh the Account avatar
      */
     private void refreshSelfAvatar() {
-        // sanity check
-        if (null != mAvatarImageView) {
-            VectorUtils.loadUserAvatar(this, mSession, mAvatarImageView, mSession.getMyUser());
-        }
+
     }
 
     /**
