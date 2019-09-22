@@ -1155,14 +1155,10 @@ public class VectorMessagesAdapter extends AbstractMessagesAdapter {
             tsTextView.setVisibility((((position + 1) == getCount()) || mIsSearchMode || mAlwaysShowTimeStamps) ? View.VISIBLE : View.GONE);
         }
 
-        // Sender avatar
-        View avatarView = mHelper.setSenderAvatar(convertView, row, isMergedView);
-
         // if the messages are merged
         // the thumbnail is hidden
         // and the subview must be moved to be aligned with the previous body
         View bodyLayoutView = convertView.findViewById(R.id.messagesAdapter_body_layout);
-        VectorMessagesAdapterHelper.alignSubviewToAvatarView(subView, bodyLayoutView, avatarView, isMergedView);
 
         // messages separator
         View messageSeparatorView = convertView.findViewById(R.id.messagesAdapter_message_separator);
@@ -1185,7 +1181,7 @@ public class VectorMessagesAdapter extends AbstractMessagesAdapter {
         manageSelectionMode(convertView, event, msgType);
 
         // read marker
-        setReadMarker(convertView, row, isMergedView, avatarView, bodyLayoutView);
+        setReadMarker(convertView, row, isMergedView, bodyLayoutView);
 
         // download / upload progress layout
         if ((ROW_TYPE_IMAGE == msgType) || (ROW_TYPE_FILE == msgType) || (ROW_TYPE_VIDEO == msgType) || (ROW_TYPE_STICKER == msgType)) {
@@ -2423,10 +2419,9 @@ public class VectorMessagesAdapter extends AbstractMessagesAdapter {
      * @param convertView      the main view
      * @param row              the message row
      * @param isMergedView     true if the message is merged
-     * @param avatarLayoutView the avatar layout
      * @param bodyLayoutView   the body layout
      */
-    private void setReadMarker(View convertView, MessageRow row, boolean isMergedView, View avatarLayoutView, View bodyLayoutView) {
+    private void setReadMarker(View convertView, MessageRow row, boolean isMergedView, View bodyLayoutView) {
         Event event = row.getEvent();
 
         // search message mode
@@ -2446,11 +2441,10 @@ public class VectorMessagesAdapter extends AbstractMessagesAdapter {
                         animateReadMarkerView(event, readMarkerView);
                     }
                 } else {
-                    ViewGroup.LayoutParams avatarLayout = avatarLayoutView.getLayoutParams();
                     ViewGroup.MarginLayoutParams bodyLayout = (ViewGroup.MarginLayoutParams) bodyLayoutView.getLayoutParams();
 
                     if (isMergedView) {
-                        highlightMakerLayout.setMargins(avatarLayout.width + 5, highlightMakerLayout.topMargin, 5, highlightMakerLayout.bottomMargin);
+                        highlightMakerLayout.setMargins(5, highlightMakerLayout.topMargin, 5, highlightMakerLayout.bottomMargin);
                     } else {
                         highlightMakerLayout.setMargins(5, highlightMakerLayout.topMargin, 5, highlightMakerLayout.bottomMargin);
                     }

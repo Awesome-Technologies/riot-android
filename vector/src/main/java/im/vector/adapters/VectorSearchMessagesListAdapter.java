@@ -107,10 +107,6 @@ public class VectorSearchMessagesListAdapter extends VectorMessagesAdapter {
 
             Room room = mSession.getDataHandler().getStore().getRoom(event.roomId);
 
-            // refresh the avatar
-            ImageView avatarView = convertView.findViewById(R.id.messagesAdapter_avatar);
-            mHelper.loadMemberAvatar(avatarView, row);
-
             // display the sender
             TextView senderTextView = convertView.findViewById(R.id.messagesAdapter_sender);
             if (senderTextView != null) {

@@ -487,54 +487,6 @@ class VectorMessagesAdapterHelper {
     }
 
     /**
-     * init the sender avatar
-     *
-     * @param convertView  the base view
-     * @param row          the message row
-     * @param isMergedView true if the cell is merged
-     * @return the avatar layout
-     */
-    View setSenderAvatar(View convertView, MessageRow row, boolean isMergedView) {
-        Event event = row.getEvent();
-        ImageView avatarView = convertView.findViewById(R.id.messagesAdapter_avatar);
-
-        if (null != avatarView) {
-            final String userId = event.getSender();
-
-            avatarView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return (null != mEventsListener) && mEventsListener.onAvatarLongClick(userId);
-                }
-            });
-
-            // click on the avatar opens the details page
-            avatarView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null != mEventsListener) {
-                        mEventsListener.onAvatarClick(userId);
-                    }
-                }
-            });
-        }
-
-        if (null != avatarView) {
-            if (isMergedView) {
-                avatarView.setVisibility(View.INVISIBLE);
-            } else {
-                avatarView.setVisibility(View.VISIBLE);
-
-                avatarView.setTag(null);
-
-                loadMemberAvatar(avatarView, row);
-            }
-        }
-
-        return avatarView;
-    }
-
-    /**
      * Align the avatar and the message body according to the mergeView flag
      *
      * @param subView          the message body

@@ -20,15 +20,6 @@
         android:layout_marginRight="16dp"
         android:orientation="horizontal">
 
-        <im.vector.view.VectorCircularImageView
-            android:id="@+id/messagesAdapter_avatar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/avatar"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/avatars" />
-
         <View
             android:id="@+id/messagesAdapter_highlight_message_marker"
             android:layout_width="6dp"
@@ -89,12 +80,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start">
 
-                    <ImageView
-                        android:id="@+id/message_adapter_e2e_icon"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/e2e_verified" />
-
                     <TextView
                         android:id="@+id/messagesAdapter_body"
                         android:layout_width="match_parent"
@@ -102,8 +87,6 @@
                         android:layout_gravity="start"
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"
-                        android:layout_toEndOf="@id/message_adapter_e2e_icon"
-                        android:layout_toRightOf="@id/message_adapter_e2e_icon"
                         android:textIsSelectable="false"
                         android:textSize="40sp"
                         tools:text="An emoji" />

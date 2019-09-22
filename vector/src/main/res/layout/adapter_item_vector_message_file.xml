@@ -20,15 +20,6 @@
         android:layout_marginRight="16dp"
         android:orientation="horizontal">
 
-        <im.vector.view.VectorCircularImageView
-            android:id="@+id/messagesAdapter_avatar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/avatar"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/avatars" />
-
         <View
             android:id="@+id/messagesAdapter_highlight_message_marker"
             android:layout_width="6dp"
