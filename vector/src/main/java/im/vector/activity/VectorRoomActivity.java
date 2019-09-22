@@ -1450,12 +1450,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     // Menu management
     //================================================================================
 
-
-    @Override
-    public int getMenuRes() {
-        return R.menu.vector_room;
-    }
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem searchInRoomMenuItem = menu.findItem(R.id.ic_action_search_in_room);
@@ -2833,13 +2827,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             } else {
                 enableActionBarHeader(HIDE_ACTION_BAR_HEADER);
             }
-        }
-    }
-
-    @OnClick(R.id.header_texts_container)
-    void onTextsContainerClick() {
-        if (TextUtils.isEmpty(mEventId) && (null == sRoomPreviewData)) {
-            enableActionBarHeader(SHOW_ACTION_BAR_HEADER);
         }
     }
 
