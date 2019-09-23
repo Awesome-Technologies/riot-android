@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context="im.vector.fragments.CaseCreateSeverityDataFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="60dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="16dp">
+
+        <View
+            android:id="@+id/infoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:id="@+id/colorInfo"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="#45AAF2"/>
+
+        <TextView
+            android:id="@+id/labelInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/colorInfo"
+            android:layout_toEndOf="@+id/colorInfo"
+            android:layout_alignParentTop="true"
+            android:padding="8dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_severity_info"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="60dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp">
+
+        <View
+            android:id="@+id/requestView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:id="@+id/colorRequest"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="#26DE81"/>
+
+        <TextView
+            android:id="@+id/labelRequest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/colorRequest"
+            android:layout_toEndOf="@+id/colorRequest"
+            android:layout_alignParentTop="true"
+            android:padding="8dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_severity_request"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="60dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp">
+
+        <View
+            android:id="@+id/urgentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:id="@+id/colorUrgent"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="#F7C931"/>
+
+        <TextView
+            android:id="@+id/labelUrgent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/colorUrgent"
+            android:layout_toEndOf="@+id/colorUrgent"
+            android:layout_alignParentTop="true"
+            android:padding="8dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_severity_urgent"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="60dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp">
+
+        <View
+            android:id="@+id/criticalView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:id="@+id/colorCritical"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="#EB3B5A"/>
+
+        <TextView
+            android:id="@+id/labelCritical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/colorCritical"
+            android:layout_toEndOf="@+id/colorCritical"
+            android:layout_alignParentTop="true"
+            android:padding="8dp"
+            android:layout_margin="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_severity_critical"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

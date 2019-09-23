@@ -53,6 +53,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
@@ -1592,6 +1593,22 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         }
     }
 
+    private void createCase(){
+        Log.d( LOG_TAG,"## createCase(): Showing case creation activity");
+
+        startActivityForResult(new Intent(this, CaseCreateActivity.class), CaseCreateActivity.REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CaseCreateActivity.REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+                Intent intent = new Intent(this, CaseDetailActivity.class);
+                intent.putExtra(CaseDetailActivity.EXTRA_MATRIX_ID, mSession.getMyUserId());
+                intent.putExtra(CaseDetailActivity.EXTRA_ROOM_ID, data.getStringExtra(CaseDetailActivity.EXTRA_ROOM_ID));
+                startActivity(intent);
+        }
+    }
+
     /*
      * *********************************************************************************************
      * Room invitation management
@@ -2296,6 +2313,13 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
     void fabMenuJoinRoom() {
         mFloatingActionsMenu.collapse();
         joinARoom();
+    }
+
+    @OnClick(R.id.fab_expand_menu_button)
+    void fabMainCreateCase() {
+        mFloatingActionsMenu.collapse();
+        //joinARoom();
+        createCase();
     }
 
     //==============================================================================================================

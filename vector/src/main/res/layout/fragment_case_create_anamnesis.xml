@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_responsiveness"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/responsiveness_time"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_time"/>
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/responsiveness"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start|center_vertical"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:text=""
+            android:importantForAutofill="no" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:fontFamily="sans-serif-regular"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@string/case_data_pain"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/pain_time"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pick_time"/>
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/pain"
+            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:gravity="start|bottom"
+            android:fontFamily="sans-serif-regular"
+            android:textSize="16sp"
+            android:inputType="textMultiLine"
+            android:text=""
+            android:importantForAutofill="no" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:fontFamily="sans-serif-regular"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@string/case_data_misc"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/misc_time"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pick_time"/>
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/misc"
+            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:gravity="start|bottom"
+            android:fontFamily="sans-serif-regular"
+            android:textSize="16sp"
+            android:inputType="textMultiLine"
+            android:text=""
+            android:importantForAutofill="no" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_last_defecation"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/last_defecation_time"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_time" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/save_data_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#21264E"
+            android:textSize="15sp"
+            android:textColor="#FFFFFF"
+            android:text="@string/case_data_save"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

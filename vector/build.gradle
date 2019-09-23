@@ -287,6 +287,7 @@ dependencies {
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 }
 
 //Ensure we never move past okhttp 3.12.x

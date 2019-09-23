@@ -327,7 +327,7 @@ Du kannst dich mit einem anderen Konto anmelden oder diese E-Mail-Adresse zu die
     <string name="room_participants_action_set_admin">Zum Admin machen</string>
     <string name="room_participants_action_ignore">Alle Nachrichten dieses Nutzers verbergen</string>
     <string name="room_participants_action_unignore">Alle Nachrichten dieses Nutzers anzeigen</string>
-    <string name="room_participants_invite_search_another_user">Benutzer-ID, Name oder E-Mail-Adresse</string>
+    <string name="room_participants_invite_search_another_user">Name</string>
     <string name="room_participants_action_mention">Erwähnen</string>
     <string name="room_participants_action_devices_list">Geräteliste anzeigen</string>
     <string name="room_participants_power_level_prompt">Du wirst diese Änderung nicht rückgängig machen können, da der Benutzer dasselbe Berechtigungslevel wie du selbst erhalten wirst.
@@ -1563,6 +1563,7 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="case_data_title">Titel</string>
     <string name="case_data_patient">Patient</string>
     <string name="case_data_severity">Dringlichkeit</string>
+    <string name="case_data_recipient">Doktor</string>
     <string name="case_data_requester">Anfragender</string>
     <string name="case_data_responsiveness">Ansprechbarkeit</string>
     <string name="case_data_pain">Schmerzen</string>
@@ -1573,6 +1574,9 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="case_data_glucose">Glukose</string>
     <string name="case_data_blood_pressure">Blutdruck</string>
     <string name="case_data_pulse">Puls</string>
+    <string name="case_data_heart">Herz</string>
+    <string name="case_data_blood_pressure_systolic">Systolisch</string>
+    <string name="case_data_blood_pressure_diastolic">Diastolisch</string>
     <string name="case_data_oxygen">Sauerstoffsättigung</string>
 
     <!-- Case Data Severity -->
@@ -1589,8 +1593,33 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="case_data_section_header_anamnesis">Anamnese</string>
     <string name="case_data_section_header_vitals">Vitaldaten</string>
     <string name="case_data_section_header_pictures">Bilder</string>
+    <string name="case_data_section_header_data">Daten</string>
 
     <!-- Case Detail Activity -->
     <string name="case_detail_title">Fall</string>
+
+    <string name="case_data_save">Speichern</string>
+
+    <plurals name="case_create_pictures">
+        <item quantity="one">1 Bild</item>
+        <item quantity="other">%d Bilder</item>
+    </plurals>
+
+    <plurals name="case_create_entries">
+        <item quantity="one">1 Eintrag</item>
+        <item quantity="other">%d Einträge</item>
+    </plurals>
+
+    <string name="set_date">Tag</string>
+    <string name="set_time">Uhrzeit</string>
+    <string name="pick_time">Zeitpunkt</string>
+    <string name="case_create_patient_name_hint">Patientenname</string>
+    <string name="case_create_gender_label">Geschlecht</string>
+    <string name="case_create_birthdate_label">Geburtsdatum</string>
+    <string name="case_create_title">Fall Anlegen</string>
+    <string name="case_create_birthdate_pick">Auswählen</string>
+    <string name="case_data_anamnesis">Anamnese</string>
+    <string name="case_data_vitals">Vitaldaten</string>
+    <string name="case_data_pictures">Bilder</string>
 
 </resources>

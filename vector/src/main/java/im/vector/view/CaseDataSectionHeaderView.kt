@@ -31,6 +31,8 @@ class CaseDataSectionHeaderView : RelativeLayout {
             CASE_DATA_SECTION_ANAMNESIS -> newTitle = context.getString(R.string.case_data_section_header_anamnesis)
             CASE_DATA_SECTION_VITALS -> newTitle = context.getString(R.string.case_data_section_header_vitals)
             CASE_DATA_SECTION_PICTURES -> newTitle = context.getString(R.string.case_data_section_header_pictures)
+            CASE_DATA_SECTION_HEART -> newTitle = context.getString(R.string.case_data_section_header_heart)
+            CASE_DATA_SECTION_DATA -> newTitle = context.getString(R.string.case_data_section_header_data)
         }
 
         section_title.text = if (mPrefix >= 0) "$mPrefix $newTitle" else newTitle
@@ -73,5 +75,7 @@ class CaseDataSectionHeaderView : RelativeLayout {
         val CASE_DATA_SECTION_ANAMNESIS = 1
         val CASE_DATA_SECTION_VITALS = 2
         val CASE_DATA_SECTION_PICTURES = 3
+        val CASE_DATA_SECTION_HEART = 4
+        val CASE_DATA_SECTION_DATA = 5
     }
 }

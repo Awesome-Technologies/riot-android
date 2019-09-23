@@ -466,7 +466,7 @@
     <string name="room_participants_action_ignore">Hide all messages from this user</string>
     <string name="room_participants_action_unignore">Show all messages from this user</string>
     <string name="room_participants_action_unignore_prompt">Show all messages from this user?\n\nNote that this action will restart the app and it may take some time.</string>
-    <string name="room_participants_invite_search_another_user">User ID, Name or email</string>
+    <string name="room_participants_invite_search_another_user">Name</string>
     <string name="room_participants_action_mention">Mention</string>
     <string name="room_participants_action_devices_list">Show Device List</string>
     <string name="room_participants_power_level_prompt">You will not be able to undo this change as you are promoting the user to have the same power level as yourself.\nAre you sure?</string>
@@ -1662,6 +1662,7 @@ Not all features in Riot are implemented in RiotX yet. Main missing (and coming 
     <string name="case_data_title">Title</string>
     <string name="case_data_patient">Patient</string>
     <string name="case_data_severity">Severity</string>
+    <string name="case_data_recipient">Recipient</string>
     <string name="case_data_requester">Requester</string>
     <string name="case_data_responsiveness">Responsiveness</string>
     <string name="case_data_pain">Pain</string>
@@ -1672,6 +1673,9 @@ Not all features in Riot are implemented in RiotX yet. Main missing (and coming 
     <string name="case_data_glucose">Glucose</string>
     <string name="case_data_blood_pressure">Blood Pressure</string>
     <string name="case_data_pulse">Pulse</string>
+    <string name="case_data_heart">Heart</string>
+    <string name="case_data_blood_pressure_systolic">Systolic</string>
+    <string name="case_data_blood_pressure_diastolic">Diastolic</string>
     <string name="case_data_oxygen">Oxygen Saturation</string>
 
     <!-- Case Data Severity -->
@@ -1688,8 +1692,42 @@ Not all features in Riot are implemented in RiotX yet. Main missing (and coming 
     <string name="case_data_section_header_anamnesis">Anamnesis</string>
     <string name="case_data_section_header_vitals">Vitals</string>
     <string name="case_data_section_header_pictures">Pictures</string>
+    <string name="case_data_section_header_heart">Heart</string>
+    <string name="case_data_section_header_data">Data</string>
 
     <!-- Case Detail Activity -->
     <string name="case_detail_title">Case</string>
+
+    <string name="case_data_save">Save</string>
+
+    <plurals name="case_create_pictures">
+        <item quantity="one">1 Picture</item>
+        <item quantity="other">%d Pictures</item>
+    </plurals>
+
+    <plurals name="case_create_entries">
+        <item quantity="one">1 Entry</item>
+        <item quantity="other">%d Entries</item>
+    </plurals>
+
+    <string name="case_data_body_weight_unit">kg</string>
+    <string name="case_data_body_temperature_unit">°C</string>
+    <string name="case_data_glucose_unit">mg/dl</string>
+    <string name="case_data_oxygen_unit">%</string>
+    <string name="case_data_blood_pressure_unit">mmHg</string>
+    <string name="case_data_pulse_unit">bpm</string>
+
+
+    <string name="set_date">Set date</string>
+    <string name="set_time">Set time</string>
+    <string name="pick_time">Pick time</string>
+    <string name="case_create_patient_name_hint">Patient name</string>
+    <string name="case_create_gender_label">Gender</string>
+    <string name="case_create_birthdate_label">Birthdate</string>
+    <string name="case_create_title">Create Case</string>
+    <string name="case_create_birthdate_pick">Pick</string>
+    <string name="case_data_anamnesis">Anamnesis</string>
+    <string name="case_data_vitals">Vitals</string>
+    <string name="case_data_pictures">Pictures</string>
 
 </resources>
