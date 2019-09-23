@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/label_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_body_weight"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/body_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:inputType="numberDecimal"
+            android:text=""
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/weight_unit"
+            android:layout_toLeftOf="@+id/weight_unit"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/weight_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:gravity="center_vertical"
+            android:text="@string/case_data_body_weight_unit"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/weight_time"
+            android:layout_toLeftOf="@+id/weight_time"/>
+
+        <Button
+            android:id="@+id/weight_time"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_time"
+            android:onClick="showTimePickerDialog" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/label_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_body_temperature"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/body_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            android:text=""
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/temperature_unit"
+            android:layout_toLeftOf="@+id/temperature_unit"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/temperature_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_body_temperature_unit"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/temperature_time"
+            android:layout_toLeftOf="@+id/temperature_time"/>
+
+        <Button
+            android:id="@+id/temperature_time"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_time"
+            android:onClick="showTimePickerDialog" />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/label_glucose"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_glucose"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/glucose"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:text=""
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/glucose_unit"
+            android:layout_toLeftOf="@+id/glucose_unit"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/glucose_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_glucose_unit"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/glucose_time"
+            android:layout_toLeftOf="@+id/glucose_time"/>
+
+        <Button
+            android:id="@+id/glucose_time"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_time"
+            android:onClick="showTimePickerDialog" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/label_oxygen"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_oxygen"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/oxygen"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:text=""
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/oxygen_unit"
+            android:layout_toLeftOf="@+id/oxygen_unit"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/oxygen_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_oxygen_unit"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/oxygen_time"
+            android:layout_toLeftOf="@+id/oxygen_time"/>
+
+        <Button
+            android:id="@+id/oxygen_time"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_time"
+            android:onClick="showTimePickerDialog" />
+
+    </RelativeLayout>
+
+    <im.vector.view.CaseDataSectionHeaderView
+        android:id="@+id/case_data_heart_section_header"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/label_blood_pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_blood_pressure"
+            android:textSize="16sp"/>
+
+
+        <EditText
+            android:id="@+id/blood_pressure_systolic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textSize="16sp"
+            android:text=""
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/label_blood_pressure_slash"
+            android:layout_toLeftOf="@+id/label_blood_pressure_slash"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/label_blood_pressure_slash"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="/"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/blood_pressure_diastolic"
+            android:layout_toLeftOf="@+id/blood_pressure_diastolic"
+            tools:ignore="HardcodedText" />
+
+        <EditText
+            android:id="@+id/blood_pressure_diastolic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textSize="16sp"
+            android:text=""
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/blood_pressure_unit"
+            android:layout_toLeftOf="@+id/blood_pressure_unit"/>
+
+        <TextView
+            android:id="@+id/blood_pressure_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_blood_pressure_unit"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/blood_pressure_time"
+            android:layout_toLeftOf="@+id/blood_pressure_time"/>
+
+        <Button
+            android:id="@+id/blood_pressure_time"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_time"
+            android:onClick="showTimePickerDialog" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/label_pulse"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_pulse"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/pulse"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:fontFamily="sans-serif-regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textSize="16sp"
+            android:text="" android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/pulse_unit"
+            android:layout_toLeftOf="@+id/pulse_unit"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/pulse_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/case_data_pulse_unit"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/pulse_time"
+            android:layout_toLeftOf="@+id/pulse_time"/>
+
+        <Button
+            android:id="@+id/pulse_time"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_time"
+            android:onClick="showTimePickerDialog" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/save_data_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#21264E"
+            android:textSize="15sp"
+            android:textColor="#FFFFFF"
+            android:text="@string/case_data_save"/>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
