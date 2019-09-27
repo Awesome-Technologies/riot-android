@@ -22,13 +22,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.Camera;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -39,8 +38,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import org.jetbrains.annotations.Contract;
 import org.matrix.androidsdk.HomeServerConnectionConfig;
 import org.matrix.androidsdk.MXSession;
-import org.matrix.androidsdk.rest.callback.SimpleApiCallback;
-import org.matrix.androidsdk.rest.model.MatrixError;
+import org.matrix.androidsdk.core.callback.SimpleApiCallback;
+import org.matrix.androidsdk.core.model.MatrixError;
 import org.matrix.androidsdk.rest.model.login.PasswordLoginParams;
 
 import java.io.IOException;
@@ -62,7 +61,7 @@ import im.vector.view.camera.GraphicOverlay;
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
  */
-public final class BarcodeLoginActivity extends AppCompatActivity implements BarcodeGraphicTracker.BarcodeUpdateListener {
+public final class BarcodeLoginActivity extends MXCActionBarActivity implements BarcodeGraphicTracker.BarcodeUpdateListener {
     private final String LOG_TAG = BarcodeLoginActivity.class.getSimpleName();
 
     // intent request code to handle updating play services if needed.
@@ -77,20 +76,19 @@ public final class BarcodeLoginActivity extends AppCompatActivity implements Bar
 
     public static final String OBFUSCATION_KEY = "wo9k5tep252qxsa5yde7366kugy6c01w7oeeya9hrmpf0t7ii7";
 
+    @Override
+    public int getLayoutRes() { return R.layout.activity_barcode_login; }
+
     /**
      * Initializes the UI and creates the detector pipeline.
      */
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
+    public void initUiAndData() {
         if (hasCredentials()) {
             Log.d(LOG_TAG, "## onCreate(): goToSplash because the credentials are already provided.");
             goToSplash();
             finish();
         }
-
-        setContentView(R.layout.activity_barcode_login);
 
         mPreview = findViewById(R.id.qr_scanner);
         mGraphicOverlay = findViewById(R.id.graphicOverlay);
@@ -357,7 +355,7 @@ public final class BarcodeLoginActivity extends AppCompatActivity implements Bar
      * Some sessions have been registered, skip the login process.
      */
     private void goToSplash() {
-        org.matrix.androidsdk.util.Log.d(LOG_TAG, "## gotoSplash(): Go to splash.");
+        Log.d(LOG_TAG, "## gotoSplash(): Go to splash.");
 
         Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);

@@ -15,25 +15,25 @@
  */
 package im.vector.fragments.verification
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.transition.TransitionManager
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.transition.TransitionManager
 import butterknife.BindView
 import butterknife.OnClick
 import im.vector.R
 import im.vector.activity.CommonActivityUtils
 import im.vector.fragments.VectorBaseFragment
 import im.vector.listeners.YesNoListener
+import org.matrix.androidsdk.core.callback.SimpleApiCallback
 import org.matrix.androidsdk.crypto.data.MXDeviceInfo
 import org.matrix.androidsdk.crypto.verification.OutgoingSASVerificationRequest
-import org.matrix.androidsdk.rest.callback.SimpleApiCallback
 
 class SASVerificationStartFragment : VectorBaseFragment() {
 

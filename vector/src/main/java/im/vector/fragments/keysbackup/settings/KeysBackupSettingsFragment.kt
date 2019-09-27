@@ -15,13 +15,11 @@
  */
 package im.vector.fragments.keysbackup.settings
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import butterknife.BindView
 import im.vector.R
 import im.vector.activity.KeysBackupRestoreActivity
@@ -43,14 +41,14 @@ class KeysBackupSettingsFragment : VectorBaseFragment(),
     private lateinit var viewModel: KeysBackupSettingsViewModel
 
     @BindView(R.id.keys_backup_settings_recycler_view)
-    lateinit var recyclerView: RecyclerView
+    lateinit var recyclerView: androidx.recyclerview.widget.RecyclerView
 
     private var recyclerViewAdapter: KeysBackupSettingsRecyclerViewAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val layoutManager = LinearLayoutManager(context)
+        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
         recyclerViewAdapter = KeysBackupSettingsRecyclerViewAdapter(activity!!)
@@ -71,7 +69,7 @@ class KeysBackupSettingsFragment : VectorBaseFragment(),
                 when (keysBackupState) {
                     KeysBackupStateManager.KeysBackupState.Unknown,
                     KeysBackupStateManager.KeysBackupState.CheckingBackUpOnHomeserver -> {
-                        viewModel.loadingEvent.value = WaitingViewData("")
+                        viewModel.loadingEvent.value = WaitingViewData(context!!.getString(R.string.keys_backup_settings_checking_backup_state))
                     }
                     else -> {
                         viewModel.loadingEvent.value = null
@@ -96,7 +94,6 @@ class KeysBackupSettingsFragment : VectorBaseFragment(),
                 recyclerViewAdapter?.updateWithTrust(session, it)
             }
         })
-
     }
 
     override fun didSelectSetupMessageRecovery() {

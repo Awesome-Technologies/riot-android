@@ -18,32 +18,18 @@
 package im.vector.activity;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.gson.JsonElement;
+import androidx.viewpager.widget.ViewPager;
 
 import org.matrix.androidsdk.MXSession;
-import org.matrix.androidsdk.db.MXMediaCache;
-import org.matrix.androidsdk.listeners.MXMediaDownloadListener;
-import org.matrix.androidsdk.rest.callback.SimpleApiCallback;
-import org.matrix.androidsdk.rest.model.MatrixError;
-import org.matrix.androidsdk.util.JsonUtils;
-import org.matrix.androidsdk.util.Log;
+import org.matrix.androidsdk.core.Log;
 
-import java.io.File;
 import java.util.List;
 
 import im.vector.Matrix;
 import im.vector.R;
-import im.vector.VectorApp;
 import im.vector.adapters.VectorMediaViewerAdapter;
-import im.vector.util.PermissionsToolsKt;
 import im.vector.util.SlidableMediaInfo;
 
 /**

@@ -21,7 +21,6 @@ package im.vector;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,14 +32,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
-import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.multidex.MultiDexApplication;
 
 import com.facebook.stetho.Stetho;
 
 import org.matrix.androidsdk.MXSession;
-import org.matrix.androidsdk.util.Log;
+import org.matrix.androidsdk.core.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -62,7 +63,7 @@ import im.vector.activity.VectorMediaPickerActivity;
 import im.vector.activity.WidgetActivity;
 import im.vector.analytics.Analytics;
 import im.vector.analytics.AppAnalytics;
-import im.vector.analytics.PiwikAnalytics;
+import im.vector.analytics.MatomoAnalytics;
 import im.vector.analytics.e2e.DecryptionFailureTracker;
 import im.vector.contacts.PIDsRetriever;
 import im.vector.notifications.NotificationDrawerManager;
@@ -193,6 +194,11 @@ public class VectorApp extends MultiDexApplication {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate();
 
+        PreferencesManager.setIntegrationManagerUrls(this,
+                getString(R.string.integrations_ui_url),
+                getString(R.string.integrations_rest_url),
+                getString(R.string.integrations_jitsi_widget_url));
+
         mLifeCycleListener = new VectorLifeCycleObserver();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(mLifeCycleListener);
 
@@ -211,7 +217,7 @@ public class VectorApp extends MultiDexApplication {
 
         instance = this;
         mCallsManager = new CallsManager(this);
-        mAppAnalytics = new AppAnalytics(this, new PiwikAnalytics(this));
+        mAppAnalytics = new AppAnalytics(this, new MatomoAnalytics(this));
         mDecryptionFailureTracker = new DecryptionFailureTracker(mAppAnalytics);
 
         mActivityTransitionTimer = null;
@@ -229,8 +235,8 @@ public class VectorApp extends MultiDexApplication {
 
         mLogsDirectoryFile = new File(getCacheDir().getAbsolutePath() + "/logs");
 
-        org.matrix.androidsdk.util.Log.setLogDirectory(mLogsDirectoryFile);
-        org.matrix.androidsdk.util.Log.init("RiotLog");
+        org.matrix.androidsdk.core.Log.setLogDirectory(mLogsDirectoryFile);
+        org.matrix.androidsdk.core.Log.init("RiotLog");
 
         // log the application version to trace update
         // useful to track backward compatibility issues
@@ -252,7 +258,7 @@ public class VectorApp extends MultiDexApplication {
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.d(LOG_TAG, "onActivityCreated " + activity);
                 mCreatedActivities.add(activity.toString());
-                // piwik
+                // matomo
                 onNewScreen(activity);
             }
 

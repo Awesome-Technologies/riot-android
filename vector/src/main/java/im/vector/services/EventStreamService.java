@@ -30,15 +30,17 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.matrix.androidsdk.MXSession;
+import org.matrix.androidsdk.core.Log;
 import org.matrix.androidsdk.data.Room;
 import org.matrix.androidsdk.data.RoomState;
 import org.matrix.androidsdk.data.store.IMXStore;
@@ -46,7 +48,6 @@ import org.matrix.androidsdk.data.store.MXStoreListener;
 import org.matrix.androidsdk.listeners.MXEventListener;
 import org.matrix.androidsdk.rest.model.Event;
 import org.matrix.androidsdk.rest.model.bingrules.BingRule;
-import org.matrix.androidsdk.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -604,7 +605,7 @@ public class EventStreamService extends Service {
                         startEventStream(session, store);
                     } else {
                         // the data are out of sync
-                        Matrix.getInstance(getApplicationContext()).reloadSessions(getApplicationContext());
+                        Matrix.getInstance(getApplicationContext()).reloadSessions(getApplicationContext(), true);
                     }
                 }
 
@@ -614,7 +615,7 @@ public class EventStreamService extends Service {
 
                     uiHandler.post(() -> {
                         Toast.makeText(getApplicationContext(), accountId + " : " + description, Toast.LENGTH_LONG).show();
-                        Matrix.getInstance(getApplicationContext()).reloadSessions(getApplicationContext());
+                        Matrix.getInstance(getApplicationContext()).reloadSessions(getApplicationContext(), true);
                     });
                 }
             });
@@ -659,7 +660,7 @@ public class EventStreamService extends Service {
 
         for (final MXSession session : mSessions) {
             // session == null has been reported by GA
-            if ((null == session) || (null == session.getDataHandler()) || (null == session.getDataHandler().getStore())) {
+            if ((null == session)) {
                 Log.i(LOG_TAG, "start : the session is not anymore valid.");
                 return;
             }

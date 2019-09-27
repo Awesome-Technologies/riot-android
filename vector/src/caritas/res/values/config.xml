@@ -9,15 +9,20 @@
     <string name="matrix_org_server_url" translatable="false">https://matrix.org</string>
     <string name="default_hs_server_url" translatable="false">https://caritas.amp.care</string>
     <string name="default_identity_server_url" translatable="false">https://caritas.amp.care</string>
-    <string name="piwik_server_url" translatable="false">https://matomo.awesome-technologies.de</string>
-    <string name="piwik_site_id" translatable="false">2</string>
-    <string name="piwik_tracker_name" translatable="false">Caritas Messenger Android</string>
+    <string name="matomo_server_url" translatable="false">https://matomo.awesome-technologies.de</string>
+    <string name="matomo_site_id" translatable="false">2</string>
+    <string name="matomo_tracker_name" translatable="false">Caritas Messenger Android</string>
     <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
     <string name="login_intent_hostname">caritas.amp.care</string>
 
     <!-- Widget urls -->
     <string name="integrations_ui_url" translatable="false">"https://caritas.amp.care/scalar-web/"</string>
     <string name="integrations_rest_url" translatable="false">"https://caritas.amp.care/scalar"</string>
+    <string name="integrations_jitsi_widget_url" translatable="false">"https://caritas.amp.care/scalar/widgets/jitsi.html"</string>
+
+    <string-array name="integrations_widgets_urls" translatable="false">
+        <item>https://caritas.amp.care/scalar</item>
+    </string-array>
 
     <!-- empty means to use the active HS url -->
     <!-- set a valid URL like "https://matrix.org" to use a custom one -->
