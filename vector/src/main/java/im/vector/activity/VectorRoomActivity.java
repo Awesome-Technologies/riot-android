@@ -3915,11 +3915,6 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             items.add(DialogListItem.SendVoice.INSTANCE);
         }
 
-        // Send sticker
-        if (WidgetManagerProvider.INSTANCE.getWidgetManager(this) != null) {
-            items.add(DialogListItem.SendSticker.INSTANCE);
-        }
-
         // Camera
         if (useNativeCamera) {
             items.add(DialogListItem.TakePhoto.INSTANCE);
