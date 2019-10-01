@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="auth_user_id_placeholder">Nutzername</string>
-
+    <!-- titles -->
     <string name="title_activity_room">Gruppe</string>
+
+    <!-- Authentication -->
+    <string name="auth_user_id_placeholder">Nutzername</string>
 
     <!-- Bottom navigation buttons -->
     <string name="bottom_action_people">Personen</string>
@@ -146,6 +147,8 @@ Unbekannte Geräte:</string>
     <string name="widget_integration_no_permission_in_room">Du hast keine Berechtigung, diese Aktion in dieser Gruppe auszuführen.</string>
     <string name="widget_integration_missing_room_id">Anfrage beinhaltet keine Gruppen-ID.</string>
     <string name="widget_integration_room_not_visible">Gruppe %s ist nicht sichtbar.</string>
+
+    <string name="e2e_re_request_encryption_key_dialog_content">Bitte öffne den Caritas Messenger auf einem anderen Gerät, das die Nachricht entschlüsseln kann, damit es diesem Gerät die Schlüssel senden kann.</string>
 
     <!-- notification statuses -->
     <string name="room_settings_no_flair">Diese Gruppe zeigt keine Flairs für irgendeine Community an</string>
