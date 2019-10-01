@@ -1087,9 +1087,11 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
     @Override
     public void onDestroy() {
-        for (MediaPlayer mp : mVectorMessageListFragment.getMediaPlayers().values()) {
-            mp.stop();
-            mp.release();
+        if (mVectorMessageListFragment != null && mVectorMessageListFragment.getMediaPlayers() != null) {
+            for (MediaPlayer mp : mVectorMessageListFragment.getMediaPlayers().values()) {
+                mp.stop();
+                mp.release();
+            }
         }
 
         if (null != mVectorMessageListFragment) {
