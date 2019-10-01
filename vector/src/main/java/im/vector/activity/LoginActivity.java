@@ -102,7 +102,6 @@ import im.vector.receiver.VectorRegistrationReceiver;
 import im.vector.receiver.VectorUniversalLinkReceiver;
 import im.vector.repositories.ServerUrlsRepository;
 import im.vector.ui.badge.BadgeProxy;
-import im.vector.util.PhoneNumberUtils;
 import im.vector.util.ViewUtilKt;
 
 /**
@@ -386,19 +385,10 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
     private Runnable mRegisterPollingRunnable;
     private Handler mHandler;
 
-    private PhoneNumberHandler mLoginPhoneNumberHandler;
-    private PhoneNumberHandler mRegistrationPhoneNumberHandler;
-
     private Dialog mCurrentDialog;
 
     @Override
     protected void onDestroy() {
-        if (mLoginPhoneNumberHandler != null) {
-            mLoginPhoneNumberHandler.release();
-        }
-        if (mRegistrationPhoneNumberHandler != null) {
-            mRegistrationPhoneNumberHandler.release();
-        }
         if (mCurrentDialog != null) {
             mCurrentDialog.dismiss();
             mCurrentDialog = null;
@@ -1022,7 +1012,6 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                 cancelEmailPolling();
                 mRegistrationManager.clearThreePid();
                 mEmailAddress.setText("");
-                mRegistrationPhoneNumberHandler.reset();
                 fallbackToRegistrationMode();
                 return true;
             }
@@ -1921,14 +1910,9 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
             hasError = true;
         }
 
-        if (TextUtils.isEmpty(username) && !mLoginPhoneNumberHandler.isPhoneNumberValidForCountry()) {
-            // Check if phone number is empty or just invalid
-            if (mLoginPhoneNumberHandler.getPhoneNumber() != null) {
-                return;
-            } else {
-                mLoginEmailTextViewTil.setError(getString(R.string.auth_invalid_login_param));
-                return;
-            }
+        if (TextUtils.isEmpty(username)) {
+            mLoginEmailTextViewTil.setError(getString(R.string.auth_invalid_login_param));
+            return;
         }
 
         if (hasError) {
@@ -2359,15 +2343,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(LOG_TAG, "## onActivityResult(): IN - requestCode=" + requestCode + " resultCode=" + resultCode);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_REGISTRATION_COUNTRY) {
-            if (data != null && data.hasExtra(CountryPickerActivity.EXTRA_OUT_COUNTRY_CODE) && mRegistrationPhoneNumberHandler != null) {
-                mRegistrationPhoneNumberHandler.setCountryCode(data.getStringExtra(CountryPickerActivity.EXTRA_OUT_COUNTRY_CODE));
-            }
-        } else if (resultCode == RESULT_OK && requestCode == REQUEST_LOGIN_COUNTRY) {
-            if (data != null && data.hasExtra(CountryPickerActivity.EXTRA_OUT_COUNTRY_CODE) && mLoginPhoneNumberHandler != null) {
-                mLoginPhoneNumberHandler.setCountryCode(data.getStringExtra(CountryPickerActivity.EXTRA_OUT_COUNTRY_CODE));
-            }
-        } else if (RequestCodesKt.CAPTCHA_CREATION_ACTIVITY_REQUEST_CODE == requestCode) {
+        if (RequestCodesKt.CAPTCHA_CREATION_ACTIVITY_REQUEST_CODE == requestCode) {
             if (resultCode == RESULT_OK) {
                 Log.d(LOG_TAG, "## onActivityResult(): CAPTCHA_CREATION_ACTIVITY_REQUEST_CODE => RESULT_OK");
                 String captchaResponse = data.getStringExtra("response");
@@ -2433,130 +2409,16 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
      */
 
     /**
-     * Submit the three pids
+     * Removed: Submit the three pids
      */
-    @OnClick(R.id.button_submit_three_pid)
-    void submitThreePids() {
-        dismissKeyboard(this);
-
-        // Make sure to start with a clear state in case user already submitted before but canceled
-        mRegistrationManager.clearThreePid();
-
-        // Check that email format is valid and not empty if field is required
-        final String email = mEmailAddress.getText().toString();
-        if (!TextUtils.isEmpty(email)) {
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                mEmailAddressTil.setError(getString(R.string.auth_invalid_email));
-                return;
-            }
-        } else if (mRegistrationManager.isEmailRequired()) {
-            mEmailAddressTil.setError(getString(R.string.auth_missing_email));
-            return;
-        }
-
-        // Check that phone number format is valid and not empty if field is required
-        if (mRegistrationPhoneNumberHandler.getPhoneNumber() != null) {
-            if (!mRegistrationPhoneNumberHandler.isPhoneNumberValidForCountry()) {
-                mRegistrationPhoneNumberTil.setError(getString(R.string.auth_invalid_phone));
-                return;
-            }
-        } else if (mRegistrationManager.isPhoneNumberRequired()) {
-            mRegistrationPhoneNumberTil.setError(getString(R.string.auth_missing_phone));
-            return;
-        }
-
-        if (!mRegistrationManager.canSkipThreePid() && mRegistrationPhoneNumberHandler.getPhoneNumber() == null && TextUtils.isEmpty(email)) {
-            // Both are required and empty (previous error was R.string.auth_missing_email_or_phone)
-            mEmailAddressTil.setError(getString(R.string.auth_missing_email));
-            mRegistrationPhoneNumberTil.setError(getString(R.string.auth_missing_phone));
-            return;
-        }
-
-        if (!TextUtils.isEmpty(email)) {
-            // Communicate email to singleton (will be validated later on)
-            mRegistrationManager.addEmailThreePid(new ThreePid(email, ThreePid.MEDIUM_EMAIL));
-        }
-
-        if (mRegistrationPhoneNumberHandler.getPhoneNumber() != null) {
-            // Communicate phone number to singleton + start validation process (always phone first)
-            enableLoadingScreen(true);
-            mRegistrationManager
-                    .addPhoneNumberThreePid(this, mRegistrationPhoneNumberHandler.getE164PhoneNumber(), mRegistrationPhoneNumberHandler.getCountryCode(),
-                            new RegistrationManager.ThreePidRequestListener() {
-                                @Override
-                                public void onThreePidRequested(ThreePid pid) {
-                                    enableLoadingScreen(false);
-                                    if (!TextUtils.isEmpty(pid.sid)) {
-                                        onPhoneNumberSidReceived(pid);
-                                    }
-                                }
-
-                                @Override
-                                public void onThreePidRequestFailed(String errorMessage) {
-                                    LoginActivity.this.onThreePidRequestFailed(errorMessage);
-                                }
-                            });
-        } else {
-            createAccount();
-        }
-    }
 
     /**
-     * Ask user the token received by SMS after phone number validation
-     *
-     * @param pid phone number pid
+     * Removed: Ask user the token received by SMS after phone number validation
      */
-    private void onPhoneNumberSidReceived(final ThreePid pid) {
-        final View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_phone_number_verification, null);
-        mCurrentDialog = new AlertDialog.Builder(LoginActivity.this)
-                .setView(dialogLayout)
-                .setMessage(R.string.settings_phone_number_verification_instruction)
-                .setPositiveButton(R.string.auth_submit, null)
-                .setNegativeButton(R.string.cancel, null)
-                .create();
-
-        // Trick to prevent dialog being closed automatically when positive button is used
-        mCurrentDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        final TextInputEditText tokenView = dialogLayout.findViewById(R.id.phone_number_code_value);
-                        submitPhoneNumber(tokenView.getText().toString(), pid);
-                    }
-                });
-            }
-        });
-
-        mCurrentDialog.show();
-    }
 
     /**
-     * Submit the phone number token entered by the user
-     *
-     * @param token code entered by the user
-     * @param pid   phone number pid
+     * Removed: Submit the phone number token entered by the user
      */
-    private void submitPhoneNumber(final String token, final ThreePid pid) {
-        if (TextUtils.isEmpty(token)) {
-            // TODO Display this error in the dialog
-            Toast.makeText(LoginActivity.this, R.string.auth_invalid_token, Toast.LENGTH_SHORT).show();
-        } else {
-            mRegistrationManager.submitValidationToken(token, pid,
-                    new RegistrationManager.ThreePidValidationListener() {
-                        @Override
-                        public void onThreePidValidated(boolean isSuccess) {
-                            if (isSuccess) {
-                                createAccount();
-                            } else {
-                                Toast.makeText(LoginActivity.this, R.string.auth_invalid_token, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
-    }
 
     /**
      * Start registration process
