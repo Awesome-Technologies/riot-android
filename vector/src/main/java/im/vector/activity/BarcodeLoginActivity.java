@@ -289,7 +289,7 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
                 return;
             }
             HomeServerConnectionConfig hsConfig = new HomeServerConnectionConfig.Builder()
-                    .withHomeServerUri(loginUri)
+                    .withHomeServerUri(Uri.parse(getString(R.string.default_hs_server_url)))
                     .withIdentityServerUri(Uri.parse(getString(R.string.default_identity_server_url)))
                     .build();
             mLoginHandler.login(this, hsConfig, auth.user, "", "", auth.password, new SimpleApiCallback<Void>(this) {
