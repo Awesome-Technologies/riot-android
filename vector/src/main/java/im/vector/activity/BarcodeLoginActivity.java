@@ -48,6 +48,7 @@ import butterknife.OnClick;
 import im.vector.LoginHandler;
 import im.vector.Matrix;
 import im.vector.R;
+import im.vector.push.fcm.FcmHelper;
 import im.vector.util.PermissionsToolsKt;
 import im.vector.view.barcode.BarcodeGraphic;
 import im.vector.view.barcode.BarcodeGraphicTracker;
@@ -84,6 +85,11 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
      */
     @Override
     public void initUiAndData() {
+        // warn that the application has started.
+        CommonActivityUtils.onApplicationStarted(this);
+
+        FcmHelper.ensureFcmTokenIsRetrieved(this);
+
         if (hasCredentials()) {
             Log.d(LOG_TAG, "## onCreate(): goToSplash because the credentials are already provided.");
             goToSplash();
