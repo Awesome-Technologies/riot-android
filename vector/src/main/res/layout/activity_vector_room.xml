@@ -332,7 +332,7 @@
                     android:padding="8dp"
                     android:rotationY="@integer/rtl_mirror_flip"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_material_file"
+                    android:src="@drawable/ic_material_camera"
                     android:tint="?attr/colorAccent" />
 
                 <ImageView
