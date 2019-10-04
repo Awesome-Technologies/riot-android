@@ -290,8 +290,10 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
-                android:layout_toEndOf="@id/room_self_avatar"
-                android:layout_toRightOf="@id/room_self_avatar"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:minHeight="56dp">
 
                 <ImageView
