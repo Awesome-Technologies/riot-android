@@ -216,12 +216,6 @@ class CaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.indicator_unread_message.setBackgroundColor(bingUnreadColor)
             itemView.indicator_unread_message.visibility = if (roomSummary.isInvited) View.INVISIBLE else View.VISIBLE
         }
-
-        if (itemView.room_more_action_click_area != null && itemView.room_more_action_anchor != null) {
-            itemView.room_more_action_click_area.setOnClickListener {
-                moreRoomActionListener?.onMoreActionClick(itemView.room_more_action_anchor, room)
-            }
-        }
     }
 
     /**
