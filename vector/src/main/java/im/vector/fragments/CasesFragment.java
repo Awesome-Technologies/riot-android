@@ -151,7 +151,7 @@ public class CasesFragment extends AbsHomeFragment implements AbsHomeFragment.On
     @Override
     public void onRoomResultUpdated(final HomeRoomsViewModel.Result result) {
         if (isResumed()) {
-            mRooms = result.getOtherRoomsWithFavorites();
+            mRooms = result.getDirectChatsWithFavorites();
             mAdapter.setRooms(mRooms);
             mAdapter.setInvitation(mActivity.getRoomInvitations());
         }
