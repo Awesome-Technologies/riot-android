@@ -91,7 +91,7 @@
     <!-- Rooms fragment -->
     <string name="rooms_header">Räume</string>
     <string name="rooms_directory_header">Raum-Verzeichnis</string>
-    <string name="no_room_placeholder">Keine Räume</string>
+    <string name="no_room_placeholder">Keine Fälle</string>
     <string name="no_public_room_placeholder">Keine öffentl. Räume verfügbar</string>
     <plurals name="public_room_nb_users">
         <item quantity="one">1 Benutzer</item>
