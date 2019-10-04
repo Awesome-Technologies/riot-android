@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.widget.Filter;
 
 import org.matrix.androidsdk.core.Log;
+import org.matrix.androidsdk.core.callback.ApiCallback;
+import org.matrix.androidsdk.core.model.MatrixError;
 import org.matrix.androidsdk.data.Room;
 
 import java.util.ArrayList;
@@ -153,7 +155,31 @@ public class CasesFragment extends AbsHomeFragment implements AbsHomeFragment.On
         if (isResumed()) {
             mRooms = result.getDirectChatsWithFavorites();
             mAdapter.setRooms(mRooms);
-            mAdapter.setInvitation(mActivity.getRoomInvitations());
+            mAdapter.setInvitation(new ArrayList<>());
+
+            for (Room room : mActivity.getRoomInvitations()) {
+                room.join(new ApiCallback<Void>() {
+                    @Override
+                    public void onNetworkError(Exception e) {
+                        Log.e(LOG_TAG, "## onRoomResultUpdated() : join fails " + e.getMessage(), e);
+                    }
+
+                    @Override
+                    public void onMatrixError(MatrixError e) {
+                        Log.e(LOG_TAG, "## onRoomResultUpdated() : join fails " + e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onUnexpectedError(Exception e) {
+                        Log.e(LOG_TAG, "## onRoomResultUpdated() : join fails " + e.getMessage(), e);
+                    }
+
+                    @Override
+                    public void onSuccess(Void info) {
+                        Log.e(LOG_TAG, "## onRoomResultUpdated() : join successful");
+                    }
+                });
+            }
         }
     }
 
