@@ -761,7 +761,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
     @Override
     public int getMenuRes() {
-        return R.menu.vector_home;
+        return -1;
     }
 
     @Override
