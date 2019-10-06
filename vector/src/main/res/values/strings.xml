@@ -1678,6 +1678,12 @@ Not all features in Riot are implemented in RiotX yet. Main missing (and coming 
     <string name="case_data_blood_pressure_diastolic">Diastolic</string>
     <string name="case_data_oxygen">Oxygen Saturation</string>
 
+    <!-- Case Data Gender -->
+    <string name="case_data_gender_male">Male</string>
+    <string name="case_data_gender_female">Female</string>
+    <string name="case_data_gender_other">Other</string>
+    <string name="case_data_gender_unknown">Unknown</string>
+
     <!-- Case Data Severity -->
     <string name="case_data_severity_info">Info</string>
     <string name="case_data_severity_request">Request</string>
@@ -1697,6 +1703,7 @@ Not all features in Riot are implemented in RiotX yet. Main missing (and coming 
 
     <!-- Case Detail Activity -->
     <string name="case_detail_title">Case</string>
+    <string name="case_data_age_years">Years</string>
 
     <string name="case_data_save">Save</string>
 
