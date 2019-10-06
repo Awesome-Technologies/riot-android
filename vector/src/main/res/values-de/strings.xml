@@ -1571,6 +1571,7 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="case_data_glucose">Glukose</string>
     <string name="case_data_blood_pressure">Blutdruck</string>
     <string name="case_data_pulse">Puls</string>
+    <string name="case_data_oxygen">Sauerstoffsättigung</string>
 
     <!-- Case Data Severity -->
     <string name="case_data_severity_info">Info</string>

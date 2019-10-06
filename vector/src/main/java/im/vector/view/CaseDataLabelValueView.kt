@@ -130,6 +130,10 @@ open class CaseDataLabelValueView : RelativeLayout {
                     label.text = context.getString(R.string.case_data_pulse)
                     value.text = obj["valueQuantity"].asJsonObject["value"].asString
                 }
+                CaseDataListFragment.CASE_DATA_OXYGEN -> {
+                    label.text = context.getString(R.string.case_data_oxygen)
+                    value.text = obj["valueQuantity"].asJsonObject["value"].asString
+                }
             }
 
             activity_indicator.visibility = View.GONE

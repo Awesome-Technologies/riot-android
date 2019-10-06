@@ -158,6 +158,18 @@
         </im.vector.view.CaseDataLabelValueDateView>
 
         <im.vector.view.CaseDataLabelValueDateView
+            android:id="@+id/case_data_oxygen_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/case_data_list_divider"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+        </im.vector.view.CaseDataLabelValueDateView>
+
+        <im.vector.view.CaseDataLabelValueDateView
             android:id="@+id/case_data_blood_pressure_view"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">

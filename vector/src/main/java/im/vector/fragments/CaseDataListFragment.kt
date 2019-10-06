@@ -112,6 +112,7 @@ class CaseDataListFragment : Fragment(), AbsHomeFragment.OnRoomChangedListener {
         case_data_blood_pressure_view.visibility = View.GONE
         case_data_pulse_view.visibility = View.GONE
         case_data_pictures_view.visibility = View.GONE
+        case_data_oxygen_view.visibility = View.GONE
 
         case_data_anamnesis_section_header.visibility = View.GONE
         case_data_vitals_section_header.visibility = View.GONE
@@ -202,6 +203,11 @@ class CaseDataListFragment : Fragment(), AbsHomeFragment.OnRoomChangedListener {
                 }
                 "pulse" -> {
                     case_data_pulse_view.displayEvent(event, CASE_DATA_PULSE)
+
+                    case_data_vitals_section_header.show(CaseDataSectionHeaderView.CASE_DATA_SECTION_VITALS)
+                }
+                "oxygen" -> {
+                    case_data_oxygen_view.displayEvent(event, CASE_DATA_OXYGEN)
 
                     case_data_vitals_section_header.show(CaseDataSectionHeaderView.CASE_DATA_SECTION_VITALS)
                 }
@@ -344,6 +350,7 @@ class CaseDataListFragment : Fragment(), AbsHomeFragment.OnRoomChangedListener {
         val CASE_DATA_BLOOD_PRESSURE = 13
         val CASE_DATA_PULSE = 14
         val CASE_DATA_PICTURES = 15
+        val CASE_DATA_OXYGEN = 16
 
         fun newInstance(session: MXSession, room: Room): CaseDataListFragment {
             val fragment = CaseDataListFragment()

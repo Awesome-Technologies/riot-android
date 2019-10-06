@@ -1671,6 +1671,7 @@ Not all features in Riot are implemented in RiotX yet. Main missing (and coming 
     <string name="case_data_glucose">Glucose</string>
     <string name="case_data_blood_pressure">Blood Pressure</string>
     <string name="case_data_pulse">Pulse</string>
+    <string name="case_data_oxygen">Oxygen Saturation</string>
 
     <!-- Case Data Severity -->
     <string name="case_data_severity_info">Info</string>
