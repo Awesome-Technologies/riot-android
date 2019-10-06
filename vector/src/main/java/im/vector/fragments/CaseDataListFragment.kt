@@ -99,6 +99,7 @@ class CaseDataListFragment : Fragment(), AbsHomeFragment.OnRoomChangedListener {
         case_data_pictures_section_header.show(CaseDataSectionHeaderView.CASE_DATA_SECTION_PICTURES, 0)
 
         // Hide all other views first
+        case_data_patient_view.visibility = View.GONE
         case_data_note_view.visibility = View.GONE
         case_data_requester_view.visibility = View.GONE
         case_data_responsiveness_view.visibility = View.GONE

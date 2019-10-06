@@ -151,7 +151,7 @@ class CaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             override fun onSuccess(pulledEvents: ArrayList<Event>?) {
                 var caseTitle = ""
                 var caseSeverity = ""
-                var patientName = ""
+                var patientName = "-"
 
                 for (event: Event in pulledEvents!!.iterator()) {
                     val obj = event.contentAsJsonObject
@@ -159,7 +159,9 @@ class CaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         caseTitle = obj!!.get("title").asString
                         caseSeverity = obj.get("severity").asString
                     } else if (event.getType() == "care.amp.patient") {
-                        patientName = obj!!.get("name").asString
+                        if (obj!!.has("name")) {
+                            patientName = obj.get("name").asString
+                        }
                     } else if (event.getType() == Event.EVENT_TYPE_STATE_ROOM_CREATE) {
                         if (itemView.room_update_date != null) {
                             itemView.room_update_date.text = RoomUtils.getRoomTimestamp(context, event)
