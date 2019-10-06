@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -327,17 +328,26 @@ public class VectorMemberDetailsActivity extends MXCActionBarActivity implements
                     MXCryptoError cryptoError = (MXCryptoError) e;
 
                     if (MXCryptoError.UNKNOWN_DEVICES_CODE.equals(cryptoError.errcode)) {
-                        CommonActivityUtils.displayUnknownDevicesDialog(mSession,
-                                VectorMemberDetailsActivity.this,
-                                (MXUsersDevicesMap<MXDeviceInfo>) cryptoError.mExceptionData,
-                                true,
-                                new VectorUnknownDevicesFragment.IUnknownDevicesSendAnywayListener() {
-                                    @Override
-                                    public void onSendAnyway() {
-                                        startCall(isVideo);
-                                    }
-                                });
 
+                        MXUsersDevicesMap<MXDeviceInfo> devicesMap = (MXUsersDevicesMap<MXDeviceInfo>) cryptoError.mExceptionData;
+                        List<Pair<String, List<MXDeviceInfo>>> res = new ArrayList<>();
+
+                        // sanity check
+                        if (null != devicesMap) {
+                            List<String> userIds = devicesMap.getUserIds();
+
+                            for (String userId : userIds) {
+                                List<MXDeviceInfo> deviceInfos = new ArrayList<>();
+                                List<String> deviceIds = devicesMap.getUserDeviceIds(userId);
+
+                                for (String deviceId : deviceIds) {
+                                    deviceInfos.add(devicesMap.getObject(deviceId, userId));
+                                }
+                                res.add(new Pair<>(userId, deviceInfos));
+                            }
+                        }
+
+                        setDevicesKnown(res, isVideo);
                         return;
                     }
                 }
@@ -350,6 +360,48 @@ public class VectorMemberDetailsActivity extends MXCActionBarActivity implements
             public void onUnexpectedError(Exception e) {
                 Toast.makeText(VectorMemberDetailsActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(LOG_TAG, "## startCall() failed " + e.getMessage(), e);
+            }
+        });
+    }
+
+    /**
+     * Update the devices verifications status.
+     *
+     * @param devicesList the devices list.
+     * @param isVideo
+     */
+    private void setDevicesKnown(List<Pair<String, List<MXDeviceInfo>>> devicesList, boolean isVideo) {
+        List<MXDeviceInfo> dis = new ArrayList<>();
+
+        for (Pair<String, List<MXDeviceInfo>> item : devicesList) {
+            dis.addAll(item.second);
+        }
+
+        mSession.getCrypto().setDevicesKnown(dis, new ApiCallback<Void>() {
+            // common method
+            private void onDone() {
+                startCall(isVideo);
+                Log.d(LOG_TAG, "## setDevicesKnown(): Made devices known");
+            }
+
+            @Override
+            public void onSuccess(Void info) {
+                onDone();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                onDone();
+            }
+
+            @Override
+            public void onMatrixError(MatrixError e) {
+                onDone();
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                onDone();
             }
         });
     }

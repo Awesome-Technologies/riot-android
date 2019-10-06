@@ -38,6 +38,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -1329,17 +1330,71 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     @Override
     public void onUnknownDevices(Event event, MXCryptoError error) {
         refreshNotificationsArea();
-        CommonActivityUtils.displayUnknownDevicesDialog(mSession,
-                this,
-                (MXUsersDevicesMap<MXDeviceInfo>) error.mExceptionData,
-                false,
-                new VectorUnknownDevicesFragment.IUnknownDevicesSendAnywayListener() {
-                    @Override
-                    public void onSendAnyway() {
-                        mVectorMessageListFragment.resendUnsentMessages();
-                        refreshNotificationsArea();
-                    }
-                });
+
+        MXUsersDevicesMap<MXDeviceInfo> devicesMap = (MXUsersDevicesMap<MXDeviceInfo>)error.mExceptionData;
+        List<Pair<String, List<MXDeviceInfo>>> res = new ArrayList<>();
+
+        // sanity check
+        if (null != devicesMap) {
+            List<String> userIds = devicesMap.getUserIds();
+
+            for (String userId : userIds) {
+                List<MXDeviceInfo> deviceInfos = new ArrayList<>();
+                List<String> deviceIds = devicesMap.getUserDeviceIds(userId);
+
+                for (String deviceId : deviceIds) {
+                    deviceInfos.add(devicesMap.getObject(deviceId, userId));
+                }
+                res.add(new Pair<>(userId, deviceInfos));
+            }
+        }
+        Runnable r = () -> {
+            mVectorMessageListFragment.resendUnsentMessages();
+            refreshNotificationsArea();
+        };
+
+        setDevicesKnown(res, r);
+    }
+
+    /**
+     * Update the devices verifications status.
+     *
+     * @param devicesList the devices list.
+     */
+    private void setDevicesKnown(List<Pair<String, List<MXDeviceInfo>>> devicesList, final Runnable func) {
+        List<MXDeviceInfo> dis = new ArrayList<>();
+
+        for (Pair<String, List<MXDeviceInfo>> item : devicesList) {
+            dis.addAll(item.second);
+        }
+
+        mSession.getCrypto().setDevicesKnown(dis, new ApiCallback<Void>() {
+            // common method
+            private void onDone() {
+                Log.d(LOG_TAG, "## setDevicesKnown(): Made devices known");
+                func.run();
+            }
+
+            @Override
+            public void onSuccess(Void info) {
+                onDone();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                onDone();
+            }
+
+            @Override
+            public void onMatrixError(MatrixError e) {
+                onDone();
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                onDone();
+            }
+        });
     }
 
     @Override
@@ -1873,17 +1928,27 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
                     MXCryptoError cryptoError = (MXCryptoError) e;
                     if (MXCryptoError.UNKNOWN_DEVICES_CODE.equals(cryptoError.errcode)) {
                         hideWaitingView();
-                        CommonActivityUtils.displayUnknownDevicesDialog(mSession,
-                                VectorRoomActivity.this,
-                                (MXUsersDevicesMap<MXDeviceInfo>) cryptoError.mExceptionData,
-                                true,
-                                new VectorUnknownDevicesFragment.IUnknownDevicesSendAnywayListener() {
-                                    @Override
-                                    public void onSendAnyway() {
-                                        startIpCall(useJitsiCall, aIsVideoCall);
-                                    }
-                                });
 
+                        MXUsersDevicesMap<MXDeviceInfo> devicesMap = (MXUsersDevicesMap<MXDeviceInfo>)cryptoError.mExceptionData;
+                        List<Pair<String, List<MXDeviceInfo>>> res = new ArrayList<>();
+
+                        // sanity check
+                        if (null != devicesMap) {
+                            List<String> userIds = devicesMap.getUserIds();
+
+                            for (String userId : userIds) {
+                                List<MXDeviceInfo> deviceInfos = new ArrayList<>();
+                                List<String> deviceIds = devicesMap.getUserDeviceIds(userId);
+
+                                for (String deviceId : deviceIds) {
+                                    deviceInfos.add(devicesMap.getObject(deviceId, userId));
+                                }
+                                res.add(new Pair<>(userId, deviceInfos));
+                            }
+                        }
+                        Runnable r = () -> startIpCall(useJitsiCall, aIsVideoCall);
+
+                        setDevicesKnown(res, r);
                         return;
                     }
                 }
