@@ -1579,6 +1579,12 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
     <string name="case_data_blood_pressure_diastolic">Diastolisch</string>
     <string name="case_data_oxygen">Sauerstoffsättigung</string>
 
+    <!-- Case Data Gender -->
+    <string name="case_data_gender_male">Männlich</string>
+    <string name="case_data_gender_female">Weiblich</string>
+    <string name="case_data_gender_other">Unbestimmt</string>
+    <string name="case_data_gender_unknown">Unbekannt</string>
+
     <!-- Case Data Severity -->
     <string name="case_data_severity_info">Info</string>
     <string name="case_data_severity_request">Anfrage</string>
@@ -1597,6 +1603,7 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
 
     <!-- Case Detail Activity -->
     <string name="case_detail_title">Fall</string>
+    <string name="case_data_age_years">Jahre</string>
 
     <string name="case_data_save">Speichern</string>
 

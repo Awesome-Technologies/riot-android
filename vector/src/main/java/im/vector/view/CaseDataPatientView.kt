@@ -1,5 +1,6 @@
 package im.vector.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import im.vector.R
@@ -12,18 +13,38 @@ import java.util.*
 
 
 class CaseDataPatientView : CaseDataLabelValueView {
+    @SuppressLint("SetTextI18n")
     override fun displayEvent(event: Event?, dataType: Int) {
         super.displayEvent(event, dataType)
         if (event != null && dataType == CaseDataListFragment.CASE_DATA_PATIENT) {
             val obj = event.contentAsJsonObject
             patient_name.text = obj["name"].asString
             val years = getAge(obj["birthDate"].asString)
+            val yearsString = "$years ${R.string.case_data_age_years}"
+            val gender = getLocalizedGender(obj["gender"].asString)
             if (years == 0) {
-                patient_info.text = "${obj["gender"].asString.capitalize()} | ${context.getString(R.string.case_data_age_unknown)}"
+                if (gender != null) {
+                    patient_info.text = gender
+                } else {
+                    patient_info.text = ""
+                }
             } else {
-                patient_info.text = "${obj["gender"].asString.capitalize()} | $years"
+                if (gender != null) {
+                    patient_info.text = "$gender | $yearsString"
+                } else {
+                    patient_info.text = yearsString
+                }
             }
         }
+    }
+
+    private fun getLocalizedGender(gender: String): String? {
+        when (gender) {
+            "male" -> return context.getString(R.string.case_data_gender_male)
+            "female" -> return context.getString(R.string.case_data_gender_female)
+            "other" -> return context.getString(R.string.case_data_gender_other)
+        }
+        return context.getString(R.string.case_data_gender_unknown)
     }
 
     override fun getLayoutRes(): Int {
