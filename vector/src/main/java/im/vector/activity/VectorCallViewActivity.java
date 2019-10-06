@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -56,13 +57,18 @@ import org.matrix.androidsdk.call.MXCallListener;
 import org.matrix.androidsdk.call.MXCallsManager;
 import org.matrix.androidsdk.call.VideoLayoutConfiguration;
 import org.matrix.androidsdk.core.Log;
+import org.matrix.androidsdk.core.callback.ApiCallback;
+import org.matrix.androidsdk.core.model.MatrixError;
 import org.matrix.androidsdk.crypto.data.MXDeviceInfo;
 import org.matrix.androidsdk.crypto.data.MXUsersDevicesMap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import im.vector.Matrix;
 import im.vector.R;
@@ -550,11 +556,9 @@ public class VectorCallViewActivity extends VectorAppCompatActivity implements S
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                CommonActivityUtils.displayUnknownDevicesDialog(mSession,
-                        VectorCallViewActivity.this,
-                        (MXUsersDevicesMap<MXDeviceInfo>) intent.getSerializableExtra(VectorCallViewActivity.EXTRA_UNKNOWN_DEVICES),
-                        true,
-                        null);
+                MXUsersDevicesMap<MXDeviceInfo> devicesMap = (MXUsersDevicesMap<MXDeviceInfo>) intent.getSerializableExtra(VectorCallViewActivity.EXTRA_UNKNOWN_DEVICES);
+
+                VectorUtils.setDevicesKnown(mSession, devicesMap, null);
             }
         });
 

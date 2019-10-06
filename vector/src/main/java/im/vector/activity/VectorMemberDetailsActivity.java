@@ -71,6 +71,7 @@ import im.vector.adapters.VectorMemberDetailsAdapter;
 import im.vector.adapters.VectorMemberDetailsDevicesAdapter;
 import im.vector.extensions.MatrixSdkExtensionsKt;
 import im.vector.fragments.VectorUnknownDevicesFragment;
+import im.vector.util.CallsManager;
 import im.vector.util.PermissionsToolsKt;
 import im.vector.util.SystemUtilsKt;
 import im.vector.util.VectorUtils;
@@ -361,17 +362,11 @@ public class VectorMemberDetailsActivity extends MXCActionBarActivity implements
                     MXCryptoError cryptoError = (MXCryptoError) e;
 
                     if (MXCryptoError.UNKNOWN_DEVICES_CODE.equals(cryptoError.errcode)) {
-                        CommonActivityUtils.displayUnknownDevicesDialog(mSession,
-                                VectorMemberDetailsActivity.this,
-                                (MXUsersDevicesMap<MXDeviceInfo>) cryptoError.mExceptionData,
-                                true,
-                                new VectorUnknownDevicesFragment.IUnknownDevicesSendAnywayListener() {
-                                    @Override
-                                    public void onSendAnyway() {
-                                        startCall(isVideo);
-                                    }
-                                });
+                        MXUsersDevicesMap<MXDeviceInfo> devicesMap = (MXUsersDevicesMap<MXDeviceInfo>)cryptoError.mExceptionData;
 
+                        Runnable r = () -> startCall(isVideo);
+
+                        VectorUtils.setDevicesKnown(mSession, devicesMap, r);
                         return;
                     }
                 }

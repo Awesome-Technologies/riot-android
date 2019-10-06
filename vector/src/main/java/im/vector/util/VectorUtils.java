@@ -33,6 +33,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewParent;
 import android.webkit.WebView;
@@ -53,6 +54,8 @@ import org.matrix.androidsdk.core.ResourceUtils;
 import org.matrix.androidsdk.core.callback.ApiCallback;
 import org.matrix.androidsdk.core.callback.SimpleApiCallback;
 import org.matrix.androidsdk.core.model.MatrixError;
+import org.matrix.androidsdk.crypto.data.MXDeviceInfo;
+import org.matrix.androidsdk.crypto.data.MXUsersDevicesMap;
 import org.matrix.androidsdk.data.Room;
 import org.matrix.androidsdk.data.RoomPreviewData;
 import org.matrix.androidsdk.db.MXMediaCache;
@@ -921,5 +924,71 @@ public class VectorUtils {
         }
 
         return map;
+    }
+
+    //==============================================================================================================
+    // Unknown Devices Util
+    //==============================================================================================================
+
+    /**
+     * Update the devices verifications status.
+     *
+     * @param session the used MXSession.
+     * @param devicesMap unknown devices map.
+     * @param doneFunc callback Runnable called when done.
+     */
+    public static void setDevicesKnown(MXSession session, MXUsersDevicesMap<MXDeviceInfo> devicesMap, final Runnable doneFunc) {
+        List<Pair<String, List<MXDeviceInfo>>> devicesList = new ArrayList<>();
+        // sanity check
+        if (null != devicesMap) {
+            List<String> userIds = devicesMap.getUserIds();
+            for (String userId : userIds) {
+                List<MXDeviceInfo> deviceInfos = new ArrayList<>();
+                List<String> deviceIds = devicesMap.getUserDeviceIds(userId);
+                for (String deviceId : deviceIds) {
+                    deviceInfos.add(devicesMap.getObject(deviceId, userId));
+                }
+                devicesList.add(new Pair<>(userId, deviceInfos));
+            }
+        }
+
+        List<MXDeviceInfo> dis = new ArrayList<>();
+
+        for (Pair<String, List<MXDeviceInfo>> item : devicesList) {
+            dis.addAll(item.second);
+        }
+
+        session.getCrypto().setDevicesKnown(dis, new ApiCallback<Void>() {
+            // common method
+            private void onDone() {
+                if (doneFunc != null) {
+                    doneFunc.run();
+                }
+            }
+
+            @Override
+            public void onSuccess(Void info) {
+                Log.d(LOG_TAG, "## setDevicesKnown(): Made devices known");
+                onDone();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                Log.d(LOG_TAG, "## setDevicesKnown(): Error making devices known\\n" + e.getMessage());
+                onDone();
+            }
+
+            @Override
+            public void onMatrixError(MatrixError e) {
+                Log.d(LOG_TAG, "## setDevicesKnown(): Error making devices known\\n" + e.getMessage());
+                onDone();
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                Log.d(LOG_TAG, "## setDevicesKnown(): Error making devices known\\n" + e.getMessage());
+                onDone();
+            }
+        });
     }
 }

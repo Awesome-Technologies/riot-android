@@ -1366,39 +1366,16 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
     @Override
     public void onUnknownDevices(Event event, MXCryptoError error) {
-        // Make all devices known automatically
-        MXUsersDevicesMap<MXDeviceInfo> unknownDevicesMap = (MXUsersDevicesMap<MXDeviceInfo>) error.mExceptionData;
-        if (null != unknownDevicesMap) {
-            List<MXDeviceInfo> dis = new ArrayList<>();
-            final List<String> userIds = unknownDevicesMap.getUserIds();
+        refreshNotificationsArea();
 
-            for (String userId : userIds) {
-                List<String> deviceIds = unknownDevicesMap.getUserDeviceIds(userId);
-                for (String deviceId : deviceIds) {
-                    dis.add(unknownDevicesMap.getObject(deviceId, userId));
-                }
-            }
+        MXUsersDevicesMap<MXDeviceInfo> devicesMap = (MXUsersDevicesMap<MXDeviceInfo>)error.mExceptionData;
 
-            mSession.getCrypto().setDevicesKnown(dis, new ApiCallback<Void>() {
-                @Override
-                public void onSuccess(Void info) {
-                    mVectorMessageListFragment.resendUnsentMessages();
-                    refreshNotificationsArea();
-                }
+        Runnable r = () -> {
+            mVectorMessageListFragment.resendUnsentMessages();
+            refreshNotificationsArea();
+        };
 
-                @Override
-                public void onNetworkError(Exception e) {
-                }
-
-                @Override
-                public void onMatrixError(MatrixError e) {
-                }
-
-                @Override
-                public void onUnexpectedError(Exception e) {
-                }
-            });
-        }
+        VectorUtils.setDevicesKnown(mSession, devicesMap, r);
     }
 
     @Override
@@ -1943,17 +1920,12 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
                     MXCryptoError cryptoError = (MXCryptoError) e;
                     if (MXCryptoError.UNKNOWN_DEVICES_CODE.equals(cryptoError.errcode)) {
                         hideWaitingView();
-                        CommonActivityUtils.displayUnknownDevicesDialog(mSession,
-                                VectorRoomActivity.this,
-                                (MXUsersDevicesMap<MXDeviceInfo>) cryptoError.mExceptionData,
-                                true,
-                                new VectorUnknownDevicesFragment.IUnknownDevicesSendAnywayListener() {
-                                    @Override
-                                    public void onSendAnyway() {
-                                        startIpCall(useJitsiCall, aIsVideoCall);
-                                    }
-                                });
 
+                        MXUsersDevicesMap<MXDeviceInfo> devicesMap = (MXUsersDevicesMap<MXDeviceInfo>)cryptoError.mExceptionData;
+
+                        Runnable r = () -> startIpCall(useJitsiCall, aIsVideoCall);
+
+                        VectorUtils.setDevicesKnown(mSession, devicesMap, r);
                         return;
                     }
                 }
