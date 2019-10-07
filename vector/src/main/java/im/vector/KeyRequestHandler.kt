@@ -157,32 +157,8 @@ class KeyRequestHandler(val session: MXSession) : VerificationManager.Verificati
                           deviceInfo: MXDeviceInfo?,
                           moreInfo: DeviceInfo? = null) {
         val deviceName = if (TextUtils.isEmpty(deviceInfo!!.displayName())) deviceInfo.deviceId else deviceInfo.displayName()
-        var dialogText: String? = null
 
-
-        if (moreInfo != null) {
-            val lastSeenIp = if (moreInfo.last_seen_ip.isNullOrBlank()) {
-                context.getString(R.string.encryption_information_unknown_ip)
-            } else {
-                moreInfo.last_seen_ip
-            }
-            val dateFormatTime = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-            val time = dateFormatTime.format(Date(moreInfo.last_seen_ts))
-            val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
-            val lastSeenTime = dateFormat.format(Date(moreInfo.last_seen_ts)) + ", " + time
-            val lastSeenInfo = context.getString(R.string.devices_details_last_seen_format, lastSeenIp, lastSeenTime)
-            dialogText = if (wasNewDevice)
-                context.getString(R.string.you_added_a_new_device_with_info, deviceName, lastSeenInfo)
-            else
-                context.getString(R.string.your_unverified_device_requesting_with_info, deviceName, lastSeenInfo)
-
-        } else {
-            dialogText = if (wasNewDevice)
-                context.getString(R.string.you_added_a_new_device, deviceName)
-            else
-                context.getString(R.string.your_unverified_device_requesting, deviceName)
-        }
-
+        val dialogText = context.getString(R.string.device_requesting_keys, deviceName)
 
         val alert = PopupAlertManager.VectorAlert(
                 alertManagerId(deviceId, userId),
@@ -197,19 +173,6 @@ class KeyRequestHandler(val session: MXSession) : VerificationManager.Verificati
         alert.dismissedAction = Runnable {
             denyAllRequests(mappingKey)
         }
-
-        alert.addButton(
-                context.getString(R.string.start_verification_short_label),
-                Runnable {
-                    alert.weakCurrentActivity?.get()?.let {
-                        val intent = SASVerificationActivity.outgoingIntent(it,
-                                session.myUserId ?: "",
-                                userId, deviceId)
-                        it.startActivity(intent)
-                    }
-                },
-                false
-        )
 
         alert.addButton(context.getString(R.string.share_without_verifying_short_label), Runnable {
             shareAllSessions(mappingKey)

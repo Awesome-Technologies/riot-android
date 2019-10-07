@@ -745,6 +745,8 @@ Unbekannte Geräte:</string>
 
     <string name="settings_containing_my_display_name">Nachrichten, die meinen Anzeigenamen enthalten</string>
     <string name="settings_containing_my_user_name">Nachrichten, die meinen Benutzernamen enthalten</string>
+    <string name="key_share_request">Schlüssel-Anfrage</string>
+    <string name="device_requesting_keys">Das Gerät \'%s\' fordert Schlüssel zum entschlüsseln von Daten an.\nWenn das nicht dein Gerät ist, solltest du diese Anfrage ignorieren.</string>
     <string name="you_added_a_new_device">Du hast das neue Gerät \'%s\' hinzugefügt, das jetzt Verschlüsselungs-Schlüssel anfordert.</string>
     <string name="your_unverified_device_requesting">Dein bislang nicht verifiziertes Gerät \'%s\' fordert Verschlüsselungs-Schlüssel an.</string>
     <string name="start_verification">Verifizierung starten</string>

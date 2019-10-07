@@ -1108,6 +1108,7 @@
     <string name="widget_integration_review_terms">To continue you need to accept the Terms of this service.</string>
 
     <!-- share keys -->
+    <string name="device_requesting_keys">The device \'%s\' is requesting encryption keys to decrypt data.\nIf you didn’t log in on another device, ignore this request.</string>
     <string name="you_added_a_new_device">You added a new device \'%s\', which is requesting encryption keys.</string>
     <string name="you_added_a_new_device_with_info">A new device is requesting encryption keys.\nDevice name: %1$s\nLast seen: %2$s\nIf you didn’t log in on another device, ignore this request.</string>
     <string name="your_unverified_device_requesting">Your unverified device  \'%s\' is requesting encryption keys.</string>
