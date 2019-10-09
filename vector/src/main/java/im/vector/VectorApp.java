@@ -365,7 +365,8 @@ public class VectorApp extends MultiDexApplication {
         initApplicationLocale();
         visitSessionVariables();
 
-        Matrix.getInstance(this).getPushManager().setNotificationPrivacy(PushManager.NotificationPrivacy.NORMAL, null);
+        Matrix.getInstance(this).getPushManager().setBackgroundSyncAllowed(true);
+        Matrix.getInstance(this).getPushManager().setContentSendingAllowed(false);
         PreferencesManager.setMarkdownEnabled(this, true);
         PreferencesManager.setShowJoinLeaveMessages(this, false);
         PreferencesManager.enableNotifications(this);
