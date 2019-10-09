@@ -1036,7 +1036,7 @@ public final class PushManager {
          * Notifications are displayed with low detail (X messages in RoomY).
          * Only message metadata is sent through the push service.
          */
-       // LOW_DETAIL,
+        // LOW_DETAIL,
 
         /**
          * Normal: full detailed notifications by keeping user privacy.

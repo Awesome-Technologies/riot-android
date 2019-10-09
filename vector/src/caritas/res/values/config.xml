@@ -14,6 +14,7 @@
     <string name="matomo_site_id" translatable="false">2</string>
     <string name="matomo_tracker_name" translatable="false">Caritas Messenger Android</string>
     <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
+    <string name="default_stun_server" translatable="false">turn.matrix.org</string>
     <string name="login_intent_hostname">caritas.amp.care</string>
 
     <!-- Widget urls -->

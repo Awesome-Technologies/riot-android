@@ -14,6 +14,7 @@
     <string name="matomo_site_id" translatable="false">3</string>
     <string name="matomo_tracker_name" translatable="false">AMPchat Android</string>
     <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
+    <string name="default_stun_server" translatable="false">turn.amp.chat</string>
     <string name="login_intent_hostname">test.amp.chat</string>
 
     <!-- Widget urls -->

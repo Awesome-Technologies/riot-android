@@ -60,6 +60,7 @@ public class PreferencesManager {
     public static final String SETTINGS_NOTIFICATION_PRIVACY_PREFERENCE_KEY = "SETTINGS_NOTIFICATION_PRIVACY_PREFERENCE_KEY";
     public static final String SETTINGS_NOTIFICATION_TROUBLESHOOT_PREFERENCE_KEY = "SETTINGS_NOTIFICATION_TROUBLESHOOT_PREFERENCE_KEY";
     public static final String SETTINGS_NOTIFICATION_ADVANCED_PREFERENCE_KEY = "SETTINGS_NOTIFICATION_ADVANCED_PREFERENCE_KEY";
+    public static final String SETTINGS_DISCOVERY_PREFERENCE_KEY = "SETTINGS_DISCOVERY_PREFERENCE_KEY";
     public static final String SETTINGS_THIRD_PARTY_NOTICES_PREFERENCE_KEY = "SETTINGS_THIRD_PARTY_NOTICES_PREFERENCE_KEY";
     public static final String SETTINGS_COPYRIGHT_PREFERENCE_KEY = "SETTINGS_COPYRIGHT_PREFERENCE_KEY";
     public static final String SETTINGS_CLEAR_CACHE_PREFERENCE_KEY = "SETTINGS_CLEAR_CACHE_PREFERENCE_KEY";
@@ -150,9 +151,10 @@ public class PreferencesManager {
 
     // background sync
     public static final String SETTINGS_START_ON_BOOT_PREFERENCE_KEY = "SETTINGS_START_ON_BOOT_PREFERENCE_KEY";
-    public static final String SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY = "SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY";
+    //public static final String SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY = "SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY";
     public static final String SETTINGS_SET_SYNC_TIMEOUT_PREFERENCE_KEY = "SETTINGS_SET_SYNC_TIMEOUT_PREFERENCE_KEY";
     public static final String SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY = "SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY";
+    public static final String SETTINGS_WORK_MANAGER_DELAY_PREFERENCE_KEY = "SETTINGS_WORK_MANAGER_DELAY_PREFERENCE_KEY";
 
     // notification targets
     public static final String SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY = "SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY";
@@ -162,6 +164,8 @@ public class PreferencesManager {
     public static final String SETTINGS_CALL_KEY = "SETTINGS_CALL_KEY";
     public static final String SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY = "SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY";
     public static final String SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY = "SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY";
+    public static final String SETTINGS_CALL_USE_DEFAULT_STUN_PREFERENCE_KEY = "SETTINGS_CALL_USE_DEFAULT_STUN_PREFERENCE_KEY";
+    public static final String SETTINGS_CALL_USE_DEFAULT_ASK_DEFAULT_STUN_PREFERENCE_KEY = "SETTINGS_CALL_USE_DEFAULT_ASK_DEFAULT_STUN_PREFERENCE_KEY";
 
     // labs
     public static final String SETTINGS_LABS_DIVIDER_PREFERENCE_KEY = "SETTINGS_LABS_DIVIDER_PREFERENCE_KEY";
@@ -235,7 +239,7 @@ public class PreferencesManager {
             SETTINGS_CONTACTS_PHONEBOOK_COUNTRY_PREFERENCE_KEY,
             SETTINGS_INTERFACE_LANGUAGE_PREFERENCE_KEY,
             SETTINGS_BACKGROUND_SYNC_PREFERENCE_KEY,
-            SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY,
+            //SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY,
             SETTINGS_SET_SYNC_TIMEOUT_PREFERENCE_KEY,
             SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY,
 
@@ -626,6 +630,34 @@ public class PreferencesManager {
     }
 
     /**
+     * Tells if the default turn server must be used when none is provided by the server
+     *
+     * @param context the context
+     * @return true if the default turn server must be used.
+     */
+    public static boolean useDefaultTurnServer(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTINGS_CALL_USE_DEFAULT_STUN_PREFERENCE_KEY, false);
+    }
+
+    public static void setUseDefaultTurnServer(Context context, boolean use) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(SETTINGS_CALL_USE_DEFAULT_STUN_PREFERENCE_KEY, use)
+                .apply();
+    }
+
+    public static boolean shouldAskForDefaultTurn(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTINGS_CALL_USE_DEFAULT_ASK_DEFAULT_STUN_PREFERENCE_KEY, true);
+    }
+
+    public static void setShouldAskForDefaultTurn(Context context, boolean ask) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(SETTINGS_CALL_USE_DEFAULT_ASK_DEFAULT_STUN_PREFERENCE_KEY, ask)
+                .apply();
+    }
+
+    /**
      * Tells if the application is started on boot
      *
      * @param context the context
@@ -976,4 +1008,23 @@ public class PreferencesManager {
                 .putBoolean(SETTINGS_ENABLE_THIS_DEVICE_PREFERENCE_KEY, true)
                 .apply();
     }
+
+    public static Integer getWorkManagerSyncIntervalMillis(Context context) {
+        //For whatever reason save as string
+        String sValue = PreferenceManager.getDefaultSharedPreferences(context).getString(SETTINGS_WORK_MANAGER_DELAY_PREFERENCE_KEY, "60000");
+        try {
+            return Integer.parseInt(sValue);
+        } catch (Exception e) {
+            return 60 * 1000;
+        }
+    }
+
+    public static void setWorkManagerSyncIntervalMillis(Context context, int delay) {
+        //For whatever reason save as string (preference fragment)
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString(SETTINGS_WORK_MANAGER_DELAY_PREFERENCE_KEY, String.valueOf(Math.abs(delay)))
+                .apply();
+    }
+
 }

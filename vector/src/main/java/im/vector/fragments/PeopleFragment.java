@@ -69,6 +69,7 @@ public class PeopleFragment extends AbsHomeFragment implements AbsHomeFragment.O
 
     private MXEventListener mEventsListener;
 
+
     /*
      * *********************************************************************************************
      * Static methods

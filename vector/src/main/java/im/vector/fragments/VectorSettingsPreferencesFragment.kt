@@ -1,5 +1,6 @@
 /*
  * Copyright 2018 New Vector Ltd
+ * Copyright 2019 New Vector Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,6 +67,7 @@ import im.vector.ui.util.SimpleTextWatcher
 import im.vector.util.*
 import org.jetbrains.anko.toast
 import org.matrix.androidsdk.MXSession
+import org.matrix.androidsdk.call.MXCallsManager
 import org.matrix.androidsdk.core.BingRulesManager
 import org.matrix.androidsdk.core.Log
 import org.matrix.androidsdk.core.ResourceUtils
@@ -87,6 +89,7 @@ import org.matrix.androidsdk.rest.model.bingrules.BingRule
 import org.matrix.androidsdk.rest.model.group.Group
 import org.matrix.androidsdk.rest.model.pid.ThirdPartyIdentifier
 import org.matrix.androidsdk.rest.model.pid.ThreePid
+import org.matrix.androidsdk.rest.model.sync.AccountDataElement
 import org.matrix.androidsdk.rest.model.sync.DeviceInfoUtil
 import java.lang.ref.WeakReference
 import java.text.DateFormat
@@ -114,6 +117,14 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             }
 
             refreshDisplay()
+        }
+
+        override fun onAccountDataUpdated(accountDataElement: AccountDataElement) {
+            if (accountDataElement.type == AccountDataElement.ACCOUNT_DATA_TYPE_IDENTITY_SERVER) {
+                (findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY) as EditTextPreference).let {
+                    updateIdentityServerPref()
+                }
+            }
         }
     }
 
@@ -210,6 +221,13 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         // ? Cause it can be removed
         findPreference(PreferencesManager.SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY) as EditTextPreference?
     }
+
+    private val mWorkManagerRequestDelayPreference by lazy {
+        // ? Cause it can be removed
+        findPreference(PreferencesManager.SETTINGS_WORK_MANAGER_DELAY_PREFERENCE_KEY) as EditTextPreference?
+    }
+
+
     private val mLabsCategory by lazy {
         findPreference(PreferencesManager.SETTINGS_LABS_PREFERENCE_KEY) as PreferenceCategory
     }
@@ -219,11 +237,15 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     private val backgroundSyncDivider by lazy {
         findPreference(PreferencesManager.SETTINGS_BACKGROUND_SYNC_DIVIDER_PREFERENCE_KEY)
     }
-    private val backgroundSyncPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY) as SwitchPreference
-    }
+//    private val backgroundSyncPreference by lazy {
+//        findPreference(PreferencesManager.SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY) as SwitchPreference
+//    }
+
     private val mUseRiotCallRingtonePreference by lazy {
         findPreference(PreferencesManager.SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY) as SwitchPreference
+    }
+    private val mUseDefaultStunPreference by lazy {
+        findPreference(PreferencesManager.SETTINGS_CALL_USE_DEFAULT_STUN_PREFERENCE_KEY) as SwitchPreference
     }
     private val mCallRingtonePreference by lazy {
         findPreference(PreferencesManager.SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY)
@@ -265,6 +287,9 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     // encrypt to unverified devices
     private val sendToUnverifiedDevicesPref by lazy {
         findPreference(PreferencesManager.SETTINGS_ENCRYPTION_NEVER_SENT_TO_PREFERENCE_KEY) as SwitchPreference
+    }
+    private val identityServerPreference by lazy {
+        findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY) as VectorPreference
     }
 
     /* ==========================================================================================
@@ -312,11 +337,15 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             false
         }
 
+
         // Add Email
         findPreference(ADD_EMAIL_PREFERENCE_KEY).isVisible = false
 
         // Add phone number
         findPreference(ADD_PHONE_NUMBER_PREFERENCE_KEY).isVisible = false
+
+        // Discovery settings
+        findPreference(SETTINGS_DISCOVERY_PREFERENCE_KEY).isVisible = false
 
         // Contacts
         mContactSettingsCategory.isVisible = false
@@ -387,48 +416,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             }
         }
 
-        // background sync tuning settings
-        // these settings are useless and hidden if the app is registered to the FCM push service
-        val pushManager = Matrix.getInstance(appContext).pushManager
-        if (pushManager.useFcm() && pushManager.hasRegistrationToken()) {
-            // Hide the section
-            preferenceScreen.removePreference(backgroundSyncDivider)
-            preferenceScreen.removePreference(backgroundSyncCategory)
-        } else {
-            backgroundSyncPreference.let {
-                it.isChecked = pushManager.isBackgroundSyncAllowed
-
-                it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, aNewValue ->
-                    val newValue = aNewValue as Boolean
-
-                    if (newValue != pushManager.isBackgroundSyncAllowed) {
-                        pushManager.isBackgroundSyncAllowed = newValue
-                    }
-
-                    displayLoadingView()
-
-                    Matrix.getInstance(activity)?.pushManager?.forceSessionsRegistration(object : ApiCallback<Void> {
-                        override fun onSuccess(info: Void?) {
-                            hideLoadingView()
-                        }
-
-                        override fun onMatrixError(e: MatrixError?) {
-                            hideLoadingView()
-                        }
-
-                        override fun onNetworkError(e: java.lang.Exception?) {
-                            hideLoadingView()
-                        }
-
-                        override fun onUnexpectedError(e: java.lang.Exception?) {
-                            hideLoadingView()
-                        }
-                    })
-
-                    true
-                }
-            }
-        }
+        refreshBackgroundSyncSection(appContext)
 
         // Push target
         refreshPushersList()
@@ -643,6 +631,23 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             false
         }
 
+        mUseDefaultStunPreference.let {
+            activity?.let { activity ->
+                it.isChecked = PreferencesManager.useDefaultTurnServer(activity)
+                val stun = getString(R.string.default_stun_server)
+                it.summary = getString(R.string.settings_call_ringtone_use_default_stun_sum, stun)
+                it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    if (mUseDefaultStunPreference.isChecked) {
+                        MXCallsManager.defaultStunServerUri = stun
+                    } else {
+                        MXCallsManager.defaultStunServerUri = null
+                    }
+                    PreferencesManager.setUseDefaultTurnServer(activity,mUseDefaultStunPreference.isChecked)
+                    false
+                }
+            }
+        }
+
         mCallRingtonePreference.let {
             activity?.let { activity -> it.summary = getCallRingtoneName(activity) }
             it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -677,6 +682,22 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
             false
         }
+    }
+
+    private fun refreshBackgroundSyncSection(appContext: Context?) {
+        // background sync tuning settings
+        // these settings are useless and hidden if the app is registered to the FCM push service
+        val pushManager = Matrix.getInstance(appContext).pushManager
+        if (pushManager.useFcm() && pushManager.hasRegistrationToken()) {
+            // Hide the section
+            preferenceScreen.removePreference(backgroundSyncDivider)
+            preferenceScreen.removePreference(backgroundSyncCategory)
+        }
+    }
+
+    private fun updateIdentityServerPref() {
+        identityServerPreference.summary = mSession.identityServerManager?.identityServerUrl
+                ?: getString(R.string.identity_server_not_defined)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -743,6 +764,8 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             refreshNotificationPrivacy()
             refreshDisplay()
             refreshBackgroundSyncPrefs()
+            refreshEmailsList()
+            refreshPhoneNumbersList()
         }
 
         interactionListener?.requestedKeyToHighlight()?.let { key ->
@@ -1358,7 +1381,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
      * @param preferenceSummary the displayed 3pid
      */
     private fun displayDelete3PIDConfirmationDialog(pid: ThirdPartyIdentifier, preferenceSummary: CharSequence) {
-        val mediumFriendlyName = ThreePid.getMediumFriendlyName(pid.medium, activity).toLowerCase(VectorLocale.applicationLocale)
+        val mediumFriendlyName = ThreePid.getMediumFriendlyName(pid.medium, requireContext()).toLowerCase(VectorLocale.applicationLocale)
         val dialogMessage = getString(R.string.settings_delete_threepid_confirmation, mediumFriendlyName, preferenceSummary)
 
         activity?.let {
@@ -1560,6 +1583,60 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
      * Refresh the emails list
      */
     private fun refreshEmailsList() {
+
+        val isURL = mSession.identityServerManager.identityServerUrl
+        if (isURL != null) {
+            updateMailSection()
+        } else {
+
+            //If there is no identity server configured, we can just remove this section
+            //as the user won't be able to add/remove 3pids
+            //Though there is a special case when HS (checked via capabilities) can manage msisdn/mails by
+            //themselves without an identity server.
+
+            mSession.doesServerSeparatesAddAndBind(object : ApiCallback<Boolean> {
+                override fun onSuccess(separatesAddAndBind: Boolean) {
+                    if (separatesAddAndBind) {
+                        updateMailSection()
+                    } else {
+                        //hide
+                        run {
+                            var index = 0
+                            while (true) {
+                                val preference = mUserSettingsCategory.findPreference(EMAIL_PREFERENCE_KEY_BASE + index)
+
+                                if (null != preference) {
+                                    mUserSettingsCategory.removePreference(preference)
+                                } else {
+                                    break
+                                }
+                                index++
+                            }
+                        }
+                        mUserSettingsCategory.findPreference(ADD_EMAIL_PREFERENCE_KEY)?.let {
+                            it.isVisible = false
+                        }
+                    }
+                }
+
+                override fun onUnexpectedError(e: Exception) {
+                    Log.e(LOG_TAG, "Failed to get version", e)
+                }
+
+                override fun onNetworkError(e: Exception) {
+                    Log.e(LOG_TAG, "Failed to get version", e)
+                }
+
+                override fun onMatrixError(e: MatrixError) {
+                    Log.e(LOG_TAG, "Failed to get version ${e.message}")
+                }
+
+            })
+        }
+
+    }
+
+    private fun updateMailSection() {
         val currentEmail3PID = ArrayList(mSession.myUser.getlinkedEmails())
 
         val newEmailsList = ArrayList<String>()
@@ -1623,6 +1700,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             }
 
             addEmailBtn.order = order
+            addEmailBtn.isVisible = true
         }
     }
 
@@ -1660,31 +1738,32 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             return
         }
 
-        val pid = ThreePid(email, ThreePid.MEDIUM_EMAIL)
+        val pid = ThreePid.fromEmail(email)
 
         displayLoadingView()
 
-        mSession.myUser.requestEmailValidationToken(pid, object : ApiCallback<Void> {
-            override fun onSuccess(info: Void?) {
-                activity?.runOnUiThread { showEmailValidationDialog(pid) }
-            }
+        mSession.identityServerManager.startAddSessionForEmail(pid, null,
+                object : ApiCallback<ThreePid> {
+                    override fun onSuccess(info: ThreePid) {
+                        activity?.runOnUiThread { showEmailValidationDialog(pid) }
+                    }
 
-            override fun onNetworkError(e: Exception) {
-                onCommonDone(e.localizedMessage)
-            }
+                    override fun onNetworkError(e: Exception) {
+                        onCommonDone(e.localizedMessage)
+                    }
 
-            override fun onMatrixError(e: MatrixError) {
-                if (TextUtils.equals(MatrixError.THREEPID_IN_USE, e.errcode)) {
-                    onCommonDone(getString(R.string.account_email_already_used_error))
-                } else {
-                    onCommonDone(e.localizedMessage)
-                }
-            }
+                    override fun onMatrixError(e: MatrixError) {
+                        if (TextUtils.equals(MatrixError.THREEPID_IN_USE, e.errcode)) {
+                            onCommonDone(getString(R.string.account_email_already_used_error))
+                        } else {
+                            onCommonDone(e.localizedMessage)
+                        }
+                    }
 
-            override fun onUnexpectedError(e: Exception) {
-                onCommonDone(e.localizedMessage)
-            }
-        })
+                    override fun onUnexpectedError(e: Exception) {
+                        onCommonDone(e.localizedMessage)
+                    }
+                })
     }
 
     /**
@@ -1698,11 +1777,15 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                     .setTitle(R.string.account_email_validation_title)
                     .setMessage(R.string.account_email_validation_message)
                     .setPositiveButton(R.string._continue) { _, _ ->
-                        mSession.myUser.add3Pid(pid, true, object : ApiCallback<Void> {
+                        mSession.identityServerManager.finalizeAddSessionForEmail(pid, object : ApiCallback<Void?> {
                             override fun onSuccess(info: Void?) {
                                 it.runOnUiThread {
                                     hideLoadingView()
-                                    refreshEmailsList()
+                                    mSession.myUser.refreshThirdPartyIdentifiers(object : SimpleApiCallback<Void?>(){
+                                        override fun onSuccess(info: Void?) {
+                                            refreshEmailsList()
+                                        }
+                                    })
                                 }
                             }
 
@@ -1725,6 +1808,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                                 onCommonDone(e.localizedMessage)
                             }
                         })
+
                     }
                     .setNegativeButton(R.string.cancel) { _, _ ->
                         hideLoadingView()
@@ -1737,10 +1821,60 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     // Phone number management
     //==============================================================================================================
 
+
     /**
      * Refresh phone number list
      */
     private fun refreshPhoneNumbersList() {
+        val isURL = mSession.identityServerManager.identityServerUrl
+        if (isURL != null) {
+            updatePhoneNumbersList()
+        } else {
+            //If there is no identity server configured, we can just remove this section
+            //as the user won't be able to add/remove 3pids
+            //Though there is a special case when HS (checked via capabilities) can manage msisdn/mails by
+            //themselves without an identity server.
+            mSession.doesServerRequireIdentityServerParam(object : ApiCallback<Boolean> {
+                override fun onSuccess(requiresIdentityServer: Boolean) {
+                    if (requiresIdentityServer) {
+                        run {
+                            var index = 0
+                            while (true) {
+                                val preference = mUserSettingsCategory.findPreference(PHONE_NUMBER_PREFERENCE_KEY_BASE + index)
+
+                                if (null != preference) {
+                                    mUserSettingsCategory.removePreference(preference)
+                                } else {
+                                    break
+                                }
+                                index++
+                            }
+                        }
+                        mUserSettingsCategory.findPreference(ADD_PHONE_NUMBER_PREFERENCE_KEY)?.let {
+                            it.isVisible = false
+                        }
+                    } else {
+                        updatePhoneNumbersList()
+                    }
+                }
+
+                override fun onUnexpectedError(e: Exception) {
+                    Log.e(LOG_TAG, "Failed to get version", e)
+                }
+
+                override fun onNetworkError(e: Exception) {
+                    Log.e(LOG_TAG, "Failed to get version", e)
+                }
+
+                override fun onMatrixError(e: MatrixError) {
+                    Log.e(LOG_TAG, "Failed to get version ${e.message}")
+                }
+
+            })
+        }
+    }
+
+    private fun updatePhoneNumbersList() {
         val currentPhoneNumber3PID = ArrayList(mSession.myUser.getlinkedPhoneNumbers())
 
         val phoneNumberList = ArrayList<String>()
@@ -1812,6 +1946,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             }
 
             addPhoneBtn.order = order
+            addPhoneBtn.isVisible = true
         }
 
     }
@@ -2280,6 +2415,10 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             val inflater = it.layoutInflater
             val layout = inflater.inflate(R.layout.dialog_base_edit_text, null)
 
+            layout.findViewById<TextView>(R.id.edit_text_content).let { tv ->
+                tv.visibility = View.VISIBLE
+                tv.setText(R.string.device_name_warning)
+            }
             val input = layout.findViewById<EditText>(R.id.edit_text)
             input.setText(aDeviceInfoToRename.display_name)
 
@@ -2740,6 +2879,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         private const val REQUEST_PHONEBOOK_COUNTRY = 789
         private const val REQUEST_LOCALE = 777
         private const val REQUEST_CALL_RINGTONE = 999
+        private const val REQUEST_BATTERY_OPTIMIZATION = 500
 
         // preference name <-> rule Id
         private var mPrefKeyToBingRuleId = mapOf(

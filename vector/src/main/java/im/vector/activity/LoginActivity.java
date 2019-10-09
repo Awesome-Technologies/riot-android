@@ -46,10 +46,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.transition.TransitionManager;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.matrix.androidsdk.HomeServerConnectionConfig;
@@ -89,7 +89,6 @@ import butterknife.OnClick;
 import im.vector.BuildConfig;
 import im.vector.LoginHandler;
 import im.vector.Matrix;
-import im.vector.PhoneNumberHandler;
 import im.vector.R;
 import im.vector.RegistrationManager;
 import im.vector.UnrecognizedCertHandler;
@@ -893,14 +892,83 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                 mSwitchToRegisterButton.setVisibility(View.VISIBLE);
             }
 
-            if (checkFlowOnUpdate) {
-                checkFlows();
-            }
+            // Wellknown request, to fill identity server Url
+            new AutoDiscovery()
+                    .getIdentityServer(mHomeServerUrl, new ApiCallback<String>() {
+
+                        @Override
+                        public void onSuccess(@Nullable String info) {
+                            if (!TextUtils.isEmpty(info)) {
+                                mIdentityServerUrl = info;
+                            } else {
+                                // Use default
+                                mIdentityServerUrl = ServerUrlsRepository.INSTANCE.getLastIdentityServerUrl(LoginActivity.this);
+                            }
+                            mIdentityServerText.setText(mIdentityServerUrl);
+
+                            onHomeServerUrlUpdateStep2(checkFlowOnUpdate);
+                        }
+
+                        @Override
+                        public void onUnexpectedError(Exception e) {
+                            onHomeServerUrlUpdateStep2(checkFlowOnUpdate);
+                        }
+
+                        @Override
+                        public void onNetworkError(Exception e) {
+                            onHomeServerUrlUpdateStep2(checkFlowOnUpdate);
+                        }
+
+                        @Override
+                        public void onMatrixError(MatrixError e) {
+                            onHomeServerUrlUpdateStep2(checkFlowOnUpdate);
+                        }
+                    });
 
             return true;
         }
 
         return false;
+    }
+
+    private void onHomeServerUrlUpdateStep2(boolean checkFlowOnUpdate) {
+        if (checkFlowOnUpdate) {
+            checkFlows();
+        }
+
+        // Check if we have to display the identity server url field
+        checkIdentityServerUrlField();
+    }
+
+    private void checkIdentityServerUrlField() {
+        mIdentityServerTextTil.setVisibility(View.GONE);
+
+        if (mMode == MODE_ACCOUNT_CREATION || mMode == MODE_FORGOT_PASSWORD) {
+            new LoginRestClient(getHsConfig())
+                    .doesServerRequireIdentityServerParam(new ApiCallback<Boolean>() {
+                        @Override
+                        public void onNetworkError(Exception e) {
+
+                        }
+
+                        @Override
+                        public void onMatrixError(MatrixError e) {
+
+                        }
+
+                        @Override
+                        public void onUnexpectedError(Exception e) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Boolean info) {
+                            if (info) {
+                                mIdentityServerTextTil.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+        }
     }
 
     /**
@@ -1136,15 +1204,52 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
             return;
         }
 
-        enableLoadingScreen(true);
-
-        ProfileRestClient pRest = new ProfileRestClient(hsConfig);
-
         // privacy
         //Log.d(LOG_TAG, "onForgotPasswordClick for email " + email);
         Log.d(LOG_TAG, "onForgotPasswordClick");
 
-        pRest.forgetPassword(email, new ApiCallback<ThreePid>() {
+        enableLoadingScreen(true);
+
+        // Check if the HS require an identity server
+        new LoginRestClient(getHsConfig())
+                .doesServerRequireIdentityServerParam(new ApiCallback<Boolean>() {
+                    @Override
+                    public void onNetworkError(Exception e) {
+                        enableLoadingScreen(false);
+                        Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onMatrixError(MatrixError e) {
+                        enableLoadingScreen(false);
+                        Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onUnexpectedError(Exception e) {
+                        enableLoadingScreen(false);
+                        Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean requiresIdentityServer) {
+                        Uri identityServerUri = hsConfig.getIdentityServerUri();
+                        if (requiresIdentityServer
+                                && (identityServerUri == null || identityServerUri.toString().isEmpty())) {
+                            enableLoadingScreen(false);
+                            Toast.makeText(LoginActivity.this, R.string.identity_server_not_defined_for_password_reset, Toast.LENGTH_LONG).show();
+
+                        } else {
+                            doForgetPasswordRequest(hsConfig, email, null);
+                        }
+                    }
+                });
+    }
+
+    private void doForgetPasswordRequest(HomeServerConnectionConfig hsConfig, String email, @Nullable String identityServerHost) {
+        ProfileRestClient pRest = new ProfileRestClient(hsConfig);
+        Uri idUri = (identityServerHost != null) ? Uri.parse(identityServerHost) : null;
+        pRest.forgetPassword(idUri, email, new ApiCallback<ThreePid>() {
             @Override
             public void onSuccess(ThreePid thirdPid) {
                 if (mMode == MODE_FORGOT_PASSWORD) {
@@ -1154,19 +1259,21 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
                     // refresh the messages
                     hideMainLayoutAndToast(getString(R.string.auth_reset_password_email_validation_message, email));
+                    mButtonsView.setVisibility(View.VISIBLE);
 
                     mMode = MODE_FORGOT_PASSWORD_WAITING_VALIDATION;
                     refreshDisplay(true);
 
                     mForgotPid = new ThreePidCredentials();
-                    mForgotPid.clientSecret = thirdPid.clientSecret;
-                    mForgotPid.idServer = hsConfig.getIdentityServerUri().getHost();
-                    mForgotPid.sid = thirdPid.sid;
+                    mForgotPid.clientSecret = thirdPid.getClientSecret();
+                    mForgotPid.idServer = identityServerHost;
+                    mForgotPid.sid = thirdPid.getSid();
                 }
             }
 
             /**
              * Display a toast to warn that the operation failed
+             *
              * @param errorMessage the error message.
              */
             private void onError(final String errorMessage) {
@@ -1250,6 +1357,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
                         // refresh the messages
                         hideMainLayoutAndToast(getString(R.string.auth_reset_password_success_message));
+                        mButtonsView.setVisibility(View.VISIBLE);
                         mIsPasswordReset = true;
                         refreshDisplay(true);
                     }
@@ -1499,7 +1607,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
                             mForgotPid = new ThreePidCredentials();
                             mForgotPid.clientSecret = aClientSecret;
-                            mForgotPid.idServer = homeServerConfig.getIdentityServerUri().getHost();
+                            mForgotPid.idServer = Uri.parse(aIdentityServer).getHost();
                             mForgotPid.sid = aSid;
 
                             mIsPasswordReset = false;
@@ -2009,7 +2117,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
      */
     private void checkLoginFlows() {
         // check only login flows
-        if (mMode != MODE_LOGIN) {
+        if (mMode != MODE_LOGIN && mMode != MODE_FORGOT_PASSWORD) {
             return;
         }
 
@@ -2028,7 +2136,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                         // stop listening to network state
                         removeNetworkStateNotificationListener();
 
-                        if (mMode == MODE_LOGIN) {
+                        if (mMode == MODE_LOGIN || mMode == MODE_FORGOT_PASSWORD) {
                             enableLoadingScreen(false);
                             setActionButtonsEnabled(true);
 
@@ -2069,7 +2177,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                     }
 
                     private void onError(String errorMessage) {
-                        if (mMode == MODE_LOGIN) {
+                        if (mMode == MODE_LOGIN || mMode == MODE_FORGOT_PASSWORD) {
                             enableLoadingScreen(false);
                             setActionButtonsEnabled(false);
                             displayErrorOnUrl(mHomeServerTextTil, errorMessage);
@@ -2133,7 +2241,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
             mUniversalLinkUri = savedInstanceState.getParcelable(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI);
         }
 
-        mPendingEmailValidation = (ThreePid) savedInstanceState.getSerializable(SAVED_CREATION_EMAIL_THREEPID);
+        mPendingEmailValidation = savedInstanceState.getParcelable(SAVED_CREATION_EMAIL_THREEPID);
     }
 
     @Override
@@ -2154,7 +2262,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
             // Retrieve the current email three pid
             ThreePid email3pid = mRegistrationManager.getEmailThreePid();
             if (null != email3pid) {
-                savedInstanceState.putSerializable(SAVED_CREATION_EMAIL_THREEPID, email3pid);
+                savedInstanceState.putParcelable(SAVED_CREATION_EMAIL_THREEPID, email3pid);
             }
         }
 
@@ -2308,7 +2416,9 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                 return null;
             }
 
-            if (!identityServerUrlString.startsWith("http://") && !identityServerUrlString.startsWith("https://")) {
+            if (!TextUtils.isEmpty(identityServerUrlString)
+                    && !identityServerUrlString.startsWith("http://")
+                    && !identityServerUrlString.startsWith("https://")) {
                 identityServerUrlString = "https://" + identityServerUrlString;
             }
 
@@ -2502,6 +2612,15 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
             }
         };
         mHandler.postDelayed(mRegisterPollingRunnable, REGISTER_POLLING_PERIOD);
+    }
+
+    @Override
+    public void onIdentityServerMissing() {
+        Log.d(LOG_TAG, "## onIdentityServerMissing()");
+        enableLoadingScreen(false);
+        showMainLayout();
+        refreshDisplay(false);
+        Toast.makeText(this, R.string.identity_server_not_defined, Toast.LENGTH_SHORT).show();
     }
 
     @Override

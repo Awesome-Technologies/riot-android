@@ -18,9 +18,7 @@
 package im.vector.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +57,7 @@ public class PeopleAdapter extends AbsAdapter {
 
     private final String mNoContactAccessPlaceholder;
     private final String mNoResultPlaceholder;
+    private final String mNoIdentityServerPlaceholder;
 
     /*
      * *********************************************************************************************
@@ -76,6 +75,7 @@ public class PeopleAdapter extends AbsAdapter {
         // ButterKnife.bind(this); cannot be applied here
         mNoContactAccessPlaceholder = context.getString(R.string.no_contact_access_placeholder);
         mNoResultPlaceholder = context.getString(R.string.no_result_placeholder);
+        mNoIdentityServerPlaceholder = context.getString(R.string.people_no_identity_server);
 
         mDirectChatsSection = new AdapterSection<>(context,
                 context.getString(R.string.direct_chats_header),
