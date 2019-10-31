@@ -1,6 +1,7 @@
 #IDEs
 /.idea
 *.iml
+*.hprof
 
 #OS
 .DS_Store
