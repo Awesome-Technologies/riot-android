@@ -52,7 +52,6 @@
 
     </im.vector.preference.VectorPreferenceCategory>
 
-    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CONTACTS_DIVIDER_KEY" />
 
     <im.vector.preference.VectorPreferenceCategory
         android:key="SETTINGS_CONTACT_PREFERENCE_KEYS"
