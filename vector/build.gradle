@@ -313,14 +313,14 @@ dependencies {
     // appfdroid flavor only
 
     // amp flavor only
-    ampImplementation('com.google.firebase:firebase-messaging:17.4.0') {
+    ampImplementation('com.google.firebase:firebase-messaging:20.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
 
     // caritas flavor only
-    caritasImplementation('com.google.firebase:firebase-messaging:17.4.0') {
+    caritasImplementation('com.google.firebase:firebase-messaging:20.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
