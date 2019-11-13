@@ -18,17 +18,23 @@ class CaseDataPatientView : CaseDataLabelValueView {
         super.displayEvent(event, dataType)
         if (event != null && dataType == CaseDataListFragment.CASE_DATA_PATIENT) {
             val obj = event.contentAsJsonObject
-            patient_name.text = obj["name"].asString
-            val years = getAge(obj["birthDate"].asString)
-            val yearsString = "$years ${R.string.case_data_age_years}"
-            val gender = getLocalizedGender(obj["gender"].asString)
-            if (years == 0) {
+            patient_name.text = obj["name"]?.asString
+            var years = 0
+            var gender: String? = null
+            if (obj.has("birthDate")) {
+                years = getAge(obj["birthDate"].asString)
+            }
+            if (obj.has("gender")) {
+                gender = getLocalizedGender(obj["gender"].asString)
+            }
+            if (years <= 0) {
                 if (gender != null) {
                     patient_info.text = gender
                 } else {
                     patient_info.text = ""
                 }
             } else {
+                val yearsString = "$years ${context.getString(R.string.case_data_age_years)}"
                 if (gender != null) {
                     patient_info.text = "$gender | $yearsString"
                 } else {
@@ -38,7 +44,7 @@ class CaseDataPatientView : CaseDataLabelValueView {
         }
     }
 
-    private fun getLocalizedGender(gender: String): String? {
+    private fun getLocalizedGender(gender: String): String {
         when (gender) {
             "male" -> return context.getString(R.string.case_data_gender_male)
             "female" -> return context.getString(R.string.case_data_gender_female)
