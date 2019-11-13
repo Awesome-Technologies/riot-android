@@ -201,7 +201,7 @@ class CaseDataListFragment : Fragment(), AbsHomeFragment.OnRoomChangedListener {
 
                     case_data_vitals_section_header.show(CaseDataSectionHeaderView.CASE_DATA_SECTION_VITALS)
                 }
-                "pulse" -> {
+                "heart-rate" -> {
                     case_data_pulse_view.displayEvent(event, CASE_DATA_PULSE)
 
                     case_data_vitals_section_header.show(CaseDataSectionHeaderView.CASE_DATA_SECTION_VITALS)
