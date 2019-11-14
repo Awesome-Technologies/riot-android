@@ -81,10 +81,14 @@ open class CaseDataLabelValueView : RelativeLayout {
                 }
                 CaseDataListFragment.CASE_DATA_LAST_DEFECATION -> {
                     label.text = context.getString(R.string.case_data_last_defecation)
-                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.GERMANY)
                     val dateString = obj["effectiveDateTime"].asString
-                    val date = dateFormatter.parse(dateString)
-                    value.text = AdapterUtils.tsToString(context, date.time, false)
+                    if (dateString.isNotEmpty()) {
+                        val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
+                        val date = dateFormatter.parse(dateString)
+                        value.text = AdapterUtils.tsToString(context, date.time, false)
+                    } else {
+                        value.text = "-"
+                    }
                 }
                 CaseDataListFragment.CASE_DATA_BODY_WEIGHT -> {
                     label.text = context.getString(R.string.case_data_body_weight)

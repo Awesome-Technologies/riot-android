@@ -21,10 +21,14 @@ open class CaseDataLabelValueDateView : CaseDataLabelValueView {
         if (event != null && dataType != CaseDataListFragment.CASE_DATA_NONE) {
             val obj = event.contentAsJsonObject
             if (obj.has("effectiveDateTime")) {
-                val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.GERMANY)
                 val dateString = obj["effectiveDateTime"].asString
-                val date = dateFormatter.parse(dateString)
-                date_label.text = AdapterUtils.tsToString(context, date.time, false)
+                if (dateString.isNotEmpty()) {
+                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
+                    val date = dateFormatter.parse(dateString)
+                    date_label.text = AdapterUtils.tsToString(context, date.time, false)
+                } else {
+                    date_label.text = "-"
+                }
             } else {
                 date_label.text = "-"
             }
