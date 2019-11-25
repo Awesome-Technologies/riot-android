@@ -274,6 +274,7 @@
     <string name="auth_reset_password_error_unauthorized">Failed to verify email address: make sure you clicked the link in the email</string>
     <string name="auth_reset_password_success_message">Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.</string>
     <string name="auth_accept_policies">"Please review and accept the policies of this homeserver:"</string>
+    <string name="auth_demo_notice">Notice: This registration creates a\ntest user for you.</string>
 
     <!-- Login Screen -->
     <string name="login_error_must_start_http">URL must start with http[s]://</string>

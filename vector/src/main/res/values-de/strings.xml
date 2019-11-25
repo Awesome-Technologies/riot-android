@@ -177,6 +177,7 @@
     <string name="auth_reset_password_success_message">Dein Passwort wurde zurückgesetzt.
 
 Du wurdest auf allen Geräten abgemeldet und wirst keine Push-Benachrichtigungen mehr erhalten. Um die Push-Benachrichtigungen wieder zu aktivieren, musst du dich auf jedem Gerät erneut anmelden.</string>
+    <string name="auth_demo_notice">Hinweis: Diese Registrierung legt einen\nTest-Nutzer für Sie an.</string>
 
     <!-- Login Screen -->
     <string name="login_error_must_start_http">URL muss mit \'http[s]://\' beginnen</string>
