@@ -2,7 +2,7 @@
 <resources>
 
     <string name="riot_app_name" translatable="false">AMP.chat</string>
-    <bool name="login_with_barcode">false</bool>
+    <bool name="login_with_barcode">true</bool>
     <bool name="calls_enabled">true</bool>
 
     <!-- server urls -->
