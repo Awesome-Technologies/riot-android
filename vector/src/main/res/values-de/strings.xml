@@ -148,6 +148,7 @@
     <string name="auth_opt_phone_number_placeholder">Telefonummer (optional)</string>
     <string name="auth_repeat_password_placeholder">Passwort wiederholen</string>
     <string name="auth_repeat_new_password_placeholder">Neues Passwort bestätigen</string>
+    <string name="auth_home_server_placeholder">Server (z.B. https://test.amp.chat)</string>
     <string name="auth_invalid_login_param">Benutzername und/oder Passwort falsch</string>
     <string name="auth_invalid_user_name">Nutzernamen dürfen nur Buchstaben, Nummern, Punkte, Binde- und Unterstriche enthalten</string>
     <string name="auth_invalid_password">Passwort zu kurz (min. 6 Zeichen)</string>

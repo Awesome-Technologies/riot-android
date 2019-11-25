@@ -265,10 +265,10 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
     EditText mForgotPassword2TextView;
 
     // the home server text
-    @BindView(R.id.login_matrix_server_url_til)
+    @BindView(R.id.login_homeserver_til)
     TextInputLayout mHomeServerTextTil;
 
-    @BindView(R.id.login_matrix_server_url)
+    @BindView(R.id.login_homeserver)
     EditText mHomeServerText;
 
     // the identity server text
@@ -582,6 +582,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         // reset the badge counter
         BadgeProxy.INSTANCE.updateBadgeCount(this, 0);
 
+        mHomeServerTextTil.setVisibility(getResources().getBoolean(R.bool.custom_homeserver) ? View.VISIBLE : View.GONE);
+
         mHomeServerText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -804,12 +806,12 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
     }
 
     /**
-     * @return the home server Url according to custom HS checkbox
+     * @return the home server Url according to custom HS config
      */
     private String getHomeServerUrl() {
         String url = ServerUrlsRepository.INSTANCE.getDefaultHomeServerUrl(this);
 
-        if (mUseCustomHomeServersCheckbox.isChecked()) {
+        if (getResources().getBoolean(R.bool.custom_homeserver)) {
             url = mHomeServerText.getText().toString().trim();
 
             if (url.endsWith("/")) {
@@ -1863,6 +1865,13 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         // the user switches to another mode
         if (mMode != MODE_ACCOUNT_CREATION) {
             mMode = MODE_ACCOUNT_CREATION;
+
+            if (getResources().getBoolean(R.bool.custom_homeserver)) {
+                mRegistrationManager.reset();
+                mHomeserverConnectionConfig = null;
+                mHomeServerText.setText(ServerUrlsRepository.INSTANCE.getDefaultHomeServerUrl(this));
+            }
+
             refreshDisplay(true);
         }
     }
@@ -2345,10 +2354,15 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
      */
     private void setActionButtonsEnabled(boolean enabled) {
         mLoginButton.setEnabled(enabled);
-        mSwitchToRegisterButton.setEnabled(enabled);
+        if (getResources().getBoolean(R.bool.custom_homeserver)) {
+            mSwitchToRegisterButton.setEnabled(!isWaitingViewVisible());
+            mSwitchToLoginButton.setEnabled(!isWaitingViewVisible());
+        } else {
+            mSwitchToRegisterButton.setEnabled(enabled);
+            mSwitchToLoginButton.setEnabled(enabled);
+        }
         mLoginSsoButton.setEnabled(enabled);
         mRegisterButton.setEnabled(enabled);
-        mSwitchToLoginButton.setEnabled(enabled);
         mForgotPasswordButton.setEnabled(enabled);
         mForgotValidateEmailButton.setEnabled(enabled);
     }
@@ -2420,7 +2434,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
     }
 
     private void displayErrorOnUrl(TextInputLayout textInputLayout, String error) {
-        if (mUseCustomHomeServersCheckbox.isChecked()) {
+        if (getResources().getBoolean(R.bool.custom_homeserver)) {
             // Inline display
             textInputLayout.setError(error);
         } else {
