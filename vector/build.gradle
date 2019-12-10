@@ -287,7 +287,7 @@ dependencies {
     /************* Matrix SDK management **************/
     // update settings.gradle
     // use the matrix SDK as external dependency
-    implementation 'com.github.matrix-org:matrix-android-sdk:v0.9.32'
+    implementation 'com.github.awesome-technologies.matrix-android-sdk:matrix-sdk:v0.9.32-AMP'
     // use the matrix SDK as a sub project
     // you have to uncomment some lines in settings.gradle
     //implementation project(':matrix-sdk')
@@ -295,7 +295,7 @@ dependencies {
     //implementation project(':matrix-sdk-core')
 
     /************* jitsi **************/
-    implementation('org.jitsi.react:jitsi-meet-sdk:2.2.2')
+    implementation('org.jitsi.react:jitsi-meet-sdk:2.4.2')
 
     /************* analytics **************/
     // another tracking than GA
