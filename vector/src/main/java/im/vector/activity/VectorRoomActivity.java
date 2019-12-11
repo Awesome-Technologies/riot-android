@@ -1784,26 +1784,9 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             requestCode = PermissionsToolsKt.PERMISSION_REQUEST_CODE_VIDEO_CALL;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VectorRoomActivity.this)
-                .setTitle(R.string.dialog_title_confirmation);
-
-        if (isVideoCall) {
-            builder.setMessage(getString(R.string.start_video_call_prompt_msg));
-        } else {
-            builder.setMessage(getString(R.string.start_voice_call_prompt_msg));
+        if (PermissionsToolsKt.checkPermissions(permissions, VectorRoomActivity.this, requestCode)) {
+            startIpCall(PreferencesManager.useJitsiConfCall(VectorRoomActivity.this), isVideoCall);
         }
-
-        builder
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (PermissionsToolsKt.checkPermissions(permissions, VectorRoomActivity.this, requestCode)) {
-                            startIpCall(PreferencesManager.useJitsiConfCall(VectorRoomActivity.this), isVideoCall);
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
     }
 
     /**
