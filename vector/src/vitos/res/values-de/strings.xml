@@ -12,11 +12,11 @@
     <string name="bottom_action_settings">Einstellungen</string>
 
     <!-- permissions Android M -->
-    <string name="permissions_rationale_msg_storage">AMP.chat benötigt die Berechtigung, auf deine Fotos und Videos zugreifen zu können, um Anhänge zu senden und zu speichern.\n\nBitte erlaube den Zugriff im nächsten Dialog, um Dateien von deinem Gerät zu versenden.</string>
-    <string name="permissions_rationale_msg_camera">AMP.chat benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um Bilder aufzunehmen und Video-Anrufe durchzuführen.</string>
-    <string name="permissions_rationale_msg_record_audio">AMP.chat benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um (Sprach-)Anrufe tätigen zu können.</string>
-    <string name="permissions_rationale_msg_camera_and_audio">AMP.chat benötigt die Berechtigung, auf deine Kamera und dein Mikrofon zugreifen zu können, um Video-Anrufe durchführen zu können.\n\nBitte erlaube den Zugriff im nächsten Dialog, um den Anruf durchzuführen.</string>
-    <string name="permissions_rationale_msg_voice_message">AMP.chat benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um Sprachnachrichten aufzunehmen.</string>
+    <string name="permissions_rationale_msg_storage">Vitos Messenger benötigt die Berechtigung, auf deine Fotos und Videos zugreifen zu können, um Anhänge zu senden und zu speichern.\n\nBitte erlaube den Zugriff im nächsten Dialog, um Dateien von deinem Gerät zu versenden.</string>
+    <string name="permissions_rationale_msg_camera">Vitos Messenger benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um Bilder aufzunehmen und Video-Anrufe durchzuführen.</string>
+    <string name="permissions_rationale_msg_record_audio">Vitos Messenger benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um (Sprach-)Anrufe tätigen zu können.</string>
+    <string name="permissions_rationale_msg_camera_and_audio">Vitos Messenger benötigt die Berechtigung, auf deine Kamera und dein Mikrofon zugreifen zu können, um Video-Anrufe durchführen zu können.\n\nBitte erlaube den Zugriff im nächsten Dialog, um den Anruf durchzuführen.</string>
+    <string name="permissions_rationale_msg_voice_message">Vitos Messenger benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um Sprachnachrichten aufzunehmen.</string>
 
     <!-- home sliding menu -->
     <string name="room_sliding_menu_global_search">Globale Suche</string>
@@ -75,7 +75,7 @@
     <string name="room_recents_join_room_prompt">Gruppen-ID oder Gruppen-Alias eingeben</string>
 
     <!-- permissions Android M -->
-    <string name="permissions_rationale_msg_qr_code_login">AMP.chat benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um mit einem QR Code einzuloggen.</string>
+    <string name="permissions_rationale_msg_qr_code_login">Vitos Messenger benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um mit einem QR Code einzuloggen.</string>
 
     <!-- Vector Settings -->
 
@@ -148,7 +148,7 @@ Unbekannte Geräte:</string>
     <string name="widget_integration_missing_room_id">Anfrage beinhaltet keine Gruppen-ID.</string>
     <string name="widget_integration_room_not_visible">Gruppe %s ist nicht sichtbar.</string>
 
-    <string name="e2e_re_request_encryption_key_dialog_content">Bitte öffne AMP.chat auf einem anderen Gerät, das die Nachricht entschlüsseln kann, damit es diesem Gerät die Schlüssel senden kann.</string>
+    <string name="e2e_re_request_encryption_key_dialog_content">Bitte öffne Vitos Messenger auf einem anderen Gerät, das die Nachricht entschlüsseln kann, damit es diesem Gerät die Schlüssel senden kann.</string>
 
     <!-- notification statuses -->
     <string name="room_settings_no_flair">Diese Gruppe zeigt keine Flairs für irgendeine Community an</string>
@@ -192,5 +192,5 @@ Unbekannte Geräte:</string>
     <string name="settings_lazy_loading_description">Verbessere Performanz, indem Gruppen-Mitglieder erst beim ersten Ansehen geladen werden.</string>
     <string name="error_lazy_loading_not_supported_by_home_server">Dein Heimserver unterstützt nachladen von Gruppen-Mitgliedern noch nicht. Versuche es später.</string>
 
-    <string name="filter_view_https_amp">Anmelden mit AMP.chat</string>
+    <string name="filter_view_https_amp">Anmelden mit Vitos Messenger</string>
 </resources>
