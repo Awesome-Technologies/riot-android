@@ -6,21 +6,21 @@
     <color name="vector_error_color">#FF61708B</color>
 
     <!-- main app colors -->
-    <color name="amp_silver_blue_color">#ecf0f1</color>
-    <color name="amp_dark_blue_color">#2c3e50</color>
-    <color name="amp_text_color">#2E2F32</color>
-    <color name="amp_grey_color">#8e8e8e</color>
+    <color name="vitos_blue_color">#0093D0</color>
+    <color name="vitos_green_color">#C8D200</color>
+    <color name="vitos_text_color">#2E2F32</color>
+    <color name="vitos_grey_color">#8e8e8e</color>
     <color name="tint_color">#2f3640</color>
 
     <!-- home activity tab bar color -->
-    <color name="tab_favourites">@color/amp_dark_blue_color</color>
-    <color name="tab_favourites_secondary">@color/amp_dark_blue_color</color>
-    <color name="tab_people">@color/amp_dark_blue_color</color>
-    <color name="tab_people_secondary">@color/amp_dark_blue_color</color>
-    <color name="tab_rooms">@color/amp_dark_blue_color</color>
-    <color name="tab_rooms_secondary">@color/amp_dark_blue_color</color>
-    <color name="tab_groups">@color/amp_dark_blue_color</color>
-    <color name="tab_groups_secondary">@color/amp_dark_blue_color</color>
+    <color name="tab_favourites">@color/vitos_blue_color</color>
+    <color name="tab_favourites_secondary">@color/vitos_blue_color</color>
+    <color name="tab_people">@color/vitos_blue_color</color>
+    <color name="tab_people_secondary">@color/vitos_blue_color</color>
+    <color name="tab_rooms">@color/vitos_blue_color</color>
+    <color name="tab_rooms_secondary">@color/vitos_blue_color</color>
+    <color name="tab_groups">@color/vitos_blue_color</color>
+    <color name="tab_groups_secondary">@color/vitos_blue_color</color>
 
     <!-- color of the direct chat avatar ring (it's 50% of color accent) -->
     <color name="direct_chat_ring_color_light">#7F7AC9A1</color>
@@ -34,18 +34,18 @@
     <color name="riot_primary_background_color_dark">#FF181B21</color>
 
     <!--Default/Android Status Bar-->
-    <color name="primary_color_dark_light">@color/amp_dark_blue_color</color>
+    <color name="primary_color_dark_light">@color/vitos_blue_color</color>
     <!--Default/Base-->
-    <color name="primary_color_light">@color/amp_dark_blue_color</color>
+    <color name="primary_color_light">@color/vitos_blue_color</color>
     <!--Default/Accent-->
-    <color name="accent_color_light">@color/amp_dark_blue_color</color>
+    <color name="accent_color_light">@color/vitos_green_color</color>
 
     <!--Dark/Android Status Bar-->
     <color name="primary_color_dark_dark">#FF0D0E10</color>
     <!--Dark/Base-->
     <color name="primary_color_dark">#FF15171B</color>
     <!--Dark/Accent-->
-    <color name="accent_color_dark">@color/amp_dark_blue_color</color>
+    <color name="accent_color_dark">@color/vitos_blue_color</color>
 
     <!--Default/Line break mobile-->
     <color name="list_divider_color_light">#339D9D9D</color>
