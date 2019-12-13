@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -481,10 +482,15 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         }
 
         final View selectedMenu;
+
+        int defaultBottomTab = getResources().getBoolean(R.bool.allow_direct_chat) ?
+                R.id.bottom_action_people :
+                R.id.bottom_action_rooms;
+
         if (isFirstCreation()) {
-            selectedMenu = mBottomNavigationView.findViewById(R.id.bottom_action_people);
+            selectedMenu = mBottomNavigationView.findViewById(defaultBottomTab);
         } else {
-            selectedMenu = mBottomNavigationView.findViewById(getSavedInstanceState().getInt(CURRENT_MENU_ID, R.id.bottom_action_people));
+            selectedMenu = mBottomNavigationView.findViewById(getSavedInstanceState().getInt(CURRENT_MENU_ID, defaultBottomTab));
         }
         if (selectedMenu != null) {
             selectedMenu.performClick();

@@ -249,7 +249,7 @@ public class VectorMemberDetailsAdapter extends BaseExpandableListAdapter {
             groupPos++;
         }
 
-        if (0 != mDirectCallsList.size()) {
+        if (0 != mDirectCallsList.size() && mContext.getResources().getBoolean(R.bool.allow_direct_chat)) {
             mActionsList.add(mDirectCallsList);
             mDirectCallsGroupPosition = groupPos;
             groupPos++;
