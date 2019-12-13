@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="riot_app_name" translatable="false">AMP.chat</string>
+    <string name="riot_app_name" translatable="false">Vitos Messenger</string>
     <bool name="login_with_barcode">true</bool>
-    <bool name="calls_enabled">true</bool>
-    <bool name="custom_homeserver">true</bool>
+    <bool name="calls_enabled">false</bool>
+    <bool name="custom_homeserver">false</bool>
 
     <!-- server urls -->
-    <string name="vector_im_server_url" translatable="false">https://test.amp.chat</string>
-    <string name="matrix_org_server_url" translatable="false">https://test.amp.chat</string>
-    <string name="default_hs_server_url" translatable="false">https://test.amp.chat</string>
-    <string name="default_identity_server_url" translatable="false">https://test.amp.chat</string>
+    <string name="vector_im_server_url" translatable="false">https://fp.vitos.amp.chat</string>
+    <string name="matrix_org_server_url" translatable="false">https://fp.vitos.amp.chat</string>
+    <string name="default_hs_server_url" translatable="false">https://fp.vitos.amp.chat</string>
+    <string name="default_identity_server_url" translatable="false">https://fp.vitos.amp.chat</string>
     <string name="matomo_server_url" translatable="false">https://matomo.awesome-technologies.de</string>
-    <string name="matomo_site_id" translatable="false">3</string>
-    <string name="matomo_tracker_name" translatable="false">AMPchat Android</string>
-    <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
+    <string name="matomo_site_id" translatable="false">5</string>
+    <string name="matomo_tracker_name" translatable="false">Vitos Messenger Android</string>
+    <string name="bug_report_url" translatable="false">https://fp.vitos.amp.chat/bugreports/submit</string>
     <string name="default_stun_server" translatable="false">turn.amp.chat</string>
-    <string name="login_intent_hostname">test.amp.chat</string>
+    <string name="login_intent_hostname">fp.vitos.amp.chat</string>
 
     <!-- Widget urls -->
-    <string name="integrations_ui_url" translatable="false">"https://test.amp.chat/scalar-web/"</string>
-    <string name="integrations_rest_url" translatable="false">"https://test.amp.chat/scalar"</string>
-    <string name="integrations_jitsi_widget_url" translatable="false">"https://test.amp.chat/scalar/widgets/jitsi.html"</string>
+    <string name="integrations_ui_url" translatable="false">"https://fp.vitos.amp.chat/scalar-web/"</string>
+    <string name="integrations_rest_url" translatable="false">"https://fp.vitos.amp.chat/scalar"</string>
+    <string name="integrations_jitsi_widget_url" translatable="false">"https://fp.vitos.amp.chat/scalar/widgets/jitsi.html"</string>
 
     <string-array name="integrations_widgets_urls" translatable="false">
-        <item>https://test.amp.chat/scalar</item>
+        <item>https://fp.vitos.amp.chat/scalar</item>
     </string-array>
 
     <!-- empty means to use the active HS url -->
     <!-- set a valid URL like "https://matrix.org" to use a custom one -->
     <string name="push_server_url" translatable="false" />
-    <string name="push_app_name" translatable="false">AMPchat (Android)</string>
+    <string name="push_app_name" translatable="false">Vitos Messenger (Android)</string>
 
     <string-array name="room_directory_servers" translatable="false">
-        <item>test.amp.chat</item>
+        <item>fp.vitos.amp.chat</item>
     </string-array>
 
 </resources>
