@@ -78,7 +78,7 @@ public class VectorUnifiedSearchFragmentPagerAdapter extends FragmentPagerAdapte
         mFragmentsData.put(pos, new Pair<Integer, Fragment>(R.string.tab_title_search_messages, null));
         pos++;
 
-        if (!searchInRoom) {
+        if (!searchInRoom && context.getResources().getBoolean(R.bool.allow_direct_chat)) {
             mFragmentsData.put(pos, new Pair<Integer, Fragment>(R.string.tab_title_search_people, null));
             pos++;
         }

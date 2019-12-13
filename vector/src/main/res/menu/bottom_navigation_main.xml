@@ -5,6 +5,7 @@
         android:id="@+id/bottom_action_people"
         android:contentDescription="@string/bottom_action_people"
         android:enabled="true"
+        android:visible="@bool/allow_direct_chat"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="" />
 
