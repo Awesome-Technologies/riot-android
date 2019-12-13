@@ -70,6 +70,7 @@ public final class PushManager {
     private static final String PREFS_SYNC_TIMEOUT = "GcmRegistrationManager.PREFS_SYNC_TIMEOUT";
     private static final String PREFS_SYNC_DELAY = "GcmRegistrationManager.PREFS_SYNC_DELAY";
 
+    private static final String DEFAULT_PUSHER_PATH = "/_matrix/push/v1/notify";
     private static final String DEFAULT_PUSHER_FILE_TAG = "mobile";
 
     private String mPusherAppName = null;
@@ -135,12 +136,11 @@ public final class PushManager {
         mContext = appContext.getApplicationContext();
         // TODO customise it ?
         mBasePusherDeviceName = Build.MODEL.trim();
-        mPusherAppName = mContext.getString(R.string.push_app_name);
-        mPusherId = mContext.getString(R.string.push_app_id);
-        mPusherUrl = mContext.getString(R.string.push_server_url);
+        mPusherAppName = (String) mContext.getPackageManager().getApplicationLabel(mContext.getApplicationInfo());
+        mPusherId = mContext.getPackageName() + ".android";
+        mPusherUrl = mContext.getString(R.string.default_hs_server_url) + DEFAULT_PUSHER_PATH;
 
         try {
-            PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
             mPusherLang = mContext.getResources().getConfiguration().locale.getLanguage();
         } catch (Exception e) {
             mPusherLang = "en";
