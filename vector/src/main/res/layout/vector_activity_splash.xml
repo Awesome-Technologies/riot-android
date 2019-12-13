@@ -6,9 +6,9 @@
 
     <ImageView
         android:id="@+id/logo_image_view"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/logo_splash"
+        android:src="@drawable/logo_splash"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
