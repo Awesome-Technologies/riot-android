@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- titles -->
+    <string name="title_activity_room">Gruppe</string>
+
+    <!-- Authentication -->
+    <string name="auth_user_id_placeholder">Nutzername</string>
+
+    <!-- Bottom navigation buttons -->
+    <string name="bottom_action_people">Personen</string>
+    <string name="bottom_action_rooms">Gruppen</string>
+    <string name="bottom_action_settings">Einstellungen</string>
+
+    <!-- permissions Android M -->
+    <string name="permissions_rationale_msg_storage">AMP.chat benötigt die Berechtigung, auf deine Fotos und Videos zugreifen zu können, um Anhänge zu senden und zu speichern.\n\nBitte erlaube den Zugriff im nächsten Dialog, um Dateien von deinem Gerät zu versenden.</string>
+    <string name="permissions_rationale_msg_camera">AMP.chat benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um Bilder aufzunehmen und Video-Anrufe durchzuführen.</string>
+    <string name="permissions_rationale_msg_record_audio">AMP.chat benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um (Sprach-)Anrufe tätigen zu können.</string>
+    <string name="permissions_rationale_msg_camera_and_audio">AMP.chat benötigt die Berechtigung, auf deine Kamera und dein Mikrofon zugreifen zu können, um Video-Anrufe durchführen zu können.\n\nBitte erlaube den Zugriff im nächsten Dialog, um den Anruf durchzuführen.</string>
+    <string name="permissions_rationale_msg_voice_message">AMP.chat benötigt die Berechtigung, auf dein Mikrofon zugreifen zu können, um Sprachnachrichten aufzunehmen.</string>
+
+    <!-- home sliding menu -->
+    <string name="room_sliding_menu_global_search">Globale Suche</string>
+    <string name="room_sliding_menu_historical">Archiv</string>
+
+    <!-- Home screen -->
+    <string name="home_filter_placeholder_home">Nach Gruppen suchen</string>
+    <string name="home_filter_placeholder_rooms">Nach Gruppen suchen</string>
+
+    <!-- Rooms fragment -->
+    <string name="rooms_header">Deine Gruppen</string>
+    <string name="rooms_directory_header">Öffentliche Gruppen</string>
+    <string name="no_room_placeholder">Keine Gruppen</string>
+    <string name="no_public_room_placeholder">Keine öffentlichen Gruppen vorhanden</string>
+
+    <!-- Groups fragment -->
+    <string name="join_room">Gruppe beitreten</string>
+
+    <!-- room info dialog Screen -->
+    <string name="room_info_room_name">Gruppenname</string>
+    <string name="room_info_room_topic">Gruppenthema</string>
+
+    <!-- Actions -->
+    <string name="join">Akzeptieren</string>
+
+    <!-- Room Preview -->
+    <string name="room_preview_invitation_format">Du wurdest von %s in diese Gruppe eingeladen</string>
+    <string name="room_preview_try_join_an_unknown_room">Du möchtest auf %s zugreifen. Möchtest du der Gruppe beitreten, um an der Diskussion teilzunehmen?</string>
+    <string name="room_preview_try_join_an_unknown_room_default">eine Gruppe</string>
+    <string name="room_preview_room_interactions_disabled">Dies ist eine Vorschau dieser Gruppe. Gruppen-Interaktionen wurden deaktiviert.</string>
+
+    <!--  Chat participants -->
+    <string name="room_participants_leave_prompt_title">Gruppe verlassen</string>
+    <string name="room_participants_leave_prompt_msg">Bist du sicher, dass du die Gruppe verlassen möchtest?</string>
+    <string name="room_participants_action_leave">Diese Gruppe verlassen</string>
+    <string name="room_participants_action_remove">Aus dieser Gruppe entfernen</string>
+    <string name="room_participants_invite_search_another_user">Name</string>
+
+    <!--  Chat -->
+    <string name="room_do_not_have_permission_to_post">Du bist nicht berechtigt, in diese Gruppe zu schreiben</string>
+
+    <!-- Room Details -->
+    <string name="room_details_title">Chat-Details</string>
+    <string name="room_details_files">Medien</string>
+
+    <!-- Search -->
+    <string name="search_members_hint">Gruppen-Mitglieder filtern</string>
+    <string name="tab_title_search_rooms">GRUPPEN</string>
+    <string name="tab_title_search_files">MEDIEN</string>
+    <string name="people_search_invite_hint">Gib mindestens einen Buchstaben ein, um die Suche zu starten.</string>
+
+    <!-- Room recents -->
+    <string name="room_recents_create_room">Gruppe erstellen</string>
+    <string name="room_recents_join_room">Gruppe beitreten</string>
+    <string name="room_recents_join_room_title">Einer Gruppe beitreten</string>
+    <string name="room_recents_join_room_prompt">Gruppen-ID oder Gruppen-Alias eingeben</string>
+
+    <!-- permissions Android M -->
+    <string name="permissions_rationale_msg_qr_code_login">AMP.chat benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um mit einem QR Code einzuloggen.</string>
+
+    <!-- Vector Settings -->
+
+    <string name="settings_invited_to_room">Wenn ich in eine Gruppe eingeladen werde</string>
+
+    <string name="settings_pin_missed_notifications">Gruppen mit ungelesenen Benachrichtigungen anheften</string>
+    <string name="settings_pin_unread_messages">Gruppen mit ungelesenen Nachrichten anheften</string>
+
+    <string name="settings_opt_in_of_analytics_summary">Awesome Technologies sammelt anonyme Analysedaten um zu verstehen, wie die App genutzt wird.</string>
+    <string name="settings_opt_in_of_analytics_prompt">Bitte aktiviere die Analysedaten um uns zu helfen den Messenger zu verbessern.</string>
+
+    <!-- room global settings-->
+    <string name="room_settings_room_photo">Gruppenbild</string>
+    <string name="room_settings_room_name">Gruppenname</string>
+    <string name="room_settings_room_tag">Gruppen-Markierung</string>
+    <string name="room_settings_leave_conversation">Gruppe verlassen</string>
+
+    <!-- room settings : access and visibility -->
+    <string name="room_settings_directory_visibility">Diese Gruppe im Gruppen-Verzeichnis anzeigen</string>
+    <string name="room_settings_room_access_rules_pref_title">Gruppenzugriff</string>
+    <string name="room_settings_room_access_rules_pref_dialog_title">Wer kann auf diese Gruppe zugreifen?</string>
+
+    <!-- Room settings: "Who can access this room?" (access rule) -->
+    <string name="room_settings_room_access_warning">Um einen Link zu einer Gruppe erstellen zu können, muss diese eine Adresse haben.</string>
+    <string name="room_settings_room_access_entry_anyone_with_link_apart_guest">Alle, die den Gruppen-Link kennen (ausgenommen Gäste)</string>
+    <string name="room_settings_room_access_entry_anyone_with_link_including_guest">Alle, die den Gruppen-Link kennen (auch Gäste)</string>
+
+    <!-- advanced -->
+    <string name="room_settings_room_internal_id">Interne ID dieser Gruppe</string>
+    <string name="room_settings_never_send_to_unverified_devices_summary">Niemals verschlüsselte Nachrichten an unverifizierte Geräte in dieser Gruppe von diesem Gerät senden.</string>
+
+    <!-- Raum settings: advanced addresses -->
+    <string name="room_settings_addresses_no_local_addresses">Diese Gruppe hat keine lokalen Adressen</string>
+
+    <string name="room_settings_copy_room_id">Gruppen-ID kopieren</string>
+    <string name="room_settings_copy_room_address">Gruppenadresse kopieren</string>
+
+    <string name="room_settings_addresses_e2e_enabled">Verschlüsselung ist in dieser Gruppe aktiviert.</string>
+    <string name="room_settings_addresses_e2e_disabled">Verschlüsselung ist in dieser Gruppe deaktiviert.</string>
+
+    <string name="encryption_export_e2e_room_keys">Ende-zu-Ende-Verschlüsselungs-Gruppenschlüssel exportieren</string>
+    <string name="encryption_export_room_keys">Gruppenschlüssel exportieren</string>
+    <string name="encryption_export_saved_as">Die Ende-zu-Ende-Gruppenschlüssel wurden in \'%s\' gespeichert.
+
+Achtung: Diese Datei wird vielleicht gelöscht, wenn die App deinstalliert wird.</string>
+
+    <string name="encryption_import_e2e_room_keys">Ende-zu-Ende-Gruppenschlüssel importieren</string>
+    <string name="encryption_import_room_keys">Gruppenschlüssel importieren</string>
+
+    <!-- unknown devices management -->
+    <string name="unknown_devices_alert_title">Gruppe enthält unbekannte Geräte</string>
+    <string name="unknown_devices_alert_message">Diese Gruppe enthält unbekannte Geräte, die noch nicht verifiziert wurden.
+Es gibt also keine Garantie, dass diese Geräte wirklich dem angegebenen Benutzer gehören.
+Wir empfehlen, den Verifizierungsprozess für jedes Gerät zu durchlaufen, bevor du fortfährst. Du kannst die Nachricht aber auch ohne Verifizierung senden, wenn du das vorziehst.
+
+Unbekannte Geräte:</string>
+
+    <!-- directory activity  -->
+    <string name="select_room_directory">Gruppen-Verzeichnis auswählen</string>
+    <string name="directory_server_type_homeserver">Gib einen Heimserver ein, um seine öffentlichen Gruppen aufzulisten</string>
+    <string name="directory_server_all_rooms_on_server">Alle Gruppen auf dem %s-Server</string>
+    <string name="directory_server_native_rooms">Alle nativen %s-Gruppen</string>
+
+    <!-- historical -->
+    <string name="widget_no_power_to_manage">Für das Verwalten von Widgets in dieser Gruppe ist eine Berechtigung erforderlich</string>
+
+    <!-- Widget Integration Manager -->
+    <string name="widget_integration_must_be_in_room">Du bist nicht Mitglied in dieser Gruppe.</string>
+    <string name="widget_integration_no_permission_in_room">Du hast keine Berechtigung, diese Aktion in dieser Gruppe auszuführen.</string>
+    <string name="widget_integration_missing_room_id">Anfrage beinhaltet keine Gruppen-ID.</string>
+    <string name="widget_integration_room_not_visible">Gruppe %s ist nicht sichtbar.</string>
+
+    <string name="e2e_re_request_encryption_key_dialog_content">Bitte öffne AMP.chat auf einem anderen Gerät, das die Nachricht entschlüsseln kann, damit es diesem Gerät die Schlüssel senden kann.</string>
+
+    <!-- notification statuses -->
+    <string name="room_settings_no_flair">Diese Gruppe zeigt keine Flairs für irgendeine Community an</string>
+
+    <!-- group details -->
+    <string name="group_details_rooms">Gruppen</string>
+
+    <string name="rooms">Gruppen</string>
+    <string name="filter_group_rooms">Filter Gruppen</string>
+
+    <string name="forget_room">Gruppe vergessen</string>
+
+    <plurals name="directory_search_rooms">
+        <item quantity="one">1 Gruppe</item>
+        <item quantity="other">%d Gruppen</item>
+    </plurals>
+    <plurals name="directory_search_rooms_for">
+        <item quantity="one">%1$s Gruppe gefunden für %2$s</item>
+        <item quantity="other">%1$s Gruppen gefunden für %2$s</item>
+    </plurals>
+    <plurals name="notification_unread_notified_messages_in_room_rooms">
+        <item quantity="one">1 Gruppe</item>
+        <item quantity="other">%d Gruppen</item>
+    </plurals>
+
+    <!-- Widget Integration Manager -->
+    <string name="command_description_invite_user">Lädt Benutzer mit angegebener Kennung in die aktuelle Gruppe ein</string>
+    <string name="command_description_join_room">Tritt der Gruppe mit angegebenen Alias bei</string>
+    <string name="command_description_part_room">Verlasse Gruppe</string>
+    <string name="command_description_topic">Setzt das Gruppen-Thema</string>
+
+    <string name="room_tombstone_versioned_description">Diese Gruppe wurde ersetzt und ist nicht länger aktiv</string>
+    <string name="room_tombstone_continuation_description">Diese Gruppe ist die Fortsetzung einer anderen Konversation</string>
+
+    <plurals name="group_rooms">
+        <item quantity="one">1 Gruppe</item>
+        <item quantity="other">%d Gruppen</item>
+    </plurals>
+
+    <string name="settings_lazy_loading_title">Gruppen-Mitglieder nachladen</string>
+    <string name="settings_lazy_loading_description">Verbessere Performanz, indem Gruppen-Mitglieder erst beim ersten Ansehen geladen werden.</string>
+    <string name="error_lazy_loading_not_supported_by_home_server">Dein Heimserver unterstützt nachladen von Gruppen-Mitgliedern noch nicht. Versuche es später.</string>
+
+    <string name="filter_view_https_amp">Anmelden mit AMP.chat</string>
+</resources>
