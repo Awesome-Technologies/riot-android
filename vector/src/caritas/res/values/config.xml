@@ -30,7 +30,9 @@
     <!-- empty means to use the active HS url -->
     <!-- set a valid URL like "https://matrix.org" to use a custom one -->
     <string name="push_server_url" translatable="false" />
+    <string name="push_app_id" translatable="false">care.amp.messenger.caritas.android</string>
     <string name="push_app_name" translatable="false">Caritas Messenger (Android)</string>
+    <string name="pusher_server_url" translatable="false">https://matrix.org/_matrix/push/v1/notify</string>
 
     <string-array name="room_directory_servers" translatable="false">
         <item>caritas.amp.care</item>

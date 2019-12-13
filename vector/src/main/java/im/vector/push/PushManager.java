@@ -70,12 +70,12 @@ public final class PushManager {
     private static final String PREFS_SYNC_TIMEOUT = "GcmRegistrationManager.PREFS_SYNC_TIMEOUT";
     private static final String PREFS_SYNC_DELAY = "GcmRegistrationManager.PREFS_SYNC_DELAY";
 
-    private static final String DEFAULT_PUSHER_APP_ID = "care.amp.messenger.caritas.android";
-    private static final String DEFAULT_PUSHER_URL = "https://caritas.amp.care/_matrix/push/v1/notify";
     private static final String DEFAULT_PUSHER_FILE_TAG = "mobile";
 
     private String mPusherAppName = null;
     private String mPusherLang = null;
+    private String mPusherId = null;
+    private String mPusherUrl = null;
 
     // the session registration listener
     private final List<ApiCallback<Void>> mRegistrationCallbacks = new ArrayList<>();
@@ -133,9 +133,12 @@ public final class PushManager {
      */
     public PushManager(final Context appContext) {
         mContext = appContext.getApplicationContext();
+
         // TODO customise it ?
         mBasePusherDeviceName = Build.MODEL.trim();
         mPusherAppName = mContext.getString(R.string.push_app_name);
+        mPusherId = mContext.getString(R.string.push_app_id);
+        mPusherUrl = mContext.getString(R.string.pusher_server_url);
 
         try {
             PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
@@ -508,12 +511,12 @@ public final class PushManager {
         boolean eventIdOnlyPushes = isBackgroundSyncAllowed() || !isContentSendingAllowed();
 
         session.getPushersRestClient().addHttpPusher(mRegistrationToken,
-                DEFAULT_PUSHER_APP_ID,
+                mPusherId,
                 computePushTag(session),
                 mPusherLang,
                 mPusherAppName,
                 mBasePusherDeviceName,
-                DEFAULT_PUSHER_URL,
+                mPusherUrl,
                 append,
                 eventIdOnlyPushes,
                 new ApiCallback<Void>() {
@@ -903,12 +906,12 @@ public final class PushManager {
         Log.d(LOG_TAG, "unregister " + session.getMyUserId());
 
         session.getPushersRestClient().removeHttpPusher(mRegistrationToken,
-                DEFAULT_PUSHER_APP_ID,
+                mPusherId,
                 computePushTag(session),
                 mPusherLang,
                 mPusherAppName,
                 mBasePusherDeviceName,
-                DEFAULT_PUSHER_URL,
+                mPusherUrl,
                 new ApiCallback<Void>() {
                     @Override
                     public void onSuccess(Void info) {
