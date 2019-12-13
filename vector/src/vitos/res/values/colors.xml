@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Error color -->
+    <color name="vector_warning_color">#FFFF4B55</color>
+    <color name="vector_error_color">#FF61708B</color>
+
+    <!-- main app colors -->
+    <color name="amp_silver_blue_color">#ecf0f1</color>
+    <color name="amp_dark_blue_color">#2c3e50</color>
+    <color name="amp_text_color">#2E2F32</color>
+    <color name="amp_grey_color">#8e8e8e</color>
+    <color name="tint_color">#2f3640</color>
+
+    <!-- home activity tab bar color -->
+    <color name="tab_favourites">@color/amp_dark_blue_color</color>
+    <color name="tab_favourites_secondary">@color/amp_dark_blue_color</color>
+    <color name="tab_people">@color/amp_dark_blue_color</color>
+    <color name="tab_people_secondary">@color/amp_dark_blue_color</color>
+    <color name="tab_rooms">@color/amp_dark_blue_color</color>
+    <color name="tab_rooms_secondary">@color/amp_dark_blue_color</color>
+    <color name="tab_groups">@color/amp_dark_blue_color</color>
+    <color name="tab_groups_secondary">@color/amp_dark_blue_color</color>
+
+    <!-- color of the direct chat avatar ring (it's 50% of color accent) -->
+    <color name="direct_chat_ring_color_light">#7F7AC9A1</color>
+    <color name="direct_chat_ring_color_dark">#7F7AC9A1</color>
+
+    <!-- theses colours are requested a background cannot be set by an ?attr on android < 5 -->
+    <!-- dedicated drawables are created for each theme -->
+    <!-- Default/Background-->
+    <color name="riot_primary_background_color_light">#FFFFFFFF</color>
+    <!-- Dark/Background-->
+    <color name="riot_primary_background_color_dark">#FF181B21</color>
+
+    <!--Default/Android Status Bar-->
+    <color name="primary_color_dark_light">@color/amp_dark_blue_color</color>
+    <!--Default/Base-->
+    <color name="primary_color_light">@color/amp_dark_blue_color</color>
+    <!--Default/Accent-->
+    <color name="accent_color_light">@color/amp_dark_blue_color</color>
+
+    <!--Dark/Android Status Bar-->
+    <color name="primary_color_dark_dark">#FF0D0E10</color>
+    <!--Dark/Base-->
+    <color name="primary_color_dark">#FF15171B</color>
+    <!--Dark/Accent-->
+    <color name="accent_color_dark">@color/amp_dark_blue_color</color>
+
+    <!--Default/Line break mobile-->
+    <color name="list_divider_color_light">#339D9D9D</color>
+    <!--Dark/Line break mobile-->
+    <color name="list_divider_color_dark">#FF61708B</color>
+
+    <color name="tab_bar_selected_background_color_light">@color/primary_color_light</color>
+    <color name="tab_bar_selected_background_color_dark">@color/primary_color_dark</color>
+
+    <color name="tab_bar_unselected_background_color_light">@color/primary_color_light</color>
+    <color name="tab_bar_unselected_background_color_dark">@color/primary_color_dark</color>
+
+    <!-- Hint Colors -->
+    <color name="primary_hint_text_color_light">#FFFFFF</color>
+    <color name="primary_hint_text_color_dark">#FFFFFF</color>
+
+    <color name="default_text_hint_color_light">#903C3C3C</color>
+    <color name="default_text_hint_color_dark">#CCDDDDDD</color>
+
+    <!-- Text Colors -->
+    <!--Default/Text Primary-->
+    <color name="riot_primary_text_color_light">#FF3C3C3C</color>
+    <!--Default/Text Secondary-->
+    <color name="riot_secondary_text_color_light">#FF9E9E9E</color>
+    <color name="riot_tertiary_text_color_light">#FF383838</color>
+
+    <!--Dark /Text Primary-->
+    <color name="riot_primary_text_color_dark">#FFEDF3FF</color>
+    <!--Dark /Text Secondary-->
+    <color name="riot_secondary_text_color_dark">#FFA1B2D1</color>
+    <color name="riot_tertiary_text_color_dark">@color/riot_primary_text_color_dark</color>
+
+    <!-- Quote Colors -->
+    <color name="quote_strip_color">#FFDDDDDD</color>
+    <color name="quote_background_color">@android:color/transparent</color>
+
+    <!-- Notification view colors -->
+    <color name="soft_resource_limit_exceeded">@color/vector_warning_color</color>
+    <color name="hard_resource_limit_exceeded">@color/vector_error_color</color>
+
+    <!-- Avatar colors -->
+    <color name="avatar_color_1">#03b381</color>
+    <color name="avatar_color_2">#368bd6</color>
+    <color name="avatar_color_3">#ac3ba8</color>
+
+    <!-- Password Strength bar colors -->
+    <color name="password_strength_bar_weak">#FFF56679</color>
+    <color name="password_strength_bar_low">#FFFFC666</color>
+    <color name="password_strength_bar_ok">#FFF8E71C</color>
+    <color name="password_strength_bar_strong">#FF7AC9A1</color>
+    <color name="password_strength_bar_undefined">#FF9E9E9E</color>
+
+    <!-- Button color -->
+    <color name="button_enabled_text_color">#FFFFFFFF</color>
+    <color name="button_disabled_text_color">#FF7F7F7F</color>
+
+    <!-- User names color -->
+    <color name="username_1">#368bd6</color>
+    <color name="username_2">#ac3ba8</color>
+    <color name="username_3">#03b381</color>
+    <color name="username_4">#e64f7a</color>
+    <color name="username_5">#ff812d</color>
+    <color name="username_6">#2dc2c5</color>
+    <color name="username_7">#5c56f5</color>
+    <color name="username_8">#74d12c</color>
+</resources>

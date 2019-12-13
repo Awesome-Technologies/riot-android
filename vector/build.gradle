@@ -102,6 +102,13 @@ android {
             keyAlias = CARITAS_KEY_ALIAS
             keyPassword CARITAS_KEY_PASSWORD
         }
+
+        vitos {
+            storeFile file(AMP_STORE_FILE)
+            storePassword AMP_STORE_PASSWORD
+            keyAlias = VITOS_KEY_ALIAS
+            keyPassword VITOS_KEY_PASSWORD
+        }
     }
 
     dexOptions {
@@ -177,6 +184,17 @@ android {
             buildConfigField "boolean", "ALLOW_FCM_USE", "true"
             buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"A\""
             buildConfigField "String", "FLAVOR_DESCRIPTION", "\"AMPchat\""
+            signingConfig signingConfigs.amp
+        }
+
+        vitos {
+            applicationId 'care.amp.messenger.vitos'
+            // use the version name
+            versionCode rootProject.ext.versionCodeProp
+            versionName rootProject.ext.versionNameProp
+            buildConfigField "boolean", "ALLOW_FCM_USE", "true"
+            buildConfigField "String", "SHORT_FLAVOR_DESCRIPTION", "\"V\""
+            buildConfigField "String", "FLAVOR_DESCRIPTION", "\"Vitos\""
             signingConfig signingConfigs.amp
         }
     }
@@ -321,6 +339,13 @@ dependencies {
 
     // caritas flavor only
     caritasImplementation('com.google.firebase:firebase-messaging:20.0.0') {
+        exclude group: 'com.google.firebase', module: 'firebase-core'
+        exclude group: 'com.google.firebase', module: 'firebase-analytics'
+        exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
+    }
+
+    // vitos flavor only
+    vitosImplementation('com.google.firebase:firebase-messaging:20.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
