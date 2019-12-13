@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="auth_user_id_placeholder">User name</string>
+
+    <string name="title_activity_room">Group</string>
+
+    <!-- Bottom navigation buttons -->
+    <string name="bottom_action_people">People</string>
+    <string name="bottom_action_rooms">Groups</string>
+    <string name="bottom_action_settings">Settings</string>
+
+    <!-- permissions Android M -->
+    <string name="permissions_rationale_msg_storage">Vitos Messenger needs permission to access your photo and video library to send and save attachments.\n\nPlease allow access on the next pop-up to be able to send files from your phone.</string>
+    <string name="permissions_rationale_msg_camera">Vitos Messenger needs permission to access your camera to take pictures and video calls.</string>
+    <string name="permissions_rationale_msg_record_audio">Vitos Messenger needs permission to access your microphone to perform audio calls.</string>
+    <string name="permissions_rationale_msg_camera_and_audio">Vitos Messenger needs permission to access your camera and your microphone to perform video calls.\n\nPlease allow access on the next pop-ups to be able to make the call.</string>
+    <string name="permissions_rationale_msg_voice_message">Vitos Messenger needs permission to access your microphone to send voice messages.</string>
+
+    <!-- home sliding menu -->
+    <string name="room_sliding_menu_global_search">Global Search</string>
+    <string name="room_sliding_menu_historical">Archive</string>
+
+    <!-- Home screen -->
+    <string name="home_filter_placeholder_home">Search for groups</string>
+    <string name="home_filter_placeholder_rooms">Search for groups</string>
+
+    <!-- Rooms fragment -->
+    <string name="rooms_header">Your Groups</string>
+    <string name="rooms_directory_header">Public Groups</string>
+    <string name="no_room_placeholder">No groups</string>
+    <string name="no_public_room_placeholder">No public groups available</string>
+
+    <!-- Groups fragment -->
+    <string name="join_room">Join Group</string>
+
+    <!-- room info dialog Screen -->
+    <string name="room_info_room_name">Group name</string>
+    <string name="room_info_room_topic">Group topic</string>
+
+    <!-- Room Preview -->
+    <string name="room_preview_invitation_format">You have been invited to join this group by %s</string>
+    <string name="room_preview_try_join_an_unknown_room_default">a group</string>
+    <string name="room_preview_room_interactions_disabled">This is a preview of this group. Group interactions have been disabled.</string>
+
+    <!--  Chat participants -->
+    <string name="room_participants_leave_prompt_title">Leave group</string>
+    <string name="room_participants_leave_prompt_msg">Are you sure you want to leave the group?</string>
+    <string name="room_participants_action_leave">Leave this group</string>
+    <string name="room_participants_action_remove">Remove from this group</string>
+    <string name="room_participants_invite_search_another_user">Name</string>
+
+    <!--  Chat -->
+    <string name="room_do_not_have_permission_to_post">You do not have permission to post to this group</string>
+
+    <!-- Room Details -->
+    <string name="room_details_title">Chat Details</string>
+    <string name="room_details_files">Media</string>
+
+    <!-- Search -->
+    <string name="search_members_hint">Filter group members</string>
+    <string name="tab_title_search_rooms">GROUPS</string>
+    <string name="tab_title_search_files">MEDIA</string>
+    <string name="people_search_invite_hint">Type at least one character to start the search.</string>
+
+    <!-- Room recents -->
+    <string name="room_recents_conversations">GROUPS</string>
+    <string name="room_recents_create_room">Create group</string>
+    <string name="room_recents_join_room">Join group</string>
+    <string name="room_recents_join_room_title">Join a group</string>
+    <string name="room_recents_join_room_prompt">Type a group id or a group alias</string>
+
+    <!-- Directory -->
+    <plurals name="directory_search_rooms">
+        <item quantity="one">1 group</item>
+        <item quantity="other">%d groups</item>
+    </plurals>
+    <plurals name="directory_search_rooms_for">
+        <item quantity="one">%1$s group found for %2$s</item>
+        <item quantity="other">%1$s groups found for %2$s</item>
+    </plurals>
+
+    <!-- permissions Android M -->
+    <string name="permissions_rationale_msg_qr_code_login">Vitos Messenger needs permission to access your camera to log in via QR-Code.</string>
+
+    <!-- Vector Settings -->
+    <string name="settings_invited_to_room">When I\'m invited to a group</string>
+    <string name="settings_pin_missed_notifications">Pin groups with missed notifications</string>
+    <string name="settings_pin_unread_messages">Pin groups with unread messages</string>
+
+    <string name="settings_opt_in_of_analytics_summary">Awesome Technologies collects anonymous statistics to allow us to improve the application.</string>
+    <string name="settings_opt_in_of_analytics_prompt">Please enable analytics to help us improve the messenger.</string>
+
+    <!-- Room Settings -->
+
+    <!-- room global settings-->
+    <string name="room_settings_room_photo">Group Photo</string>
+    <string name="room_settings_room_name">Group Name</string>
+    <string name="room_settings_room_tag">Group Tag</string>
+    <string name="room_settings_leave_conversation">Leave group</string>
+
+    <!-- room settings : access and visibility -->
+    <string name="room_settings_directory_visibility">List this group in group directory</string>
+    <string name="room_settings_room_access_rules_pref_title">Group Access</string>
+    <string name="room_settings_room_read_history_rules_pref_title">Group History Readability</string>
+    <string name="room_settings_room_access_rules_pref_dialog_title">Who can access this group?</string>
+
+    <!-- Room settings: "Who can access this room?" (access rule) -->
+    <string name="room_settings_room_access_warning">To link to a group it must have an address.</string>
+    <string name="room_settings_room_access_entry_anyone_with_link_apart_guest">Anyone who knows the group\'s link, apart from guests</string>
+    <string name="room_settings_room_access_entry_anyone_with_link_including_guest">Anyone who knows the group\'s link, including guests</string>
+
+    <!-- advanced -->
+    <string name="room_settings_room_internal_id">This group\'s internal ID</string>
+    <string name="room_settings_never_send_to_unverified_devices_summary">Never send encrypted messages to unverified devices in this group from this device.</string>
+
+    <!-- Room settings: advanced addresses -->
+    <string name="room_settings_addresses_no_local_addresses">This group has no local addresses</string>
+
+    <string name="room_settings_no_flair">This group is not showing flair for any communities</string>
+
+
+    <string name="room_settings_addresses_disable_main_address_prompt_msg">You will have no main address specified for this group."</string>
+
+    <string name="room_settings_copy_room_id">Copy Group ID</string>
+    <string name="room_settings_copy_room_address">Copy Group Address</string>
+
+    <string name="room_settings_addresses_e2e_enabled">Encryption is enabled in this group.</string>
+    <string name="room_settings_addresses_e2e_disabled">Encryption is disabled in this group.</string>
+
+    <!-- matrix error -->
+    <string name="failed_to_load_timeline_position">%s was trying to load a specific point in this group\'s timeline but was unable to find it.</string>
+
+    <string name="encryption_export_e2e_room_keys">Export E2E group keys</string>
+    <string name="encryption_export_room_keys">Export group keys</string>
+    <string name="encryption_export_saved_as">The E2E group keys have been saved to \'%s\'.\n\nWarning: this file may be deleted if the application is uninstalled.</string>
+
+    <string name="encryption_import_e2e_room_keys">Import E2E group keys</string>
+    <string name="encryption_import_room_keys">Import group keys</string>
+
+    <!-- unknown devices management -->
+    <string name="unknown_devices_alert_title">Group contains unknown devices</string>
+    <string name="unknown_devices_alert_message">This group contains unknown devices which have not been verified.\nThis means there is no guarantee that the devices belong to the users they claim to.\nWe recommend you go through the verification process for each device before continuing, but you can resend the message without verifying if you prefer.\n\nUnknown devices:</string>
+
+    <!-- directory activity  -->
+    <string name="select_room_directory">Select a group directory</string>
+    <string name="directory_server_type_homeserver">Type a homeserver to list public groups from</string>
+    <string name="directory_server_all_rooms_on_server">All groups on %s server</string>
+    <string name="directory_server_native_rooms">All native %s groups</string>
+
+    <!-- Notifications -->
+    <plurals name="notification_unread_notified_messages_in_room_rooms">
+        <item quantity="one">1 group</item>
+        <item quantity="other">%d groups</item>
+    </plurals>
+
+    <!-- Widget-->
+    <string name="widget_no_power_to_manage">You need permission to manage widgets in this group</string>
+
+    <!-- Widget Integration Manager -->
+    <string name="widget_integration_must_be_in_room">You are not in this group.</string>
+    <string name="widget_integration_no_permission_in_room">You do not have permission to do that in this group.</string>
+    <string name="widget_integration_missing_room_id">Missing group_id in request.</string>
+    <string name="widget_integration_missing_user_id">Missing user_id in request.</string>
+    <string name="widget_integration_room_not_visible">Group %s is not visible.</string>
+
+    <!-- slash commands -->
+    <string name="command_description_invite_user">Invites user with given id to current group</string>
+    <string name="command_description_join_room">Joins group with given alias</string>
+    <string name="command_description_part_room">Leave group</string>
+    <string name="command_description_topic">Set the group topic</string>
+
+    <!-- group details -->
+    <string name="group_details_rooms">Groups</string>
+
+    <string name="rooms">Rooms</string>
+    <string name="filter_group_rooms">Filter group groups</string>
+
+    <plurals name="group_rooms">
+        <item quantity="one">1 group</item>
+        <item quantity="other">%d groups</item>
+    </plurals>
+
+    <string name="forget_room">Forget group</string>
+
+    <!-- Deactivate account screen -->
+    <string name="room_tombstone_versioned_description">This group has been replaced and is no longer active</string>
+    <string name="room_tombstone_continuation_description">This group is a continuation of another conversation</string>
+
+    <!-- Lazy loading -->
+    <string name="settings_lazy_loading_title">Lazy load groups members</string>
+    <string name="settings_lazy_loading_description">Increase performance by only loading group members on first view.</string>
+    <string name="error_lazy_loading_not_supported_by_home_server">Your homeserver does not support lazy loading of group members yet. Try later.</string>
+
+    <string name="filter_view_https_amp">Login with Vitos Messenger</string>
+</resources>

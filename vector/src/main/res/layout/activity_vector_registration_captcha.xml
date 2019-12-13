@@ -20,7 +20,7 @@
 
         <ImageView
             android:id="@+id/login_large_logo"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/logo_splash" />
