@@ -291,12 +291,12 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
 
     private void login(Uri loginUri, PasswordLoginParams auth) {
         try {
-            if (loginUri.getHost() == null || !loginUri.getHost().equals(getString(R.string.login_intent_hostname))) {
+            if (loginUri.getHost() == null) {
                 return;
             }
             HomeServerConnectionConfig hsConfig = new HomeServerConnectionConfig.Builder()
-                    .withHomeServerUri(Uri.parse(getString(R.string.default_hs_server_url)))
-                    .withIdentityServerUri(Uri.parse(getString(R.string.default_identity_server_url)))
+                    .withHomeServerUri(loginUri)
+                    .withIdentityServerUri(loginUri)
                     .build();
             mLoginHandler.login(this, hsConfig, auth.user, "", "", auth.password, new SimpleApiCallback<Void>(this) {
                 @Override
