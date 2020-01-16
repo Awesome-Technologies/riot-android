@@ -41,6 +41,7 @@ import org.matrix.androidsdk.core.listeners.IMXNetworkEventListener;
 import org.matrix.androidsdk.core.model.MatrixError;
 import org.matrix.androidsdk.crypto.IncomingRoomKeyRequest;
 import org.matrix.androidsdk.crypto.IncomingRoomKeyRequestCancellation;
+import org.matrix.androidsdk.crypto.MXCryptoConfig;
 import org.matrix.androidsdk.crypto.RoomKeysRequestListener;
 import org.matrix.androidsdk.crypto.keysbackup.KeysBackup;
 import org.matrix.androidsdk.crypto.keysbackup.KeysBackupStateManager;
@@ -698,6 +699,10 @@ public class Matrix {
         final MXDataHandler dataHandler = new MXDataHandler(store, credentials);
         store.setDataHandler(dataHandler);
         dataHandler.setLazyLoadingEnabled(PreferencesManager.useLazyLoading(context));
+
+        MXCryptoConfig config = new MXCryptoConfig();
+        config.mEnableEncryptionForInvitedMembers = true;
+        MXSession.setCryptoConfig(config);
 
         final MXSession session = new MXSession.Builder(hsConfig, dataHandler, context)
                 .withPushServerUrl(context.getString(R.string.push_server_url))
