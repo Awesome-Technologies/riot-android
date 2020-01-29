@@ -263,7 +263,8 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
         Log.d(LOG_TAG, "onBarcodeDetected: raw=" + barcode.rawValue);
         Uri barcodeUri = Uri.parse(barcode.rawValue);
         if (barcodeUri != null && barcodeUri.getFragment() != null) {
-            login(barcodeUri, decode(barcodeUri.getFragment()));
+            Uri loginUri = Uri.parse(barcode.rawValue.substring(0, barcode.rawValue.indexOf("#")));
+            login(loginUri, decode(barcodeUri.getFragment()));
         } else {
             runOnUiThread(() -> Toast.makeText(this, getString(R.string.login_error_invalid_qr_code), Toast.LENGTH_SHORT).show());
         }
