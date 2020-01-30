@@ -561,6 +561,13 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             false
         }
 
+        // consent
+        findPreference(PreferencesManager.SETTINGS_CONSENT_PREFERENCE_KEY)
+                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            VectorUtils.displayConsent()
+            false
+        }
+
         // update keep medias period
         findPreference(PreferencesManager.SETTINGS_MEDIA_SAVING_PERIOD_KEY).let {
             it.summary = PreferencesManager.getSelectedMediasSavingPeriodString(activity)

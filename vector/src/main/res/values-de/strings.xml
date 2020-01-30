@@ -464,6 +464,7 @@ Beachte: Diese Aktion wird die App neu starten und einige Zeit brauchen.</string
     <string name="settings_olm_version">OLM Version</string>
     <string name="settings_app_term_conditions">Nutzungsbedingungen</string>
     <string name="settings_third_party_notices">Nutzungshinweise von Drittanbietern</string>
+    <string name="settings_consent">Einwilligung</string>
     <string name="settings_copyright">Urheberrechtserklärung</string>
     <string name="settings_privacy_policy">Datenschutzerklärung</string>
     <string name="settings_clear_cache">Cache leeren</string>

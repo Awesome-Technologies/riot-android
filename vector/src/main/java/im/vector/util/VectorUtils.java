@@ -632,6 +632,15 @@ public class VectorUtils {
         }
     }
 
+    /**
+     * Display the consent text.
+     */
+    public static void displayConsent() {
+        if (null != VectorApp.getCurrentActivity()) {
+            displayInWebView(VectorApp.getCurrentActivity(), "file:///android_asset/consent.html");
+        }
+    }
+
     //==============================================================================================================
     // List uris from intent
     //==============================================================================================================
