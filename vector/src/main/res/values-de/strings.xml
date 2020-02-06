@@ -1973,4 +1973,8 @@ Wenn du diese neue Wiederherstellungsmethode nicht eingerichtet hast, kann ein A
 
     <!-- Barcode -->
     <string name="low_storage_error">Zusätzliche Komponenten konnten nicht geladen werden wegen zu wenig Speicherplatz</string>
+
+    <!-- Painting -->
+    <string name="paint_image_title">Bild bemalen</string>
+    <string name="paint_image_write_to_file_error">Es gab einen unerwarteten Fehler. Bitte erneut versuchen.</string>
 </resources>

@@ -2168,4 +2168,8 @@ Not all features in Riot are implemented in RiotX yet. Main missing (and coming 
 
     <!-- Barcode -->
     <string name="low_storage_error">QR-Code scanner dependencies cannot be downloaded due to low device storage</string>
+
+    <!-- Painting -->
+    <string name="paint_image_title">Paint on image</string>
+    <string name="paint_image_write_to_file_error">There was an unexpected error. Please try again.</string>
 </resources>

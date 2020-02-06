@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/riot_primary_background_color_black">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/VectorToolbarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/send_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <im.vector.view.PaintOnImageView
+            android:id="@+id/paintOnImageView"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_above="@id/send_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/color_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingStart="100dp"
+            android:background="@color/paint_image_accent"
+            tools:ignore="RtlSymmetry">
+
+            <ImageButton
+                android:id="@+id/red_color_button"
+                style="@style/PaintColorButtonStyle"
+                android:background="@color/paint_image_stroke_red" />
+
+            <ImageButton
+                android:id="@+id/blue_color_button"
+                style="@style/PaintColorButtonStyle"
+                android:background="@color/paint_image_stroke_blue" />
+
+            <ImageButton
+                android:id="@+id/black_color_button"
+                style="@style/PaintColorButtonStyle"
+                android:background="@color/paint_image_stroke_black" />
+
+            <ImageButton
+                android:id="@+id/white_color_button"
+                style="@style/PaintColorButtonStyle"
+                android:background="@color/paint_image_stroke_white" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/change_color_button"
+            android:padding="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/paint_change_color_background"
+            android:src="@drawable/paint_bucket"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/remove_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/VectorButtonStyle"
+        android:text="@string/remove" />
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/VectorButtonStyle"
+        android:text="@string/send" />
+
+</RelativeLayout>

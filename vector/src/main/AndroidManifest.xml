@@ -305,6 +305,9 @@
                 android:value="im.vector.activity.VectorHomeActivity" />
         </activity>
         <activity
+            android:name=".activity.PaintImageActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
             android:name=".activity.VectorPublicRoomsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/directory_title"

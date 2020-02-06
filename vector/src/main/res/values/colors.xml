@@ -154,4 +154,11 @@
     <color name="notification_accent_color">#368BD6</color>
     <color name="key_share_req_accent_color">#ff812d</color>
 
+    <!-- Painting colors -->
+    <color name="paint_image_stroke_white">#FFF7FAFA</color>
+    <color name="paint_image_stroke_black">#FF060708</color>
+    <color name="paint_image_stroke_red">#FFFF4B55</color>
+    <color name="paint_image_stroke_blue">#FF0093D0</color>
+    <color name="paint_image_accent">#7F586C7B</color>
+
 </resources>

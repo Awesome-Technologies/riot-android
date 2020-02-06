@@ -202,6 +202,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     private static final int INVITE_USER_REQUEST_CODE = 4;
     public static final int UNREAD_PREVIEW_REQUEST_CODE = 5;
     private static final int RECORD_AUDIO_REQUEST_CODE = 6;
+    private static final int PAINT_IMAGE_REQUEST_CODE = 8;
 
     // media selection
     private static final int MEDIA_SOURCE_FILE = 1;
@@ -1313,8 +1314,11 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_FILES_REQUEST_CODE:
                 case TAKE_IMAGE_REQUEST_CODE:
+                    openPaintImageActivity(data);
+                    break;
+                case PAINT_IMAGE_REQUEST_CODE:
+                case REQUEST_FILES_REQUEST_CODE:
                 case RECORD_AUDIO_REQUEST_CODE:
                     sendMediasIntent(data);
                     break;
@@ -2395,6 +2399,15 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             startActivityForResult(intent, RequestCodesKt.STICKER_PICKER_ACTIVITY_REQUEST_CODE);
         }
 
+    }
+
+    /**
+     * Open painting activity
+     */
+    private void openPaintImageActivity(Intent data) {
+        Intent intent = new Intent(this, PaintImageActivity.class);
+        intent.putExtra(PaintImageActivity.EXTRA_PICTURE_URI, mLatestTakePictureCameraUri);
+        startActivityForResult(intent, PAINT_IMAGE_REQUEST_CODE);
     }
 
     /**
