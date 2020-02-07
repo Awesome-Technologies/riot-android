@@ -3975,42 +3975,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             mSendVoiceView.setImageResource(R.drawable.vector_micro_green);
             manageSendMoreButtons();
         } else {
-            boolean useNativeCamera = PreferencesManager.useNativeCamera(this);
-            boolean isVoiceFeatureEnabled = PreferencesManager.isSendVoiceFeatureEnabled(this);
-
-            switch (PreferencesManager.getSelectedDefaultMediaSource(this)) {
-                case MEDIA_SOURCE_FILE:
-                    onSendChoiceClicked(DialogListItem.SendFile.INSTANCE);
-                    return;
-                case MEDIA_SOURCE_VOICE:
-                    if (isVoiceFeatureEnabled) {
-                        onSendChoiceClicked(DialogListItem.SendVoice.INSTANCE);
-                        return;
-                    }
-                    // show all options if voice feature is disabled
-                    break;
-                case MEDIA_SOURCE_STICKER:
-                    onSendChoiceClicked(DialogListItem.SendSticker.INSTANCE);
-                    return;
-                case MEDIA_SOURCE_PHOTO:
-                    if (useNativeCamera) {
-                        onSendChoiceClicked(DialogListItem.TakePhoto.INSTANCE);
-                        return;
-                    } else {
-                        onSendChoiceClicked(DialogListItem.TakePhotoVideo.INSTANCE);
-                        return;
-                    }
-                case MEDIA_SOURCE_VIDEO:
-                    if (useNativeCamera) {
-                        onSendChoiceClicked(DialogListItem.TakeVideo.INSTANCE);
-                        return;
-                    } else {
-                        onSendChoiceClicked(DialogListItem.TakePhotoVideo.INSTANCE);
-                        return;
-                    }
-            }
-
-            chooseMediaSource(useNativeCamera, isVoiceFeatureEnabled);
+            onSendChoiceClicked(DialogListItem.TakePhoto.INSTANCE);
         }
     }
 
@@ -4019,9 +3984,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         if (!TextUtils.isEmpty(mEditText.getText()) && !PreferencesManager.sendMessageWithEnter(this)) {
             return false;
         }
-        boolean useNativeCamera = PreferencesManager.useNativeCamera(this);
-        boolean isVoiceFeatureEnabled = PreferencesManager.isSendVoiceFeatureEnabled(this);
-        chooseMediaSource(useNativeCamera, isVoiceFeatureEnabled);
+        chooseMediaSource(true, false);
 
         return true;
     }
