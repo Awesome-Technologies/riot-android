@@ -16,7 +16,7 @@
     <string name="matomo_server_url" translatable="false">https://matomo.awesome-technologies.de</string>
     <string name="matomo_site_id" translatable="false">8</string>
     <string name="matomo_tracker_name" translatable="false">Vitos Messenger Android</string>
-    <string name="bug_report_url" translatable="false">https://fp.vitos.amp.chat/bugreports/submit</string>
+    <string name="bug_report_url" translatable="false">https://vitos.amp.chat/bugreports/submit</string>
     <string name="default_stun_server" translatable="false">turn.amp.chat</string>
     <string name="login_intent_hostname">fp.vitos.amp.chat</string>
 
