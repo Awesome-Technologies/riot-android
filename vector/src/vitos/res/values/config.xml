@@ -12,25 +12,25 @@
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>
     <string name="matrix_org_server_url" translatable="false">https://matrix.org</string>
     <string name="default_hs_server_url" translatable="false">https://vitos.amp.chat</string>
-    <string name="default_identity_server_url" translatable="false">https://fp.vitos.amp.chat</string>
+    <string name="default_identity_server_url" translatable="false">https://vitos.amp.chat</string>
     <string name="matomo_server_url" translatable="false">https://matomo.awesome-technologies.de</string>
     <string name="matomo_site_id" translatable="false">8</string>
     <string name="matomo_tracker_name" translatable="false">Vitos Messenger Android</string>
     <string name="bug_report_url" translatable="false">https://vitos.amp.chat/bugreports/submit</string>
     <string name="default_stun_server" translatable="false">turn.amp.chat</string>
-    <string name="login_intent_hostname">fp.vitos.amp.chat</string>
+    <string name="login_intent_hostname">*.vitos.amp.chat</string>
 
     <!-- Widget urls -->
-    <string name="integrations_ui_url" translatable="false">"https://fp.vitos.amp.chat/scalar-web/"</string>
-    <string name="integrations_rest_url" translatable="false">"https://fp.vitos.amp.chat/scalar"</string>
-    <string name="integrations_jitsi_widget_url" translatable="false">"https://fp.vitos.amp.chat/scalar/widgets/jitsi.html"</string>
+    <string name="integrations_ui_url" translatable="false">"https://vitos.amp.chat/scalar-web/"</string>
+    <string name="integrations_rest_url" translatable="false">"https://vitos.amp.chat/scalar"</string>
+    <string name="integrations_jitsi_widget_url" translatable="false">"https://vitos.amp.chat/scalar/widgets/jitsi.html"</string>
 
     <string-array name="integrations_widgets_urls" translatable="false">
-        <item>https://fp.vitos.amp.chat/scalar</item>
+        <item>https://vitos.amp.chat/scalar</item>
     </string-array>
 
     <string-array name="room_directory_servers" translatable="false">
-        <item>fp.vitos.amp.chat</item>
+        <item>vitos.amp.chat</item>
     </string-array>
 
 </resources>
