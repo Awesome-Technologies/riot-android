@@ -763,9 +763,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                         mUseCustomHomeServersCheckbox.performClick();
                     }
                 } else {
-                    if (!mUseCustomHomeServersCheckbox.isChecked()
-                            || !hs.equals(mHomeServerUrl)
-                            || !ids.equals(mIdentityServerUrl)) {
+                    if (getResources().getBoolean(R.bool.custom_homeserver) &&
+                            (!hs.equals(mHomeServerUrl) || !ids.equals(mIdentityServerUrl))) {
                         String finalIds = ids;
                         new AlertDialog.Builder(LoginActivity.this)
                                 .setTitle(getString(R.string.autodiscover_well_known_autofill_dialog_title))
@@ -784,6 +783,11 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                                 })
                                 .setNegativeButton(R.string.ignore, null)
                                 .show();
+                    } else {
+                        mHomeServerText.setText(hs);
+                        mIdentityServerText.setText(ids);
+                        onHomeServerUrlUpdate(true);
+                        onIdentityServerUrlUpdate(true);
                     }
                 }
             }
@@ -809,14 +813,13 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
      * @return the home server Url according to custom HS config
      */
     private String getHomeServerUrl() {
-        String url = ServerUrlsRepository.INSTANCE.getDefaultHomeServerUrl(this);
+        String url = mHomeServerText.getText().toString().trim();
 
-        if (getResources().getBoolean(R.bool.custom_homeserver)) {
-            url = mHomeServerText.getText().toString().trim();
-
-            if (url.endsWith("/")) {
-                url = url.substring(0, url.length() - 1);
-            }
+        if (url.isEmpty()) {
+            url = ServerUrlsRepository.INSTANCE.getDefaultHomeServerUrl(this);
+        }
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
         }
 
         return url;
