@@ -22,8 +22,10 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.biometric.DeviceCredentialHandlerActivity
 import com.tapadoo.alerter.Alerter
 import com.tapadoo.alerter.OnHideAlertListener
+import im.vector.activity.LocalAuthenticationActivity
 import im.vector.activity.SASVerificationActivity
 import java.lang.ref.WeakReference
 
@@ -138,6 +140,10 @@ object PopupAlertManager {
     }
 
     private fun showAlert(alert: VectorAlert, activity: Activity, animate: Boolean = true) {
+        // Don't show alert on local authentication activity
+        if (activity::class.simpleName == LocalAuthenticationActivity::class.simpleName || activity::class.simpleName == DeviceCredentialHandlerActivity::class.simpleName) {
+            return
+        }
         alert.weakCurrentActivity = WeakReference(activity)
         Alerter.create(activity)
                 .setTitle(alert.title)

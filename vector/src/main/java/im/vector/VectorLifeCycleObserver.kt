@@ -22,6 +22,7 @@ import android.os.Build
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import im.vector.activity.LocalAuthenticationActivity
 import im.vector.services.EventStreamServiceX
 import org.matrix.androidsdk.core.Log
 
@@ -59,6 +60,8 @@ class VectorLifeCycleObserver : LifecycleObserver {
     fun onMoveToBackground() {
         Log.d(this::class.java.name, "Moving to background…")
         EventStreamServiceX.onAppGoingToBackground(VectorApp.getInstance())
+
+        LocalAuthenticationActivity.invalidate()
     }
 
 }

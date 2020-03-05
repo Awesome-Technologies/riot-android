@@ -33,8 +33,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
+import androidx.biometric.DeviceCredentialHandlerActivity;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDexApplication;
 
@@ -59,6 +61,8 @@ import java.util.TimerTask;
 
 import im.vector.activity.CommonActivityUtils;
 import im.vector.activity.JitsiCallActivity;
+import im.vector.activity.LocalAuthenticationActivity;
+import im.vector.activity.SplashActivity;
 import im.vector.activity.VectorCallViewActivity;
 import im.vector.activity.VectorMediaPickerActivity;
 import im.vector.activity.WidgetActivity;
@@ -283,9 +287,14 @@ public class VectorApp extends MultiDexApplication {
             @Override
             public void onActivityResumed(final Activity activity) {
                 Log.d(LOG_TAG, "onActivityResumed " + activity);
+
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+
                 setCurrentActivity(activity);
 
                 String activityKey = activity.toString();
+
+                authenticateUserLocally(activity);
 
                 if (mLocalesByActivity.containsKey(activityKey)) {
                     String prevActivityLocale = mLocalesByActivity.get(activityKey);
@@ -314,6 +323,10 @@ public class VectorApp extends MultiDexApplication {
             @Override
             public void onActivityPaused(Activity activity) {
                 Log.d(LOG_TAG, "onActivityPaused " + activity);
+
+                // Block view of content in app overview
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+
                 mLocalesByActivity.put(activity.toString(), getActivityLocaleStatus(activity));
                 setCurrentActivity(null);
                 onAppPause();
@@ -365,6 +378,25 @@ public class VectorApp extends MultiDexApplication {
         PreferencesManager.setShowJoinLeaveMessages(this, false);
         PreferencesManager.enableNotifications(this);
         PreferencesManager.setDefaultMediaSource(this, 4); // send photo
+    }
+
+    private void authenticateUserLocally(Activity activity) {
+        // Authenticate locally only when logged in
+        if (Matrix.getInstance(this).getSessions().isEmpty()) {
+            return;
+        }
+        // Prevent deadlock
+        if (activity.getClass() == SplashActivity.class
+                || activity.getClass() == DeviceCredentialHandlerActivity.class
+                || activity.getClass() == LocalAuthenticationActivity.class) {
+            return;
+        }
+        if (!LocalAuthenticationActivity.isAuthenticated()) {
+            Intent intent = new Intent(this, LocalAuthenticationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            activity.startActivity(intent);
+        }
     }
 
     @Override

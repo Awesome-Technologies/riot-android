@@ -98,6 +98,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
+    <!-- local authentication using biometrics -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <uses-feature
         android:name="android.hardware.bluetooth"
         android:required="false"
@@ -169,6 +172,9 @@
                     android:host="@string/login_intent_hostname" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.LocalAuthenticationActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/local_auth_title" />
         <activity
             android:name=".activity.AccountCreationCaptchaActivity"
             android:configChanges="orientation|screenSize"

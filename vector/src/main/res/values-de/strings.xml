@@ -180,6 +180,14 @@
 Du wurdest auf allen Geräten abgemeldet und wirst keine Push-Benachrichtigungen mehr erhalten. Um die Push-Benachrichtigungen wieder zu aktivieren, musst du dich auf jedem Gerät erneut anmelden.</string>
     <string name="auth_demo_notice">Hinweis: Diese Registrierung legt einen\nTest-Nutzer für Sie an.</string>
 
+    <!-- Local Authentication -->
+    <string name="local_auth_title">Authentifizierung</string>
+    <string name="local_auth_retry">Erneut versuchen</string>
+    <string name="local_auth_explanation">Authentifizieren Sie sich bitte,\num die App zu entsperren.</string>
+    <string name="local_auth_explanation_prompt">Authentifizieren Sie sich bitte, um die App zu entsperren.\n\nBestätigen zum Fortsetzen.</string>
+    <string name="local_auth_not_setup">Um diese App benutzen zu können, schützen Sie dieses Gerät bitte mindestens mit einem Pin-Code.\n\nDas können Sie in den Systemeinstellungen einrichten.</string>
+    <string name="local_auth_success">Authentifizierung erfolgreich!</string>
+
     <!-- Login Screen -->
     <string name="login_error_must_start_http">URL muss mit \'http[s]://\' beginnen</string>
     <string name="login_error_network_error">Login unmöglich: Netzwerkfehler</string>

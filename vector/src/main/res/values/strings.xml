@@ -279,6 +279,14 @@
     <string name="auth_accept_policies">"Please review and accept the policies of this homeserver:"</string>
     <string name="auth_demo_notice">Notice: This registration creates a\ntest user for you.</string>
 
+    <!-- Local Authentication -->
+    <string name="local_auth_title">Authentication</string>
+    <string name="local_auth_retry">Retry</string>
+    <string name="local_auth_explanation">Please authenticate to unlock the app.</string>
+    <string name="local_auth_explanation_prompt">Please authenticate to unlock the app.\n\nConfirm to proceed.</string>
+    <string name="local_auth_not_setup">To be able to use this app, please secure the device by using at least a pin code.\n\nYou can set that up in system settings.</string>
+    <string name="local_auth_success">Authentication succeeded!</string>
+
     <!-- Login Screen -->
     <string name="login_error_must_start_http">URL must start with http[s]://</string>
     <string name="login_error_network_error">Unable to login: Network error</string>

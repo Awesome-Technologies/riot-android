@@ -259,6 +259,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt 'com.jakewharton:butterknife-compiler:10.1.0'
 
+    implementation 'androidx.biometric:biometric:1.0.1'
+
     // Work manager
     // (Java only)
     implementation "android.arch.work:work-runtime:1.0.1"
