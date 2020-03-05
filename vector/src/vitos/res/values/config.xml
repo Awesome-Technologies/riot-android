@@ -7,6 +7,7 @@
     <bool name="custom_homeserver">false</bool>
     <bool name="allow_direct_chat">false</bool>
     <bool name="show_consent">true</bool>
+    <bool name="profile_info_editable">false</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>

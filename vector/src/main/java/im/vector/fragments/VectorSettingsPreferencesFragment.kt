@@ -337,6 +337,10 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             false
         }
 
+        // Hide display name and password based on configuration
+        val profileInfoEditable = resources.getBoolean(R.bool.profile_info_editable)
+        findPreference(PreferencesManager.SETTINGS_DISPLAY_NAME_PREFERENCE_KEY).isVisible = profileInfoEditable
+        findPreference(PreferencesManager.SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY).isVisible = profileInfoEditable
 
         // Add Email
         findPreference(ADD_EMAIL_PREFERENCE_KEY).isVisible = false
