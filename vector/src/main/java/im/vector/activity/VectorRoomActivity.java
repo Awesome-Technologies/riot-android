@@ -3126,6 +3126,11 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
                         // i.e not a room preview
                         boolean hideMembersButtons = (null == mRoom) || !TextUtils.isEmpty(mEventId) || (null != sRoomPreviewData);
                         mActionBarHeaderActiveMembersListButton.setVisibility(hideMembersButtons ? View.INVISIBLE : View.VISIBLE);
+                        if (!hideMembersButtons) {
+                            int minPowerLevelToInvite = roomState.getPowerLevels().invite;
+                            int userPowerLevel = roomState.getPowerLevels().getUserPowerLevel(mSession.getMyUserId());
+                            hideMembersButtons = userPowerLevel < minPowerLevelToInvite;
+                        }
                         mActionBarHeaderActiveMembersInviteButton.setVisibility(hideMembersButtons ? View.INVISIBLE : View.VISIBLE);
 
                         // Display what we have synchronously first. Use 0 as active members number

@@ -679,7 +679,9 @@ public class VectorRoomDetailsMembersFragment extends VectorBaseFragment {
             mSwitchDeletionMenuItem.setVisible(!mIsMultiSelectionMode);
         }
 
-        if (mRoom.isDirect()) {
+        int minPowerLevelToInvite = mRoom.getState().getPowerLevels().invite;
+        int userPowerLevel = mRoom.getState().getPowerLevels().getUserPowerLevel(mSession.getMyUserId());
+        if (mRoom.isDirect() && userPowerLevel >= minPowerLevelToInvite) {
             mAddMembersFloatingActionButton.setVisibility(View.GONE);
         }
     }
