@@ -40,4 +40,6 @@
         <item>matrix.org</item>
     </string-array>
 
+    <string name="privacy_url">https://riot.im/privacy</string>
+
 </resources>

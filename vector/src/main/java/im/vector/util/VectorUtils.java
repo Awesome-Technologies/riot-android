@@ -619,7 +619,8 @@ public class VectorUtils {
      */
     public static void displayAppPrivacyPolicy() {
         if (null != VectorApp.getCurrentActivity()) {
-            displayInWebView(VectorApp.getCurrentActivity(), "https://riot.im/privacy");
+            String privacyUrl = VectorApp.getCurrentActivity().getResources().getString(R.string.privacy_url);
+            displayInWebView(VectorApp.getCurrentActivity(), privacyUrl);
         }
     }
 

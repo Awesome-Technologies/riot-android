@@ -33,4 +33,6 @@
         <item>caritas.amp.care</item>
     </string-array>
 
+    <string name="privacy_url">file:///android_asset/privacy_policy.html</string>
+
 </resources>
