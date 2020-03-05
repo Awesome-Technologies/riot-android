@@ -325,8 +325,9 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         model.init(mSession);
 
         // Check whether the user has agreed to the use of analytics tracking
-
-        if (!PreferencesManager.didAskToUseAnalytics(this)) {
+        if (getResources().getString(R.string.matomo_site_id).equals("-1")) {
+            setAnalyticsAuthorization(false);
+        } else if (!PreferencesManager.didAskToUseAnalytics(this)) {
             promptForAnalyticsTracking();
         }
 

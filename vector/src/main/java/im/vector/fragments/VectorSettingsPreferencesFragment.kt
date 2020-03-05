@@ -484,12 +484,16 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
         // Analytics tracking management
         (findPreference(PreferencesManager.SETTINGS_USE_ANALYTICS_KEY) as SwitchPreference).let {
-            // On if the analytics tracking is activated
-            it.isChecked = PreferencesManager.useAnalytics(appContext)
+            if (resources.getString(R.string.matomo_site_id) == "-1") {
+                it.isVisible = false
+            } else {
+                // On if the analytics tracking is activated
+                it.isChecked = PreferencesManager.useAnalytics(appContext)
 
-            it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                PreferencesManager.setUseAnalytics(appContext, newValue as Boolean)
-                true
+                it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                    PreferencesManager.setUseAnalytics(appContext, newValue as Boolean)
+                    true
+                }
             }
         }
 
