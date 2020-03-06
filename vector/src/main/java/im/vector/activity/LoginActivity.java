@@ -587,8 +587,11 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         mHomeServerText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Disable buttons
-                setActionButtonsEnabled(false);
+                String cleanedUrl = sanitizeUrl(s.toString());
+                if (!TextUtils.equals(cleanedUrl, getHomeServerUrl())) {
+                    // Disable buttons
+                    setActionButtonsEnabled(false);
+                }
             }
 
             @Override
@@ -610,8 +613,11 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         mIdentityServerText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Disable buttons
-                setActionButtonsEnabled(false);
+                String cleanedUrl = sanitizeUrl(s.toString());
+                if (!TextUtils.equals(cleanedUrl, getIdentityServerUrl())) {
+                    // Disable buttons
+                    setActionButtonsEnabled(false);
+                }
             }
 
             @Override
