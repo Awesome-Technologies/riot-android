@@ -54,6 +54,8 @@ class VectorLifeCycleObserver : LifecycleObserver {
         } else {
             EventStreamServiceX.onAppGoingToForeground(VectorApp.getInstance())
         }
+        // Trigger check to see if we are still in the grace period
+        LocalAuthenticationActivity.invalidate()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -61,7 +63,9 @@ class VectorLifeCycleObserver : LifecycleObserver {
         Log.d(this::class.java.name, "Moving to background…")
         EventStreamServiceX.onAppGoingToBackground(VectorApp.getInstance())
 
-        LocalAuthenticationActivity.invalidate()
+        // To prevent short out-of-app trips to prompt another authentication
+        // start a grace period after the app entered background mode
+        LocalAuthenticationActivity.startGracePeriodToInvalidate()
     }
 
 }

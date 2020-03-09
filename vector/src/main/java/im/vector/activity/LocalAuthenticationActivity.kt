@@ -19,6 +19,7 @@ package im.vector.activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.os.Build
+import android.os.SystemClock
 import android.view.View
 import android.widget.Toast
 import androidx.biometric.BiometricManager
@@ -131,11 +132,24 @@ class LocalAuthenticationActivity : VectorAppCompatActivity() {
         var isAuthenticated: Boolean = false
             private set
 
+        private var gracePeriodStart: Long = Long.MAX_VALUE
+        private const val gracePeriodInSeconds = 60
+
+        @JvmStatic
+        fun startGracePeriodToInvalidate() {
+            gracePeriodStart = SystemClock.elapsedRealtime()
+        }
+
         @JvmStatic
         fun invalidate() {
-            isAuthenticated = false
-            biometricPrompt?.cancelAuthentication()
-            biometricPrompt = null
+            // When we are below the grace period, prompt user again
+            if (SystemClock.elapsedRealtime() - gracePeriodStart > gracePeriodInSeconds * 1000) {
+                isAuthenticated = false
+                biometricPrompt?.cancelAuthentication()
+                biometricPrompt = null
+
+                gracePeriodStart = Long.MAX_VALUE
+            }
         }
     }
 }
