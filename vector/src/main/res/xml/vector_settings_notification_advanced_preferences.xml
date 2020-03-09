@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         android:key="SETTINGS_NOTIFICATION_LEVEL"
@@ -19,7 +20,8 @@
         <im.vector.preference.BingRulePreference
             android:defaultValue="true"
             android:key="SETTINGS_MESSAGES_IN_ONE_TO_ONE_PREFERENCE_KEY_2"
-            android:title="@string/settings_messages_in_one_to_one" />
+            android:title="@string/settings_messages_in_one_to_one"
+            app:isPreferenceVisible="@bool/allow_direct_chat" />
 
         <im.vector.preference.BingRulePreference
             android:defaultValue="true"
