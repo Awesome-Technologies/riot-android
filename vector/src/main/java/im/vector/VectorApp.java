@@ -294,7 +294,10 @@ public class VectorApp extends MultiDexApplication {
 
                 String activityKey = activity.toString();
 
-                authenticateUserLocally(activity);
+                boolean requireAuthentication = getResources().getBoolean(R.bool.require_authentication);
+                if (requireAuthentication) {
+                    authenticateUserLocally(activity);
+                }
 
                 if (mLocalesByActivity.containsKey(activityKey)) {
                     String prevActivityLocale = mLocalesByActivity.get(activityKey);
