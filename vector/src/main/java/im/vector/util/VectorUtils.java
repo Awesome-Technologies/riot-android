@@ -610,7 +610,8 @@ public class VectorUtils {
      */
     public static void displayAppTac() {
         if (null != VectorApp.getCurrentActivity()) {
-            displayInWebView(VectorApp.getCurrentActivity(), "https://riot.im/tac");
+            String termsUrl = VectorApp.getCurrentActivity().getResources().getString(R.string.terms_and_conditions_url);
+            displayInWebView(VectorApp.getCurrentActivity(), termsUrl);
         }
     }
 

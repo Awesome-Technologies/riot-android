@@ -42,5 +42,6 @@
     </string-array>
 
     <string name="privacy_url">https://riot.im/privacy</string>
+    <string name="terms_and_conditions_url">https://riot.im/tac</string>
 
 </resources>
