@@ -3,10 +3,11 @@
 
     <string name="riot_app_name" translatable="false">Caritas Messenger</string>
     <bool name="login_with_barcode">true</bool>
-    <bool name="calls_enabled">false</bool>
+    <bool name="calls_enabled">true</bool>
     <bool name="custom_homeserver">false</bool>
     <bool name="allow_direct_chat">true</bool>
     <bool name="show_consent">false</bool>
+    <bool name="support_group_calls">true</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>

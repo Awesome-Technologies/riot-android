@@ -1534,7 +1534,13 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         if (TextUtils.isEmpty(mEventId) && (null == sRoomPreviewData)) {
             RoomMember member = mRoom.getMember(mSession.getMyUserId());
 
-            boolean isCallSupported = (mRoom.getNumberOfMembers() == 2) && mSession.isVoipCallSupported() && getResources().getBoolean(R.bool.calls_enabled);
+            boolean isCallSupported = mSession.isVoipCallSupported() && getResources().getBoolean(R.bool.calls_enabled);
+            boolean groupCallsSupported = getResources().getBoolean(R.bool.support_group_calls);
+            if (groupCallsSupported) {
+                isCallSupported = isCallSupported && mRoom.getNumberOfMembers() >= 2;
+            } else {
+                isCallSupported = isCallSupported && mRoom.getNumberOfMembers() == 2;
+            }
             if (startCallMenuItem != null) {
                 startCallMenuItem.setVisible(isCallSupported);
             }
