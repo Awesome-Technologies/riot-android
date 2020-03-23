@@ -19,6 +19,7 @@
     <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
     <string name="default_stun_server" translatable="false">turn.matrix.org</string>
     <string name="login_intent_hostname">caritas.amp.care</string>
+    <string name="jitsi_server_url">https://jitsi.caritas.amp.chat/</string>
 
     <!-- Widget urls -->
     <string name="integrations_ui_url" translatable="false">"https://caritas.amp.care/scalar-web/"</string>

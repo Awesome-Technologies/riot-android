@@ -44,6 +44,7 @@ import java.util.Map;
 import butterknife.BindView;
 import im.vector.Matrix;
 import im.vector.R;
+import im.vector.VectorApp;
 import im.vector.widgets.Widget;
 import im.vector.widgets.WidgetManagerProvider;
 import im.vector.widgets.WidgetsManager;
@@ -67,7 +68,7 @@ public class JitsiCallActivity extends VectorAppCompatActivity implements JitsiM
     /**
      * Base server URL
      */
-    public static final String JITSI_SERVER_URL = "https://jitsi.riot.im/";
+    public static final String JITSI_SERVER_URL = VectorApp.getInstance().getResources().getString(R.string.jitsi_server_url);
 
     // the jitsi view
     private JitsiMeetView mJitsiView;
