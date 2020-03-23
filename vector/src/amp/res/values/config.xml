@@ -7,6 +7,7 @@
     <bool name="custom_homeserver">true</bool>
     <bool name="allow_direct_chat">true</bool>
     <bool name="show_consent">false</bool>
+    <bool name="support_group_calls">true</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://test.amp.chat</string>
@@ -19,6 +20,7 @@
     <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
     <string name="default_stun_server" translatable="false">turn.amp.chat</string>
     <string name="login_intent_hostname">test.amp.chat</string>
+    <string name="jitsi_server_url">https://jitsi.amp.chat/</string>
 
     <!-- Widget urls -->
     <string name="integrations_ui_url" translatable="false">"https://test.amp.chat/scalar-web/"</string>
