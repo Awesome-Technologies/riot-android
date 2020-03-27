@@ -7,7 +7,7 @@
     <bool name="custom_homeserver">false</bool>
     <bool name="allow_direct_chat">true</bool>
     <bool name="show_consent">false</bool>
-    <bool name="support_group_calls">true</bool>
+    <bool name="support_group_calls">false</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>
@@ -23,12 +23,12 @@
     <string name="jitsi_server_url">https://jitsi.caritas.amp.chat/</string>
 
     <!-- Widget urls -->
-    <string name="integrations_ui_url" translatable="false">"https://caritas.amp.care/scalar-web/"</string>
-    <string name="integrations_rest_url" translatable="false">"https://caritas.amp.care/scalar"</string>
-    <string name="integrations_jitsi_widget_url" translatable="false">"https://caritas.amp.care/scalar/widgets/jitsi.html"</string>
+    <string name="integrations_ui_url" translatable="false">"https://dimension.caritas.amp.care/riot"</string>
+    <string name="integrations_rest_url" translatable="false">"https://dimension.caritas.amp.care/api/v1/scalar"</string>
+    <string name="integrations_jitsi_widget_url" translatable="false">"https://dimension.caritas.amp.care/widgets/jitsi"</string>
 
     <string-array name="integrations_widgets_urls" translatable="false">
-        <item>https://caritas.amp.care/scalar</item>
+        <item>https://dimension.caritas.amp.care/widgets</item>
     </string-array>
 
     <string-array name="room_directory_servers" translatable="false">
