@@ -9,6 +9,7 @@
     <bool name="show_consent">true</bool>
     <bool name="profile_info_editable">false</bool>
     <bool name="require_authentication">true</bool>
+    <bool name="show_terms_and_conditions">false</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>

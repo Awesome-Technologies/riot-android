@@ -549,11 +549,12 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         }
 
         // terms & conditions
-        findPreference(PreferencesManager.SETTINGS_APP_TERM_CONDITIONS_PREFERENCE_KEY)
-                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        val termsPreference = findPreference(PreferencesManager.SETTINGS_APP_TERM_CONDITIONS_PREFERENCE_KEY)
+        termsPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             VectorUtils.displayAppTac()
             false
         }
+        termsPreference.isVisible = resources.getBoolean(R.bool.show_terms_and_conditions)
 
         // privacy policy
         findPreference(PreferencesManager.SETTINGS_PRIVACY_POLICY_PREFERENCE_KEY)

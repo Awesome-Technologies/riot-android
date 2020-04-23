@@ -39,6 +39,7 @@
 
         <item
             android:id="@+id/sliding_menu_app_tac"
+            android:visible="@bool/show_terms_and_conditions"
             android:title="@string/room_sliding_menu_term_and_conditions" />
 
         <item
