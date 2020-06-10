@@ -59,6 +59,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
 
@@ -80,6 +81,7 @@ import org.matrix.androidsdk.core.callback.SimpleApiCallback;
 import org.matrix.androidsdk.core.model.MatrixError;
 import org.matrix.androidsdk.crypto.data.MXDeviceInfo;
 import org.matrix.androidsdk.crypto.data.MXUsersDevicesMap;
+import org.matrix.androidsdk.crypto.keysbackup.KeysBackupStateManager;
 import org.matrix.androidsdk.data.MyUser;
 import org.matrix.androidsdk.data.Room;
 import org.matrix.androidsdk.data.RoomState;
@@ -502,6 +504,18 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         PublicRoomsManager.getInstance().refreshPublicRoomsCount(null);
 
         initViews();
+        model.getKeysBackupState().observe(this, new Observer<KeysBackupStateManager.KeysBackupState>() {
+            @Override
+            public void onChanged(KeysBackupStateManager.KeysBackupState keysBackupState) {
+                if (keysBackupState == KeysBackupStateManager.KeysBackupState.NotTrusted) {
+                    SignOutBottomSheetDialogFragment signoutDialog = SignOutBottomSheetDialogFragment.Companion.newInstance(mSession.getMyUserId());
+                    signoutDialog.setTitles(getString(R.string.title_activity_keys_backup_setup), getString(R.string.sign_out_bottom_sheet_warning_backup_not_active));
+                    signoutDialog.show(getSupportFragmentManager(), "SO");
+                }
+            }
+        });
+
+
     }
 
     /**

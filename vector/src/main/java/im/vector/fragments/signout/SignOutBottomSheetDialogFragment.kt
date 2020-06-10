@@ -42,6 +42,7 @@ import im.vector.activity.KeysBackupManageActivity
 import im.vector.activity.KeysBackupSetupActivity
 import im.vector.activity.MXCActionBarActivity
 import im.vector.extensions.withArgs
+import kotlinx.android.synthetic.main.bottom_sheet_logout_and_backup.*
 import org.jetbrains.anko.toast
 import org.matrix.androidsdk.crypto.keysbackup.KeysBackupStateManager
 
@@ -83,6 +84,9 @@ class SignOutBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     var onSignOut: Runnable? = null
 
+    var title: String = "";
+    var subtitle: String = "";
+
     companion object {
         fun newInstance(matrixId: String) = SignOutBottomSheetDialogFragment()
                 .withArgs {
@@ -123,7 +127,10 @@ class SignOutBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
 
         dontWantClickableView.setOnClickListener { _ ->
-            context?.let {
+            if (title != "")
+                dismiss()
+            else
+                context?.let {
                 AlertDialog.Builder(it)
                         .setTitle(R.string.are_you_sure)
                         .setMessage(R.string.sign_out_bottom_sheet_will_lose_secure_messages)
@@ -153,7 +160,7 @@ class SignOutBottomSheetDialogFragment : BottomSheetDialogFragment() {
                             onSignOut?.run()
                         }
                         .show()
-            }
+                }
 
         }
 
@@ -191,6 +198,8 @@ class SignOutBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     backupStatusTex.text = getString(R.string.keys_backup_info_keys_all_backup_up)
 
                     sheetTitle.text = getString(R.string.action_sign_out_confirmation_simple)
+                    if(title != "")
+                        this.dismiss()
                 }
                 KeysBackupStateManager.KeysBackupState.BackingUp,
                 KeysBackupStateManager.KeysBackupState.WillBackUp    -> {
@@ -217,12 +226,19 @@ class SignOutBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     dontWantClickableView.isVisible = true
                     setupClickableView.isVisible = true
                     activateClickableView.isVisible = false
-                    sheetTitle.text = getString(R.string.sign_out_bottom_sheet_warning_no_backup)
+                    if(subtitle != "")
+                        bottom_sheet_signout_warning_text.text = subtitle
+                    else
+                        sheetTitle.text = getString(R.string.sign_out_bottom_sheet_warning_no_backup)
                 }
             }
 
 //            updateSignOutSection()
         })
+
+        if(title != "") {
+            bottom_sheet_signout_title.text = title
+        }
 
     }
 
@@ -258,6 +274,11 @@ class SignOutBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 viewModel.keysExportedToFile.value = manualExportDone
             }
         }
+    }
+
+    fun setTitles(title: String, subtitle: String) {
+        this.subtitle = subtitle
+        this.title = title
     }
 
 }

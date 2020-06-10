@@ -10,6 +10,7 @@
     android:paddingBottom="8dp">
 
     <TextView
+        android:id="@+id/bottom_sheet_signout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/layout_horizontal_margin"
@@ -27,7 +28,7 @@
         android:layout_marginEnd="@dimen/layout_horizontal_margin"
         android:layout_marginBottom="8dp"
         android:textColor="?android:attr/textColorSecondary"
-        tools:text="@string/sign_out_bottom_sheet_warning_no_backup" />
+        android:text="@string/sign_out_bottom_sheet_warning_no_backup" />
 
     <LinearLayout
         android:id="@+id/bottom_sheet_signout_backingup_status_group"
