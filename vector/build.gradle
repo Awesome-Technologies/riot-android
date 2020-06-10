@@ -20,6 +20,12 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 kapt {
     correctErrorTypes = true
 }
@@ -308,6 +314,8 @@ dependencies {
     // update settings.gradle
     // use the matrix SDK as external dependency
     implementation 'com.github.awesome-technologies.matrix-android-sdk:matrix-sdk:v0.9.33-AMP'
+    implementation 'com.github.awesome-technologies.matrix-android-sdk:matrix-sdk-crypto:v0.9.33-AMP'
+    implementation 'com.github.awesome-technologies.matrix-android-sdk:matrix-sdk-core:v0.9.33-AMP'
     // use the matrix SDK as a sub project
     // you have to uncomment some lines in settings.gradle
     //implementation project(':matrix-sdk')
