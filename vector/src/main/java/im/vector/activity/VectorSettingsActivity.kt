@@ -27,6 +27,7 @@ import im.vector.fragments.VectorSettingsNotificationsTroubleshootFragment
 import im.vector.fragments.VectorSettingsPreferencesFragment
 import im.vector.fragments.discovery.VectorSettingsDiscoveryFragment
 import im.vector.util.PreferencesManager
+import im.vector.util.VectorUtils
 
 /**
  * Displays the client settings.
@@ -128,6 +129,15 @@ class VectorSettingsActivity : MXCActionBarActivity(),
 
     override fun requestedKeyToHighlight(): String? {
         return keyToHighlight
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Since the openCamera function only takes an Activity as its first parameter,
+        // we have to propagate the callback back to the fragment
+        if (requestCode == VectorUtils.TAKE_IMAGE) {
+            vectorSettingsPreferencesFragment.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     companion object {

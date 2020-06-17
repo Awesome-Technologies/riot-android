@@ -66,6 +66,7 @@ import im.vector.settings.VectorLocale
 import im.vector.ui.themes.ThemeUtils
 import im.vector.ui.util.SimpleTextWatcher
 import im.vector.util.*
+import im.vector.util.openCamera
 import org.jetbrains.anko.toast
 import org.matrix.androidsdk.MXSession
 import org.matrix.androidsdk.call.MXCallsManager
@@ -152,6 +153,10 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
     // current publicised group list
     private var mPublicisedGroups: MutableSet<String>? = null
+
+    private val CAMERA_VALUE_TITLE = "attachment" // Samsung devices need a filepath to write to or else won't return a Uri (!!!)
+    private var mLatestTakePictureCameraUri: String? = null; // has to be String not Uri because of Serializable
+
 
     private var integrationManagerManagerListener = object : IntegrationManager.IntegrationManagerManagerListener {
         override fun onIntegrationManagerChange(managerConfig: IntegrationManager) {
@@ -1278,9 +1283,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     }
 
     private fun changeAvatar() {
-        val intent = Intent(activity, VectorMediaPickerActivity::class.java)
-        intent.putExtra(VectorMediaPickerActivity.EXTRA_AVATAR_MODE, true)
-        startActivityForResult(intent, VectorUtils.TAKE_IMAGE)
+        mLatestTakePictureCameraUri = openCamera(VectorApp.getCurrentActivity(), CAMERA_VALUE_TITLE, VectorUtils.TAKE_IMAGE)
     }
 
     /**
@@ -1322,7 +1325,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                     }
                 }
                 VectorUtils.TAKE_IMAGE        -> {
-                    val thumbnailUri = VectorUtils.getThumbnailUriFromIntent(activity, data, mSession.mediaCache)
+                    val thumbnailUri = Uri.parse(mLatestTakePictureCameraUri)
 
                     if (null != thumbnailUri) {
                         displayLoadingView()
