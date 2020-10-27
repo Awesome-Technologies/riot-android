@@ -772,23 +772,24 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                     if (getResources().getBoolean(R.bool.custom_homeserver) &&
                             (!hs.equals(mHomeServerUrl) || !ids.equals(mIdentityServerUrl))) {
                         String finalIds = ids;
-                        new AlertDialog.Builder(LoginActivity.this)
-                                .setTitle(getString(R.string.autodiscover_well_known_autofill_dialog_title))
-                                .setMessage(getString(R.string.autodiscover_well_known_autofill_dialog_message,
-                                        domain,
-                                        String.format("• %s\n• %s", hs, ids)))
-                                .setPositiveButton(getString(R.string.autodiscover_well_known_autofill_confirm), (dialog, which) -> {
-                                    mHomeServerText.setText(hs);
-                                    mIdentityServerText.setText(finalIds);
-                                    if (!mUseCustomHomeServersCheckbox.isChecked()) {
-                                        mUseCustomHomeServersCheckbox.performClick();
-                                    } else {
-                                        onHomeServerUrlUpdate(true);
-                                        onIdentityServerUrlUpdate(true);
-                                    }
-                                })
-                                .setNegativeButton(R.string.ignore, null)
-                                .show();
+                        // Remove the warning, it's too confusing for non-technical users (#3310)
+                        //new AlertDialog.Builder(LoginActivity.this)
+                        //        .setTitle(getString(R.string.autodiscover_well_known_autofill_dialog_title))
+                        //        .setMessage(getString(R.string.autodiscover_well_known_autofill_dialog_message,
+                        //                domain,
+                        //                String.format("• %s\n• %s", hs, ids)))
+                        //        .setPositiveButton(getString(R.string.autodiscover_well_known_autofill_confirm), (dialog, which) -> {
+                        mHomeServerText.setText(hs);
+                        mIdentityServerText.setText(finalIds);
+                        if (!mUseCustomHomeServersCheckbox.isChecked()) {
+                            mUseCustomHomeServersCheckbox.performClick();
+                        } else {
+                            onHomeServerUrlUpdate(true);
+                            onIdentityServerUrlUpdate(true);
+                        }
+                        //       })
+                        //       .setNegativeButton(R.string.ignore, null)
+                        //       .show();
                     } else {
                         mHomeServerText.setText(hs);
                         mIdentityServerText.setText(ids);

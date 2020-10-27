@@ -135,7 +135,6 @@ import im.vector.util.PreferencesManager;
 import im.vector.util.ReadMarkerManager;
 import im.vector.util.RoomUtils;
 import im.vector.util.SlashCommandsParser;
-import im.vector.util.UrlUtilKt;
 import im.vector.util.VectorMarkdownParser;
 import im.vector.util.VectorRoomMediasSender;
 import im.vector.util.VectorUtils;
@@ -146,6 +145,7 @@ import im.vector.view.VectorOngoingConferenceCallView;
 import im.vector.view.VectorPendingCallView;
 import im.vector.widgets.Widget;
 import im.vector.widgets.WidgetsManager;
+import im.vector.widgets.model.JitsiWidgetProperties;
 import kotlin.Unit;
 
 import static org.matrix.androidsdk.rest.model.message.Message.MSGTYPE_AUDIO;
@@ -1792,8 +1792,9 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
                     .show();
         } else {
             //Here check native widget perm
+            final JitsiWidgetProperties jitsi = new JitsiWidgetProperties(widget.getUrl());
 
-            String domain = UrlUtilKt.extractDomain(JitsiCallActivity.JITSI_SERVER_URL);
+            String domain = jitsi.getDomain();
             if (domain == null) return; //display a toast?
             boolean isAllowed = mSession.getIntegrationManager().isNativeWidgetAllowed("jitsi", domain);
             if (isAllowed) {
