@@ -55,6 +55,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -111,6 +112,9 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
 
     // boolean, tell if the video recording is supported
     public static final String EXTRA_VIDEO_RECORDING_MODE = "EXTRA_VIDEO_RECORDING_MODE";
+
+    // boolean, tell if the video recording is supported
+    public static final String EXTRA_GALLERY_MODE = "EXTRA_GALLERY_MODE";
 
     // internal keys
     private static final String KEY_EXTRA_IS_TAKEN_IMAGE_DISPLAYED = "IS_TAKEN_IMAGE_DISPLAYED";
@@ -201,6 +205,7 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
     private ImageView mVideoButtonView;
 
     // gallery management
+    private ScrollView mGalleryScrollView;
     private RelativeLayout mPreviewAndGalleryLayout;
     private int mGalleryImageCount;
     private int mScreenHeight;
@@ -211,6 +216,9 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
 
     // manage video recording
     private boolean mIsVideoRecordingSupported;
+
+    // whether or not to display the gallery
+    private boolean mShowGallery;
 
     // lifecycle management variable
     private boolean mIsTakenImageDisplayed;
@@ -256,6 +264,7 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
         Intent intent = getIntent();
         mIsAvatarMode = intent.getBooleanExtra(EXTRA_AVATAR_MODE, false);
         mIsVideoRecordingSupported = intent.getBooleanExtra(EXTRA_VIDEO_RECORDING_MODE, false);
+        mShowGallery = intent.getBooleanExtra(EXTRA_GALLERY_MODE, true);
 
         mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
 
@@ -282,6 +291,9 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
 
         mTakeImageView = findViewById(R.id.media_picker_camera_button);
         mGalleryTableLayout = findViewById(R.id.gallery_table_layout);
+
+        mGalleryScrollView = findViewById(R.id.media_picker_gallery_scroll_view);
+        mGalleryScrollView.setVisibility(mShowGallery ? View.VISIBLE : View.GONE);
 
         // hide switch camera view if there is only one camera
         mSwitchCameraImageView.setVisibility((Camera.getNumberOfCameras() > 1) ? View.VISIBLE : View.GONE);
@@ -399,8 +411,10 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
     protected void onResume() {
         super.onResume();
 
-        // update gallery content
-        refreshRecentMediaList();
+        if (mShowGallery) {
+            // update gallery content
+            refreshRecentMediaList();
+        }
 
         // restart the preview
         startCameraPreview();

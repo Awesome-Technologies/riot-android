@@ -2385,7 +2385,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
      */
     private void openPaintImageActivity(Intent data) {
         Intent intent = new Intent(this, PaintImageActivity.class);
-        intent.putExtra(PaintImageActivity.EXTRA_PICTURE_URI, mLatestTakePictureCameraUri);
+        intent.setData(data.getData());
         startActivityForResult(intent, PAINT_IMAGE_REQUEST_CODE);
     }
 
@@ -2415,6 +2415,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
 
         Intent intent = new Intent(this, VectorMediaPickerActivity.class);
         intent.putExtra(VectorMediaPickerActivity.EXTRA_VIDEO_RECORDING_MODE, true);
+        intent.putExtra(VectorMediaPickerActivity.EXTRA_GALLERY_MODE, false);
         startActivityForResult(intent, TAKE_IMAGE_REQUEST_CODE);
     }
 
@@ -3972,7 +3973,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
             mSendVoiceView.setImageResource(R.drawable.vector_micro_green);
             manageSendMoreButtons();
         } else {
-            onSendChoiceClicked(DialogListItem.TakePhoto.INSTANCE);
+            onSendChoiceClicked(DialogListItem.TakePhotoVideo.INSTANCE);
         }
     }
 
@@ -3981,7 +3982,7 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         if (!TextUtils.isEmpty(mEditText.getText()) && !PreferencesManager.sendMessageWithEnter(this)) {
             return false;
         }
-        chooseMediaSource(true, false);
+        onSendChoiceClicked(DialogListItem.TakePhotoVideo.INSTANCE);
 
         return true;
     }

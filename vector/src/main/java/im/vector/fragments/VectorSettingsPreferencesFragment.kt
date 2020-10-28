@@ -66,7 +66,6 @@ import im.vector.settings.VectorLocale
 import im.vector.ui.themes.ThemeUtils
 import im.vector.ui.util.SimpleTextWatcher
 import im.vector.util.*
-import im.vector.util.openCamera
 import org.jetbrains.anko.toast
 import org.matrix.androidsdk.MXSession
 import org.matrix.androidsdk.call.MXCallsManager
@@ -1283,7 +1282,10 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     }
 
     private fun changeAvatar() {
-        mLatestTakePictureCameraUri = openCamera(VectorApp.getCurrentActivity(), CAMERA_VALUE_TITLE, VectorUtils.TAKE_IMAGE)
+        val intent = Intent(context, VectorMediaPickerActivity::class.java)
+        intent.putExtra(VectorMediaPickerActivity.EXTRA_VIDEO_RECORDING_MODE, false)
+        intent.putExtra(VectorMediaPickerActivity.EXTRA_GALLERY_MODE, false)
+        startActivityForResult(intent, VectorUtils.TAKE_IMAGE)
     }
 
     /**
@@ -1325,7 +1327,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                     }
                 }
                 VectorUtils.TAKE_IMAGE        -> {
-                    val thumbnailUri = Uri.parse(mLatestTakePictureCameraUri)
+                    val thumbnailUri = data?.data
 
                     if (null != thumbnailUri) {
                         displayLoadingView()

@@ -19,7 +19,6 @@ package im.vector.activity
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -55,8 +54,8 @@ class PaintImageActivity : VectorAppCompatActivity() {
         paintOnImageView.setStrokeColor(ContextCompat.getColor(this, R.color.paint_image_stroke_white))
         updateChangeColorButtonTint()
 
-        intent.extras?.getString(EXTRA_PICTURE_URI)?.let {
-            paintOnImageView.setBitmap(Uri.parse(it))
+        intent.data?.let { uri ->
+            paintOnImageView.setBitmap(uri)
         }
 
         send_button.setOnClickListener {
@@ -142,7 +141,6 @@ class PaintImageActivity : VectorAppCompatActivity() {
     }
 
     companion object {
-        internal const val EXTRA_PICTURE_URI = "EXTRA_PICTURE_URI"
         private val LOG_TAG = PaintImageActivity::class.java.simpleName
     }
 }
