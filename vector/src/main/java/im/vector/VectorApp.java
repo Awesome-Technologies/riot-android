@@ -263,6 +263,12 @@ public class VectorApp extends MultiDexApplication {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.d(LOG_TAG, "onActivityCreated " + activity);
+
+                if (getResources().getBoolean(R.bool.disable_screenshots)) {
+                    // Prevent screenshots and video recording
+                    activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+                }
+
                 mCreatedActivities.add(activity.toString());
                 // matomo
                 onNewScreen(activity);
@@ -288,7 +294,9 @@ public class VectorApp extends MultiDexApplication {
             public void onActivityResumed(final Activity activity) {
                 Log.d(LOG_TAG, "onActivityResumed " + activity);
 
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                if (!getResources().getBoolean(R.bool.disable_screenshots)) {
+                    activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                }
 
                 setCurrentActivity(activity);
 
