@@ -702,6 +702,7 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
     private void tryAutoDiscover(String possibleDomain) {
         if (autoDiscoveredDomainCache.containsKey(possibleDomain)) {
             onAutoDiscoveryRetrieved(possibleDomain, autoDiscoveredDomainCache.get(possibleDomain));
+            enableLoadingScreen(false);
         } else {
             enableLoadingScreen(true);
 
@@ -740,8 +741,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
                     Log.d(LOG_TAG, "AutoDiscovery info " + info);
                     if (!TextUtils.equals(mDomain, possibleDomain)) return;
 
-                    enableLoadingScreen(false);
                     onAutoDiscoveryRetrieved(mDomain, info);
+                    enableLoadingScreen(false);
                 }
             });
         }
