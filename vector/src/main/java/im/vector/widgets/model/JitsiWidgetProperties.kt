@@ -18,4 +18,4 @@ class JitsiWidgetProperties(private val uriString: String) {
     }
 }
 
-private const val DEFAULT_JITSI_DOMAIN = "jitsi.riot.im"
+private const val DEFAULT_JITSI_DOMAIN = "jitsi.amp.chat"
