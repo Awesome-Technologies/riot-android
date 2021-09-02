@@ -35,6 +35,7 @@ import org.matrix.androidsdk.core.model.MatrixError;
 import org.matrix.androidsdk.data.Room;
 import org.matrix.androidsdk.data.RoomPreviewData;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import im.vector.Matrix;
+import im.vector.R;
 import im.vector.VectorApp;
 import im.vector.activity.CommonActivityUtils;
 import im.vector.activity.LoginActivity;
@@ -70,10 +72,10 @@ public class VectorUniversalLinkReceiver extends BroadcastReceiver {
     public static final String HOME_SENDER_ID = VectorHomeActivity.class.getSimpleName();
 
     // supported host list
-    private static final List<String> sSupportedVectorHosts = Arrays.asList("vector.im", "riot.im");
+    private static List<String> sSupportedVectorHosts = new ArrayList<>(Arrays.asList("vector.im", "riot.im"));
 
     // supported paths list
-    private static final List<String> sSupportedVectorLinkPaths = Arrays.asList("/beta/", "/develop/", "/app/", "/staging/");
+    private static final List<String> sSupportedVectorLinkPaths = Arrays.asList("/beta/", "/develop/", "/app/", "/staging/", "/");
 
     // the session
     private MXSession mSession;
@@ -88,6 +90,12 @@ public class VectorUniversalLinkReceiver extends BroadcastReceiver {
     public void onReceive(final Context aContext, final Intent aIntent) {
         String action, uriString;
         Uri intentUri;
+
+        String str = aContext.getString(R.string.login_intent_hostname);
+
+        if (!sSupportedVectorHosts.contains(str)) {
+            sSupportedVectorHosts.add(str);
+        }
 
         Log.d(LOG_TAG, "## onReceive() IN");
 

@@ -162,17 +162,9 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.BarcodeLoginActivity"
-            android:label="@string/auth_login_qr_code">
-            <intent-filter android:label="@string/filter_view_https_amp">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with @string/login_intent_hostname -->
-                <data android:scheme="https"
-                    android:host="@string/login_intent_hostname" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.LocalAuthenticationActivity"
+            android:label="@string/auth_login_qr_code"></activity>
+        <activity
+            android:name=".activity.LocalAuthenticationActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/local_auth_title" />
         <activity
@@ -401,7 +393,7 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="matrix.to" />
+                <data android:host="@string/login_intent_hostname" />
             </intent-filter>
         </activity>
         <activity
