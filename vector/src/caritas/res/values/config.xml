@@ -12,27 +12,27 @@
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>
     <string name="matrix_org_server_url" translatable="false">https://matrix.org</string>
-    <string name="default_hs_server_url" translatable="false">https://caritas.amp.care</string>
-    <string name="default_identity_server_url" translatable="false">https://caritas.amp.care</string>
+    <string name="default_hs_server_url" translatable="false">https://caritas.amp.chat</string>
+    <string name="default_identity_server_url" translatable="false">https://caritas.amp.chat</string>
     <string name="matomo_server_url" translatable="false">https://matomo.awesome-technologies.de</string>
     <string name="matomo_site_id" translatable="false">2</string>
     <string name="matomo_tracker_name" translatable="false">Caritas Messenger Android</string>
-    <string name="bug_report_url" translatable="false">https://caritas.amp.care/bugreports/submit</string>
+    <string name="bug_report_url" translatable="false">https://caritas.amp.chat/bugreports/submit</string>
     <string name="default_stun_server" translatable="false">turn.matrix.org</string>
-    <string name="login_intent_hostname">caritas.amp.care</string>
+    <string name="login_intent_hostname">caritas.amp.chat</string>
     <string name="jitsi_server_url">https://jitsi.caritas.amp.chat/</string>
 
     <!-- Widget urls -->
-    <string name="integrations_ui_url" translatable="false">"https://dimension.caritas.amp.care/riot"</string>
-    <string name="integrations_rest_url" translatable="false">"https://dimension.caritas.amp.care/api/v1/scalar"</string>
-    <string name="integrations_jitsi_widget_url" translatable="false">"https://dimension.caritas.amp.care/widgets/jitsi"</string>
+    <string name="integrations_ui_url" translatable="false">"https://dimension.caritas.amp.chat/riot"</string>
+    <string name="integrations_rest_url" translatable="false">"https://dimension.caritas.amp.chat/api/v1/scalar"</string>
+    <string name="integrations_jitsi_widget_url" translatable="false">"https://dimension.caritas.amp.chat/widgets/jitsi"</string>
 
     <string-array name="integrations_widgets_urls" translatable="false">
-        <item>https://dimension.caritas.amp.care/widgets</item>
+        <item>https://dimension.caritas.amp.chat/widgets</item>
     </string-array>
 
     <string-array name="room_directory_servers" translatable="false">
-        <item>caritas.amp.care</item>
+        <item>caritas.amp.chat</item>
     </string-array>
 
     <string name="privacy_url">file:///android_asset/privacy_policy.html</string>
