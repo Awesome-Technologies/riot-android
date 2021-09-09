@@ -189,6 +189,13 @@ class VectorMessagesAdapterMediasHelper {
 
     void managePlayback(final View convertView, final Event event, final int type, final String mediaUrl) {
         View playbackLayout = convertView.findViewById(R.id.content_media_playback_layout);
+
+        Message message = JsonUtils.toMessage(event.getContent());
+        String msgType = message.msgtype;
+        if (event.getType().equals(Event.EVENT_TYPE_MESSAGE) && Message.MSGTYPE_FILE.equals(msgType)) {
+            playbackLayout.setVisibility(View.GONE);
+            return;
+        }
         playbackLayout.setTag(mediaUrl);
         final View playButton = playbackLayout.findViewById(R.id.media_playback);
 
