@@ -19,12 +19,12 @@ package im.vector.view
 import android.content.Context
 import android.graphics.*
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
+import org.jetbrains.anko.displayMetrics
 import org.matrix.androidsdk.core.Log
 import java.io.IOException
 import kotlin.math.abs
@@ -32,7 +32,7 @@ import kotlin.math.abs
 class PaintOnImageView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private var mOriginalBitmap: Bitmap? = null
+    private var mSampledBitmap: Bitmap? = null
 
     private var mOriginalUri: Uri? = null
     private var mBitmapPaint = Paint(Paint.FILTER_BITMAP_FLAG)
@@ -90,7 +90,7 @@ class PaintOnImageView @JvmOverloads constructor(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        mOriginalBitmap?.let { originalBitmap ->
+        mSampledBitmap?.let { originalBitmap ->
             val bitmapRatio = originalBitmap.width / originalBitmap.height.toFloat()
             val params = layoutParams as RelativeLayout.LayoutParams
             params.height = (w / bitmapRatio).toInt()
@@ -103,7 +103,7 @@ class PaintOnImageView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        mOriginalBitmap?.let {
+        mSampledBitmap?.let {
             canvas?.drawBitmap(it, null, mCanvasSize, null)
         }
         mColorPaths.forEach {
@@ -162,8 +162,8 @@ class PaintOnImageView @JvmOverloads constructor(
 
     fun setBitmap(uri: Uri) {
         mOriginalUri = uri
-        mOriginalBitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-        mOriginalBitmap?.let {
+        mSampledBitmap = getBitmapFromPath(uri, context.displayMetrics.widthPixels, context.displayMetrics.heightPixels)
+        mSampledBitmap?.let {
             invalidate()
         }
         clear()
@@ -174,15 +174,15 @@ class PaintOnImageView @JvmOverloads constructor(
             return mOriginalUri
         }
         try {
-            mOriginalBitmap?.let {originalBitmap ->
-                val resultingBitmap = Bitmap.createBitmap(originalBitmap.width, originalBitmap.height, Bitmap.Config.ARGB_8888)
+            mSampledBitmap?.let { bitmap ->
+                val resultingBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
 
                 val matrix = Matrix()
-                matrix.setScale(originalBitmap.width / width.toFloat(), originalBitmap.height / height.toFloat())
+                matrix.setScale(bitmap.width / width.toFloat(), bitmap.height / height.toFloat())
                 val scaledPaths = mColorPaths
 
                 val canvas = Canvas(resultingBitmap)
-                canvas.drawBitmap(originalBitmap, 0f, 0f, mBitmapPaint)
+                canvas.drawBitmap(bitmap, 0f, 0f, mBitmapPaint)
                 scaledPaths.forEach { pair ->
                     pair.value.transform(matrix)
                     mCachedPaints[pair.key]?.let { paint ->
@@ -202,6 +202,46 @@ class PaintOnImageView @JvmOverloads constructor(
             e.printStackTrace()
         }
         return null
+    }
+
+    private fun getBitmapFromPath(
+            path: Uri,
+            reqWidth: Int,
+            reqHeight: Int
+    ): Bitmap {
+        // First decode with inJustDecodeBounds=true to check dimensions
+        return BitmapFactory.Options().run {
+            inJustDecodeBounds = true
+            BitmapFactory.decodeFile(path.encodedPath, this)
+
+            // Calculate inSampleSize
+            inSampleSize = calculateInSampleSize(this, reqWidth, reqHeight)
+
+            // Decode bitmap with inSampleSize set
+            inJustDecodeBounds = false
+
+            BitmapFactory.decodeFile(path.encodedPath, this)
+        }
+    }
+
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        // Raw height and width of image
+        val (height: Int, width: Int) = options.run { outHeight to outWidth }
+        var inSampleSize = 1
+
+        if (height > reqHeight || width > reqWidth) {
+
+            val halfHeight: Int = height / 2
+            val halfWidth: Int = width / 2
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                inSampleSize *= 2
+            }
+        }
+
+        return inSampleSize
     }
 
     companion object {
