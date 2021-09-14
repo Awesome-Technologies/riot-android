@@ -331,7 +331,7 @@ dependencies {
     /************* flavors management **************/
 
     // app flavor only
-    appImplementation('com.google.firebase:firebase-messaging:20.0.0') {
+    appImplementation('com.google.firebase:firebase-messaging:22.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -340,21 +340,21 @@ dependencies {
     // appfdroid flavor only
 
     // amp flavor only
-    ampImplementation('com.google.firebase:firebase-messaging:20.0.0') {
+    ampImplementation('com.google.firebase:firebase-messaging:22.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
 
     // caritas flavor only
-    caritasImplementation('com.google.firebase:firebase-messaging:20.0.0') {
+    caritasImplementation('com.google.firebase:firebase-messaging:22.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
 
     // vitos flavor only
-    vitosImplementation('com.google.firebase:firebase-messaging:20.0.0') {
+    vitosImplementation('com.google.firebase:firebase-messaging:22.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'

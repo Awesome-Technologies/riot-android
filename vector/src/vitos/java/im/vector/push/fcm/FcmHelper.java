@@ -28,10 +28,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.matrix.androidsdk.core.Log;
 
@@ -83,19 +80,9 @@ public class FcmHelper {
             //'app should always check the device for a compatible Google Play services APK before accessing Google Play services features'
             if (checkPlayServices(activity)) {
                 try {
-                    FirebaseInstanceId.getInstance().getInstanceId()
-                            .addOnSuccessListener(activity, new OnSuccessListener<InstanceIdResult>() {
-                                @Override
-                                public void onSuccess(InstanceIdResult instanceIdResult) {
-                                    storeFcmToken(activity, instanceIdResult.getToken());
-                                }
-                            })
-                            .addOnFailureListener(activity, new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e(LOG_TAG, "## ensureFcmTokenIsRetrieved() : failed " + e.getMessage(), e);
-                                }
-                            });
+                    FirebaseMessaging.getInstance().getToken()
+                            .addOnSuccessListener(activity, token -> storeFcmToken(activity, token))
+                            .addOnFailureListener(activity, e -> Log.e(LOG_TAG, "## ensureFcmTokenIsRetrieved() : failed " + e.getMessage(), e));
                 } catch (Throwable e) {
                     Log.e(LOG_TAG, "## ensureFcmTokenIsRetrieved() : failed " + e.getMessage(), e);
                 }

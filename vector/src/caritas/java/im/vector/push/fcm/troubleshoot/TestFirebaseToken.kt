@@ -16,7 +16,7 @@
 package im.vector.push.fcm.troubleshoot
 
 import androidx.fragment.app.Fragment
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.installations.FirebaseInstallations
 import im.vector.R
 import im.vector.fragments.troubleshoot.NotificationTroubleshootTestManager
 import im.vector.fragments.troubleshoot.TroubleshootTest
@@ -33,8 +33,8 @@ class TestFirebaseToken(val fragment: Fragment) : TroubleshootTest(R.string.sett
         val activity = fragment.activity
         if (activity != null) {
             try {
-                FirebaseInstanceId.getInstance().instanceId
-                        .addOnCompleteListener(activity) { task ->
+                FirebaseInstallations.getInstance().getToken(true)
+                    .addOnCompleteListener(activity) { task ->
                             if (!task.isSuccessful) {
                                 val errorMsg = if (task.exception == null) "Unknown" else task.exception!!.localizedMessage
                                 //Can't find where this constant is (not documented -or deprecated in docs- and all obfuscated)
