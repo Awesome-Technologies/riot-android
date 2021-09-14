@@ -241,12 +241,13 @@ static def gitBranchName() {
 dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     // Kotlin KTX
-    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'androidx.core:core-ktx:1.6.0'
 
     // Kotlin coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
     implementation "org.jetbrains.anko:anko-commons:0.10.8"
 
     // Note: do not upgrade to 1.0.3 because it lead to crashes at startup on Android 16
@@ -254,16 +255,16 @@ dependencies {
 
     implementation 'me.leolin:ShortcutBadger:1.1.2@aar'
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt 'com.jakewharton:butterknife-compiler:10.1.0'
+    kapt 'com.jakewharton:butterknife-compiler:10.2.3'
 
     implementation 'androidx.biometric:biometric:1.0.1'
 
@@ -274,7 +275,7 @@ dependencies {
     implementation "android.arch.work:work-runtime-ktx:1.0.1"
 
     // UI
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'com.binaryfork:spanny:1.0.4'
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
@@ -285,27 +286,27 @@ dependencies {
     kapt 'com.airbnb.android:epoxy-processor:3.7.0'
 
     // Network
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation "com.google.code.gson:gson:$gson_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.12.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation 'com.facebook.stetho:stetho:1.5.0'
-    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
-    implementation 'com.squareup.okio:okio:1.17.2'
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation 'com.facebook.stetho:stetho:1.6.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.6.0'
+    implementation 'com.squareup.okio:okio:3.0.0-alpha.10'
 
     // Use Glide library to display image (Gif supported)
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     // Passphrase strength helper
-    implementation 'com.nulab-inc:zxcvbn:1.2.5'
+    implementation 'com.nulab-inc:zxcvbn:1.5.2'
 
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.9.12'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.31'
 
     // QR code scanner
-    implementation 'com.google.android.gms:play-services-vision:19.0.0'
+    implementation 'com.google.android.gms:play-services-vision:20.1.3'
 
     //Alerter
     implementation 'com.tapadoo.android:alerter:4.0.3'
@@ -313,14 +314,12 @@ dependencies {
     /************* Matrix SDK management **************/
     // update settings.gradle
     // use the matrix SDK as external dependency
-    implementation 'com.github.awesome-technologies.matrix-android-sdk:matrix-sdk:v0.9.36-AMP'
-    implementation 'com.github.awesome-technologies.matrix-android-sdk:matrix-sdk-crypto:v0.9.36-AMP'
-    implementation 'com.github.awesome-technologies.matrix-android-sdk:matrix-sdk-core:v0.9.36-AMP'
+    //implementation 'com.github.awesome-technologies.matrix-android-sdk:matrix-sdk:v0.9.36-AMP'
     // use the matrix SDK as a sub project
     // you have to uncomment some lines in settings.gradle
-    //implementation project(':matrix-sdk')
-    //implementation project(':matrix-sdk-crypto')
-    //implementation project(':matrix-sdk-core')
+    implementation project(':matrix-sdk')
+    implementation project(':matrix-sdk-crypto')
+    implementation project(':matrix-sdk-core')
 
     /************* jitsi **************/
     implementation('org.jitsi.react:jitsi-meet-sdk:2.7.0')
@@ -362,19 +361,19 @@ dependencies {
     }
 
     // Test
-    testImplementation 'junit:junit:4.12' // Test
-    testImplementation 'androidx.test:runner:1.2.0'
-    testImplementation 'androidx.test:rules:1.2.0'
-    testImplementation 'org.mockito:mockito-core:2.23.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.hamcrest:hamcrest-library:1.3'
+    testImplementation 'junit:junit:4.13.2' // Test
+    testImplementation 'androidx.test:runner:1.4.0'
+    testImplementation 'androidx.test:rules:1.4.0'
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testImplementation 'org.apache.maven:maven-ant-tasks:2.1.3' // fixes issue on linux/mac
-    testImplementation "org.robolectric:robolectric:4.0.2"
+    testImplementation 'org.robolectric:robolectric:4.6.1'
 
     // Robolectric
-    androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
 }
 
 //Ensure we never move past okhttp 3.12.x

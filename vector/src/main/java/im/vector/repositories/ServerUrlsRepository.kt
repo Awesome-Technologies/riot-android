@@ -69,8 +69,8 @@ object ServerUrlsRepository {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
         return prefs.getString(HOME_SERVER_URL_PREF,
-                prefs.getString(DEFAULT_REFERRER_HOME_SERVER_URL_PREF,
-                        getDefaultHomeServerUrl(context)))
+            prefs.getString(DEFAULT_REFERRER_HOME_SERVER_URL_PREF,
+                getDefaultHomeServerUrl(context)))!!
     }
 
 
@@ -81,8 +81,8 @@ object ServerUrlsRepository {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
         return prefs.getString(IDENTITY_SERVER_URL_PREF,
-                prefs.getString(DEFAULT_REFERRER_IDENTITY_SERVER_URL_PREF,
-                        getDefaultIdentityServerUrl(context)))
+            prefs.getString(DEFAULT_REFERRER_IDENTITY_SERVER_URL_PREF,
+                getDefaultIdentityServerUrl(context)))!!
     }
 
     /**

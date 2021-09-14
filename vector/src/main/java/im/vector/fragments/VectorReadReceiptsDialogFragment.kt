@@ -44,10 +44,10 @@ class VectorReadReceiptsDialogFragment : VectorBaseDialogFragment<VectorReadRece
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val mxSession = Matrix.getInstance(context).getSession(arguments!!.getString(ARG_SESSION_ID))
+        val mxSession = Matrix.getInstance(context).getSession(requireArguments().getString(ARG_SESSION_ID))
 
-        val roomId = arguments!!.getString(ARG_ROOM_ID)
-        val eventId = arguments!!.getString(ARG_EVENT_ID)
+        val roomId = requireArguments().getString(ARG_ROOM_ID)!!
+        val eventId = requireArguments().getString(ARG_EVENT_ID)
 
         // sanity check
         if (mxSession == null || TextUtils.isEmpty(roomId) || TextUtils.isEmpty(eventId)) {
@@ -58,7 +58,7 @@ class VectorReadReceiptsDialogFragment : VectorBaseDialogFragment<VectorReadRece
 
         val room = mxSession.dataHandler.getRoom(roomId)
 
-        mAdapter = VectorReadReceiptsAdapter(context!!,
+        mAdapter = VectorReadReceiptsAdapter(requireContext(),
                 mxSession,
                 room,
                 ArrayList(mxSession.dataHandler.store!!.getEventReceipts(roomId, eventId, true, true)),

@@ -95,7 +95,7 @@ class UrlPreviewView @JvmOverloads constructor(
                     it.text = SpannableString(preview.title)
                             .apply {
                                 setSpan(object : ClickableSpan() {
-                                    override fun onClick(widget: View?) {
+                                    override fun onClick(widget: View) {
                                         openUrlInExternalBrowser(context, preview.requestedURL)
                                     }
                                 }, 0, preview.title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -107,7 +107,7 @@ class UrlPreviewView @JvmOverloads constructor(
                     it.text = SpannableString(preview.requestedURL)
                             .apply {
                                 setSpan(object : ClickableSpan() {
-                                    override fun onClick(widget: View?) {
+                                    override fun onClick(widget: View) {
                                         openUrlInExternalBrowser(context, preview.requestedURL)
                                     }
                                 }, 0, preview.requestedURL.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)

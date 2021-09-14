@@ -50,7 +50,7 @@ fun Room?.getRoomMaxPowerLevel(): Int {
     var maxPowerLevel = 0
 
     state?.powerLevels?.let {
-        maxPowerLevel = max(it.users_default, it.users?.values?.max() ?: 0)
+        maxPowerLevel = max(it.users_default, it.users?.values?.maxOrNull() ?: 0)
     }
 
     return maxPowerLevel

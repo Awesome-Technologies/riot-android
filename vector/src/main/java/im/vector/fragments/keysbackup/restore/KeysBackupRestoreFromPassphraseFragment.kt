@@ -72,13 +72,13 @@ class KeysBackupRestoreFromPassphraseFragment : VectorBaseFragment() {
         } ?: throw Exception("Invalid Activity")
 
 
-        viewModel.passphraseErrorText.observe(this, Observer { newValue ->
+        viewModel.passphraseErrorText.observe(viewLifecycleOwner, Observer { newValue ->
             mPassphraseInputLayout.error = newValue
         })
 
-        helperTextWithLink.text = spannableStringForHelperText(context!!)
+        helperTextWithLink.text = spannableStringForHelperText(requireContext())
 
-        viewModel.showPasswordMode.observe(this, Observer {
+        viewModel.showPasswordMode.observe(viewLifecycleOwner, Observer {
             val shouldBeVisible = it ?: false
             mPassphraseTextEdit.showPassword(shouldBeVisible)
             mPassphraseReveal.setImageResource(if (shouldBeVisible) R.drawable.ic_eye_closed_black else R.drawable.ic_eye_black)
@@ -102,7 +102,7 @@ class KeysBackupRestoreFromPassphraseFragment : VectorBaseFragment() {
 
         // used just to have default link representation
         val clickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View?) {}
+            override fun onClick(widget: View) {}
         }
         val start = helperText.indexOf(clickableText)
         val end = start + clickableText.length
@@ -126,7 +126,7 @@ class KeysBackupRestoreFromPassphraseFragment : VectorBaseFragment() {
         if (value.isNullOrBlank()) {
             viewModel.passphraseErrorText.value = context?.getString(R.string.passphrase_empty_error_message)
         } else {
-            viewModel.recoverKeys(context!!, sharedViewModel)
+            viewModel.recoverKeys(requireContext(), sharedViewModel)
         }
     }
 
