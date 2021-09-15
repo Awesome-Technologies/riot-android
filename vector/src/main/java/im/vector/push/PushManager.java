@@ -742,10 +742,12 @@ public final class PushManager {
         registerToThirdPartyServer(session, index > 0, new ApiCallback<Void>() {
             @Override
             public void onSuccess(Void info) {
-                Log.d(LOG_TAG, "registerSessions : session " + session.getMyUserId() + " is registered");
+                if (session.isAlive()) {
+                    Log.d(LOG_TAG, "registerSessions : session " + session.getMyUserId() + " is registered");
 
-                // Go on with the next index
-                registerToThirdPartyServerRecursive(sessions, index + 1);
+                    // Go on with the next index
+                    registerToThirdPartyServerRecursive(sessions, index + 1);
+                }
             }
 
             @Override
