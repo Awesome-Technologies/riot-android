@@ -742,7 +742,6 @@ Du kannst sie jetzt aktivieren oder später über das Einstellungsmenü.</string
     <string name="widget_integration_missing_user_id">Anfrage enthält keine user_id.</string>
     <string name="light_theme">Helles Design</string>
     <string name="dark_theme">Dunkles Design</string>
-    <string name="black_them">Schwarzes Design</string>
 
     <string name="login_mobile_device">Mobilgerät</string>
 
