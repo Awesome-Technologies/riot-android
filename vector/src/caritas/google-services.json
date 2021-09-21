@@ -29,24 +29,24 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCdZvtbUjPWCtcVVAZ7VwkSIDneOfOUcxY"
+          "current_key": "AIzaSyAcy7lm0YhiK62UAb-wBaHTi_oYc0qa2Ro"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "194842688140-49fmq58hvdf5v1mqbqjp49ciqc6epdei.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "194842688140-h6ehvdi9qvo6akjtsju767nm39poqurv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "care.amp.mobile"
+              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
