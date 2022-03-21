@@ -1597,4 +1597,8 @@ Why choose Riot.im?
     <!-- Painting -->
     <string name="paint_image_title">Paint on image</string>
     <string name="paint_image_write_to_file_error">There was an unexpected error. Please try again.</string>
+
+    <!-- Send Message -->
+    <string name="send_message_permission_label">3rd Party Messaging</string>
+    <string name="send_message_permission_desc">Allows other apps to send messages on behalf of the user. You will be asked for permission, should an app try to use this permission and be able to decline access.</string>
 </resources>

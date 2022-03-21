@@ -46,6 +46,8 @@ import im.vector.R;
 import im.vector.VectorApp;
 import im.vector.analytics.TrackingEvent;
 import im.vector.push.PushManager;
+import im.vector.receiver.AMPSendMessageReceiver;
+import im.vector.receiver.SendMessageModel;
 import im.vector.receiver.VectorUniversalLinkReceiver;
 import im.vector.services.EventStreamServiceX;
 import im.vector.util.PreferencesManager;
@@ -61,6 +63,8 @@ public class SplashActivity extends MXCActionBarActivity {
 
     private Map<MXSession, IMXEventListener> mListeners = new HashMap<>();
     private Map<MXSession, IMXEventListener> mDoneListeners = new HashMap<>();
+
+    private static SendMessageModel mMessageData = null;
 
     private final long mLaunchTime = System.currentTimeMillis();
 
@@ -108,8 +112,14 @@ public class SplashActivity extends MXCActionBarActivity {
                 intent.putExtras(receivedBundle);
             }
 
+            if (mMessageData != null) {
+                intent.putExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA, mMessageData);
+                mMessageData = null;
+            }
+
             // display a spinner while managing the universal link
-            if (intent.hasExtra(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI)) {
+            if (intent.hasExtra(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI)
+                    || intent.hasExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA)) {
                 intent.putExtra(VectorHomeActivity.EXTRA_WAITING_VIEW_STATUS, VectorHomeActivity.WAITING_VIEW_START);
             }
 
@@ -170,6 +180,10 @@ public class SplashActivity extends MXCActionBarActivity {
         Drawable background = animatedLogo.getBackground();
         if (background instanceof AnimationDrawable) {
             ((AnimationDrawable) background).start();
+        }
+
+        if (getIntent().hasExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA)) {
+            mMessageData = getIntent().getParcelableExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA);
         }
 
         // Check the lazy loading status

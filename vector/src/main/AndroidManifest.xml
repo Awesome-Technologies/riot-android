@@ -42,6 +42,12 @@
     <!-- disable the battery optimisation on some devices to let the background sync works -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
+    <permission
+        android:name="chat.amp.messenger.permission.SEND_MESSAGE"
+        android:label="@string/send_message_permission_label"
+        android:description="@string/send_message_permission_desc"
+        android:protectionLevel="normal" />
+
     <!-- videocall feature -->
     <!-- android.permission.CAMERA defines android.hardware.camera -->
     <uses-feature
@@ -352,23 +358,32 @@
             android:launchMode="singleTop"
             android:theme="@style/GroupAppTheme.Light"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.AMPSendMessageActivity"
+            android:permission="chat.amp.messenger.permission.SEND_MESSAGE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="chat.amp.messenger.SEND_MESSAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.VectorUniversalLinkActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.VIEW" />-->
 
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+            <!--                <category android:name="android.intent.category.DEFAULT" />-->
+            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-<!--                <data android:scheme="http" />-->
-<!--                <data android:scheme="https" />-->
-<!--                <data android:host="vector.im" />-->
-<!--                <data android:pathPrefix="/app/" />-->
-<!--                <data android:pathPrefix="/beta/" />-->
-<!--                <data android:pathPrefix="/develop/" />-->
-<!--                <data android:pathPrefix="/staging/" />-->
-<!--                &lt;!&ndash; mail validation &ndash;&gt;-->
-<!--                <data android:pathPrefix="/_matrix/" />-->
-<!--            </intent-filter>-->
+            <!--                <data android:scheme="http" />-->
+            <!--                <data android:scheme="https" />-->
+            <!--                <data android:host="vector.im" />-->
+            <!--                <data android:pathPrefix="/app/" />-->
+            <!--                <data android:pathPrefix="/beta/" />-->
+            <!--                <data android:pathPrefix="/develop/" />-->
+            <!--                <data android:pathPrefix="/staging/" />-->
+            <!--                &lt;!&ndash; mail validation &ndash;&gt;-->
+            <!--                <data android:pathPrefix="/_matrix/" />-->
+            <!--            </intent-filter>-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -464,6 +479,13 @@
         </provider>
 
         <!-- broadcast receiver -->
+        <receiver
+            android:name=".receiver.AMPSendMessageReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="im.vector.receiver.AMP_SEND_MESSAGE" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".receiver.VectorUniversalLinkReceiver"
             android:exported="false">

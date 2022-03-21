@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
@@ -49,6 +50,8 @@ import im.vector.LoginHandler;
 import im.vector.Matrix;
 import im.vector.R;
 import im.vector.push.fcm.FcmHelper;
+import im.vector.receiver.AMPSendMessageReceiver;
+import im.vector.receiver.SendMessageModel;
 import im.vector.util.PermissionsToolsKt;
 import im.vector.view.barcode.BarcodeGraphic;
 import im.vector.view.barcode.BarcodeGraphicTracker;
@@ -76,6 +79,7 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
     public static final String OBFUSCATION_KEY = "wo9k5tep252qxsa5yde7366kugy6c01w7oeeya9hrmpf0t7ii7";
+    private SendMessageModel mSendMessageData;
 
     @Override
     public int getLayoutRes() { return R.layout.activity_barcode_login; }
@@ -89,6 +93,17 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
         CommonActivityUtils.onApplicationStarted(this);
 
         FcmHelper.ensureFcmTokenIsRetrieved(this);
+
+        Intent intent = getIntent();
+
+        // Check whether the application has been resumed from an universal link
+        Bundle receivedBundle = intent.getExtras();
+        if (null != receivedBundle) {
+            if (receivedBundle.containsKey(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA)) {
+                mSendMessageData = receivedBundle.getParcelable(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA);
+                Log.d(LOG_TAG, "## onCreate() Login activity started by send message action");
+            }
+        }
 
         if (hasCredentials()) {
             Log.d(LOG_TAG, "## onCreate(): goToSplash because the credentials are already provided.");
@@ -109,7 +124,7 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
         final Button button = findViewById(R.id.alternative_login);
         button.setOnClickListener(v -> onSwitchToLoginActivityClick());
 
-        Uri loginUri = getIntent().getData();
+        Uri loginUri = intent.getData();
         if (loginUri != null && loginUri.getFragment() != null) {
             login(loginUri, decode(loginUri.getFragment()));
         }
@@ -124,6 +139,7 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
 
         // go to login page
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtras(getIntent());
         startActivity(intent);
     }
 
@@ -365,6 +381,9 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
         Log.d(LOG_TAG, "## gotoSplash(): Go to splash.");
 
         Intent intent = new Intent(this, SplashActivity.class);
+        if (null != mSendMessageData) {
+            intent.putExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA, mSendMessageData);
+        }
         startActivity(intent);
     }
 }

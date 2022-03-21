@@ -29,7 +29,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -118,6 +117,8 @@ import im.vector.fragments.RoomsFragment;
 import im.vector.fragments.signout.SignOutBottomSheetDialogFragment;
 import im.vector.fragments.signout.SignOutViewModel;
 import im.vector.push.PushManager;
+import im.vector.receiver.AMPSendMessageReceiver;
+import im.vector.receiver.SendMessageModel;
 import im.vector.receiver.VectorUniversalLinkReceiver;
 import im.vector.services.EventStreamServiceX;
 import im.vector.tools.VectorUncaughtExceptionHandler;
@@ -186,6 +187,8 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
     // switch to a room activity
     private Map<String, Object> mAutomaticallyOpenedRoomParams = null;
+
+    private SendMessageModel mSendingMessageData = null;
 
     private Uri mUniversalLinkToOpen = null;
 
@@ -356,6 +359,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
             intent.removeExtra(EXTRA_MEMBER_ID);
             intent.removeExtra(EXTRA_GROUP_ID);
             intent.removeExtra(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI);
+            intent.removeExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA);
         } else {
 
             if (intent.hasExtra(EXTRA_CALL_SESSION_ID) && intent.hasExtra(EXTRA_CALL_ID)) {
@@ -387,6 +391,15 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
             mGroupIdToOpen = intent.getStringExtra(EXTRA_GROUP_ID);
             intent.removeExtra(EXTRA_GROUP_ID);
+
+            // the home activity has been launched with a send message request
+            if (intent.hasExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA)) {
+                Log.d(LOG_TAG, "Has message data");
+
+                processSendMessageAction();
+            } else {
+                Log.d(LOG_TAG, "create with no send message data");
+            }
 
             // the home activity has been launched with an universal link
             if (intent.hasExtra(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI)) {
@@ -545,6 +558,19 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
         if (null != mAutomaticallyOpenedRoomParams) {
             CommonActivityUtils.goToRoomPage(VectorHomeActivity.this, mSession, mAutomaticallyOpenedRoomParams);
             mAutomaticallyOpenedRoomParams = null;
+        }
+
+        // make use of the send message data
+        if (null != mSendingMessageData) {
+            intent.putExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA, mSendingMessageData);
+
+            new Handler(getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    processSendMessageAction();
+                    mSendingMessageData = null;
+                }
+            }, 100);
         }
 
         // jump to an external link
@@ -1145,6 +1171,33 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
                                     }
                                 })
                         .show();
+            }
+        }
+    }
+
+    private void processSendMessageAction() {
+        Intent intent;
+        SendMessageModel data;
+
+        if (null != (intent = getIntent())) {
+            if (intent.hasExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA)) {
+                Log.d(LOG_TAG, "## processSendMessageAction(): EXTRA_MESSAGE_DATA present");
+                data = intent.getParcelableExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA);
+
+                if (null != data) {
+                    // since android O
+                    // set the class to avoid having "Background execution not allowed"
+                    Intent myBroadcastIntent = new Intent(VectorApp.getInstance(), AMPSendMessageReceiver.class);
+                    myBroadcastIntent.setAction(AMPSendMessageReceiver.BROADCAST_ACTION_AMP_SEND_MESSAGE);
+                    myBroadcastIntent.putExtras(getIntent().getExtras());
+                    sendBroadcast(myBroadcastIntent);
+
+                    showWaitingView();
+
+                    // use only once, remove since it has been used
+                    intent.removeExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA);
+                    Log.d(LOG_TAG, "## processSendMessageAction(): Broadcast BROADCAST_ACTION_AMP_SEND_MESSAGE sent");
+                }
             }
         }
     }
@@ -2047,6 +2100,7 @@ public class VectorHomeActivity extends VectorAppCompatActivity implements Searc
 
                 // treat any pending URL link workflow, that was started previously
                 processIntentUniversalLink();
+                processSendMessageAction();
             }
 
             @Override

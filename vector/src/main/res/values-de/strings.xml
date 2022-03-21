@@ -1666,4 +1666,8 @@ Verwahre deinen Wiederherstellungsschlüssel an einem sehr sicheren Ort wie eine
     <!-- Painting -->
     <string name="paint_image_title">Bild bemalen</string>
     <string name="paint_image_write_to_file_error">Es gab einen unerwarteten Fehler. Bitte erneut versuchen.</string>
+
+    <!-- Send Message -->
+    <string name="send_message_permission_label">Dritt-App Nachrichten</string>
+    <string name="send_message_permission_desc">Erlaubt anderen Apps das Senden von Nachrichten in Ihrem Namen. Vor der Nutzung dieser Schnittstelle haben Sie die Möglichkeit den Zugriff abzulehnen.</string>
 </resources>

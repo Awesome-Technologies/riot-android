@@ -126,6 +126,7 @@ import im.vector.fragments.VectorReadReceiptsDialogFragment;
 import im.vector.fragments.VectorUnknownDevicesFragment;
 import im.vector.fragments.roomwidgets.RoomWidgetPermissionBottomSheet;
 import im.vector.listeners.IMessagesAdapterActionsListener;
+import im.vector.receiver.SendMessageModel;
 import im.vector.ui.themes.ThemeUtils;
 import im.vector.util.CallsManager;
 import im.vector.util.ExternalApplicationsUtilKt;
@@ -176,6 +177,9 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
     public static final String EXTRA_ROOM_PREVIEW_ROOM_ALIAS = "EXTRA_ROOM_PREVIEW_ROOM_ALIAS";
     // expand the room header when the activity is launched (boolean)
     public static final String EXTRA_EXPAND_ROOM_HEADER = "EXTRA_EXPAND_ROOM_HEADER";
+
+    // send message data
+    public static final String EXTRA_SEND_MESSAGE_DATA = "EXTRA_SEND_MESSAGE_DATA";
 
     // display the room information while joining a room.
     // until the join is done.
@@ -1047,6 +1051,20 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
                         mIsUnreadPreviewMode ? ReadMarkerManager.PREVIEW_MODE : ReadMarkerManager.LIVE_MODE,
                         findViewById(R.id.jump_to_first_unread));
             }
+        }
+
+        Log.d(LOG_TAG, "Apply send message data if applicable");
+        SendMessageModel messageData = intent.getParcelableExtra(EXTRA_SEND_MESSAGE_DATA);
+        if (messageData != null) {
+            new Handler(getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mEditText.setText(messageData.getMessage());
+                    if (messageData.getSendNow()) {
+                        sendTextMessage();
+                    }
+                }
+            }, 100);
         }
 
         Log.d(LOG_TAG, "End of create");

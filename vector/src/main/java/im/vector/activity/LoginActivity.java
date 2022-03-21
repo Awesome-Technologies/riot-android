@@ -96,7 +96,9 @@ import im.vector.activity.policies.AccountCreationTermsActivity;
 import im.vector.activity.util.RequestCodesKt;
 import im.vector.features.hhs.ResourceLimitDialogHelper;
 import im.vector.push.fcm.FcmHelper;
+import im.vector.receiver.AMPSendMessageReceiver;
 import im.vector.receiver.LoginConfig;
+import im.vector.receiver.SendMessageModel;
 import im.vector.receiver.VectorRegistrationReceiver;
 import im.vector.receiver.VectorUniversalLinkReceiver;
 import im.vector.repositories.ServerUrlsRepository;
@@ -299,6 +301,9 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
 
     // the pending universal link uri (if any)
     private Parcelable mUniversalLinkUri;
+
+    // the pending send message data (if any)
+    private SendMessageModel mSendMessageData;
 
     // the HS and the IS urls
     private String mHomeServerUrl = null;
@@ -642,7 +647,10 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         // Check whether the application has been resumed from an universal link
         Bundle receivedBundle = null != intent ? getIntent().getExtras() : null;
         if (null != receivedBundle) {
-            if (receivedBundle.containsKey(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI)) {
+            if (receivedBundle.containsKey(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA)) {
+                mSendMessageData = receivedBundle.getParcelable(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA);
+                Log.d(LOG_TAG, "## onCreate() Login activity started by send message action");
+            } else if (receivedBundle.containsKey(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI)) {
                 mUniversalLinkUri = receivedBundle.getParcelable(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI);
                 Log.d(LOG_TAG, "## onCreate() Login activity started by universal link");
             } else if (receivedBundle.containsKey(VectorRegistrationReceiver.EXTRA_EMAIL_VALIDATION_PARAMS)) {
@@ -1138,6 +1146,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         Intent intent = new Intent(this, SplashActivity.class);
         if (null != mUniversalLinkUri) {
             intent.putExtra(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI, mUniversalLinkUri);
+        } else if (null != mSendMessageData) {
+            intent.putExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA, mSendMessageData);
         }
 
         startActivity(intent);
@@ -2241,6 +2251,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         // check if the application has been opened by click on an url
         if (savedInstanceState.containsKey(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI)) {
             mUniversalLinkUri = savedInstanceState.getParcelable(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI);
+        } else if (savedInstanceState.containsKey(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA)) {
+            mSendMessageData = savedInstanceState.getParcelable(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA);
         }
 
         mPendingEmailValidation = savedInstanceState.getParcelable(SAVED_CREATION_EMAIL_THREEPID);
@@ -2257,6 +2269,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         // check if the application has been opened by click on an url
         if (null != mUniversalLinkUri) {
             savedInstanceState.putParcelable(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI, mUniversalLinkUri);
+        } else if (null != mSendMessageData) {
+            savedInstanceState.putParcelable(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA, mSendMessageData);
         }
 
         // check whether an email validation is in progress
