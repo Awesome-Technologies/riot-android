@@ -1670,4 +1670,6 @@ Verwahre deinen Wiederherstellungsschlüssel an einem sehr sicheren Ort wie eine
     <!-- Send Message -->
     <string name="send_message_permission_label">Dritt-App Nachrichten</string>
     <string name="send_message_permission_desc">Erlaubt anderen Apps das Senden von Nachrichten in Ihrem Namen. Vor der Nutzung dieser Schnittstelle haben Sie die Möglichkeit den Zugriff abzulehnen.</string>
+    <string name="send_message_permission_dialog_title">Nachrichten Berechtigungsanfrage</string>
+    <string name="send_message_permission_dialog_desc">Die App %s (%s) würde gerne in Ihrem Namen eine Nachricht verschicken. Erlauben Sie das dieser App?</string>
 </resources>
