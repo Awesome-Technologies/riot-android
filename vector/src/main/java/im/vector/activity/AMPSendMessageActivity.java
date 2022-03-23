@@ -1,6 +1,7 @@
 package im.vector.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
@@ -29,32 +30,46 @@ public class AMPSendMessageActivity extends VectorAppCompatActivity {
 
         if (TextUtils.equals(getIntent().getAction(), AMPSendMessageReceiver.SEND_MESSAGE_ACTION)) {
             Log.d(LOG_TAG, "## initUiAndData(): Appropriate action found. Broadcasting data…");
-            try {
-                PackageManager pm = getPackageManager();
-                String packageName = getCallingPackage();
-                ApplicationInfo appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-                String appName = pm.getApplicationLabel(appInfo).toString();
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.send_message_permission_dialog_title)
-                        .setIcon(pm.getApplicationIcon(appInfo))
-                        .setMessage(getString(R.string.send_message_permission_dialog_desc, appName, packageName))
-                        // Decline the request
-                        .setNegativeButton(R.string.no, (dialogInterface, i) -> setResult(-2))
-                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-                            Intent intent = new Intent(this, AMPSendMessageReceiver.class);
-                            intent.setAction(AMPSendMessageReceiver.BROADCAST_ACTION_AMP_SEND_MESSAGE);
-                            intent.putExtras(getIntent().getExtras());
-                            sendBroadcast(intent);
-                            setResult(RESULT_OK);
-                        })
-                        .setOnDismissListener(dialogInterface -> {
-                            finish();
-                        })
-                        .show();
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-                setResult(RESULT_CANCELED);
+            String packageName = getCallingPackage();
+            SharedPreferences pref = getSharedPreferences("SendMessagePreferences", MODE_PRIVATE);
+            if (pref.getBoolean(packageName, false)) {
+                // The user accepted a request from this app before
+                Intent intent = new Intent(this, AMPSendMessageReceiver.class);
+                intent.setAction(AMPSendMessageReceiver.BROADCAST_ACTION_AMP_SEND_MESSAGE);
+                intent.putExtras(getIntent().getExtras());
+                sendBroadcast(intent);
+                setResult(RESULT_OK);
                 finish();
+            } else {
+                try {
+                    PackageManager pm = getPackageManager();
+                    ApplicationInfo appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+                    String appName = pm.getApplicationLabel(appInfo).toString();
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.send_message_permission_dialog_title)
+                            .setIcon(pm.getApplicationIcon(appInfo))
+                            .setMessage(getString(R.string.send_message_permission_dialog_desc, appName, packageName))
+                            // Decline the request
+                            .setNegativeButton(R.string.no, (dialogInterface, i) -> setResult(-2))
+                            // Accept the request
+                            .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                                Intent intent = new Intent(this, AMPSendMessageReceiver.class);
+                                intent.setAction(AMPSendMessageReceiver.BROADCAST_ACTION_AMP_SEND_MESSAGE);
+                                intent.putExtras(getIntent().getExtras());
+                                sendBroadcast(intent);
+                                setResult(RESULT_OK);
+                                // Save to remember next time
+                                pref.edit().putBoolean(packageName, true).apply();
+                            })
+                            .setOnDismissListener(dialogInterface -> {
+                                finish();
+                            })
+                            .show();
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
             }
         } else {
             setResult(RESULT_CANCELED);
