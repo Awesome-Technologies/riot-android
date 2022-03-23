@@ -381,6 +381,20 @@
 
     </im.vector.preference.VectorPreferenceCategory>
 
+    <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_SEND_MESSAGE_PERMISSION_MANAGE_DIVIDER_PREFERENCE_KEY" />
+
+    <!-- ************ Send Message Permission section ************ -->
+    <im.vector.preference.VectorPreferenceCategory
+        android:key="SETTINGS_SEND_MESSAGE_PERMISSION_MANAGE_PREFERENCE_KEY"
+        android:title="@string/settings_send_message_manage_permissions_title">
+
+        <im.vector.preference.VectorPreference
+            android:key="SETTINGS_SEND_MESSAGE_PERMISSIONS_PREFERENCE_KEY"
+            android:title="@string/settings_send_message_manage_permissions"
+            app:fragment="im.vector.fragments.SettingsManageSendMessagePermissionsFragment" />
+
+    </im.vector.preference.VectorPreferenceCategory>
+
     <im.vector.preference.VectorPreferenceDivider android:key="SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY" />
 
     <!-- ************ Cryptography section ************ -->

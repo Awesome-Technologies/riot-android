@@ -1603,4 +1603,8 @@ Why choose Riot.im?
     <string name="send_message_permission_desc">Allows other apps to send messages on behalf of the user. You will be asked for permission, should an app try to use this permission and be able to decline access.</string>
     <string name="send_message_permission_dialog_title">Messaging Permission Request</string>
     <string name="send_message_permission_dialog_desc">The app %s (%s) would like to send a message on your behalf. Would you like to allow this?</string>
+    <string name="settings_send_message_manage_permissions">Manage Permissions</string>
+    <string name="settings_send_message_manage_permissions_title">3rd Party Messaging</string>
+    <string name="settings_send_message_manage_permissions_revoke_title">Revoke Permission</string>
+    <string name="settings_send_message_manage_permissions_revoke_desc">Do you want to revoke the permission to send messages on your behalf for this app?</string>
 </resources>

@@ -22,6 +22,7 @@ import androidx.preference.PreferenceFragmentCompat
 import im.vector.Matrix
 import im.vector.R
 import im.vector.fragments.VectorSettingsAdvancedNotificationPreferenceFragment
+import im.vector.fragments.SettingsManageSendMessagePermissionsFragment
 import im.vector.fragments.VectorSettingsFragmentInteractionListener
 import im.vector.fragments.VectorSettingsNotificationsTroubleshootFragment
 import im.vector.fragments.VectorSettingsPreferencesFragment
@@ -100,6 +101,8 @@ class VectorSettingsActivity : MXCActionBarActivity(),
         val oFragment = when (pref.key) {
             PreferencesManager.SETTINGS_NOTIFICATION_TROUBLESHOOT_PREFERENCE_KEY ->
                 VectorSettingsNotificationsTroubleshootFragment.newInstance(session.myUserId)
+            PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSIONS_PREFERENCE_KEY ->
+                SettingsManageSendMessagePermissionsFragment()
             PreferencesManager.SETTINGS_NOTIFICATION_ADVANCED_PREFERENCE_KEY     ->
                 VectorSettingsAdvancedNotificationPreferenceFragment.newInstance(session.myUserId)
             PreferencesManager.SETTINGS_DISCOVERY_PREFERENCE_KEY,

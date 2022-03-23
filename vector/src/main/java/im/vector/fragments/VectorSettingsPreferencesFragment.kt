@@ -208,6 +208,16 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     private val mCryptographyManageCategoryDivider by lazy {
         findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY)
     }
+    // send message permission manage
+    private val mSendMessagePermissionManageCategory by lazy {
+        findPreference(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSION_MANAGE_PREFERENCE_KEY) as PreferenceCategory
+    }
+    private val mSendMessagePermissionManageCategoryDivider by lazy {
+        findPreference(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSION_MANAGE_DIVIDER_PREFERENCE_KEY)
+    }
+    private val mSendMessageManagePermissions by lazy {
+        findPreference(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSIONS_PREFERENCE_KEY)
+    }
     // displayed pushers
     private val mPushersSettingsDivider by lazy {
         findPreference(PreferencesManager.SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY)
@@ -478,6 +488,11 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         // crypto manage
         mCryptographyManageCategoryDivider.isVisible = true
         mCryptographyManageCategory.isVisible = true
+
+        // permission manage
+        mSendMessagePermissionManageCategory.isVisible = true
+        mSendMessagePermissionManageCategoryDivider.isVisible = true
+        mSendMessageManagePermissions.isVisible = true
 
         // Analytics
         findPreference(PreferencesManager.SETTINGS_ANALYTICS_DIVIDER_PREFERENCE_KEY).isVisible = false
