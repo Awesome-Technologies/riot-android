@@ -111,7 +111,6 @@ class RoomWidgetFragment : VectorBaseMvRxFragment(), HandleBackParticipant {
         // Make sure you remove the WebView from its parent view before doing anything.
         (webview.parent as? ViewGroup)?.removeAllViews()
 
-        webview.webViewClient = null
         webview.clearHistory()
 
         // NOTE: clears RAM cache, if you pass true, it will also clear the disk cache.
@@ -328,10 +327,8 @@ class RoomWidgetFragment : VectorBaseMvRxFragment(), HandleBackParticipant {
 
             webview.webViewClient = webViewClient
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val cookieManager = CookieManager.getInstance()
-                cookieManager.setAcceptThirdPartyCookies(mWidgetWebView, false)
-            }
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.setAcceptThirdPartyCookies(mWidgetWebView, false)
         }
     }
 

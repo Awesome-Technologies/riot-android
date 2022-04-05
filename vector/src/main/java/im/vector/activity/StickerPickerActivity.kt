@@ -46,8 +46,8 @@ class StickerPickerActivity : AbstractWidgetActivity() {
     override fun getTitleRes() = R.string.title_activity_choose_sticker
 
     override fun initUiAndData() {
-        mWidgetUrl = intent.getStringExtra(EXTRA_WIDGET_URL)
-        mWidgetId = intent.getStringExtra(EXTRA_WIDGET_ID)
+        mWidgetUrl = intent.getStringExtra(EXTRA_WIDGET_URL)!!
+        mWidgetId = intent.getStringExtra(EXTRA_WIDGET_ID)!!
 
         configureToolbar()
 
@@ -199,7 +199,7 @@ class StickerPickerActivity : AbstractWidgetActivity() {
         private const val EXTRA_OUT_CONTENT = "EXTRA_OUT_CONTENT"
 
         fun getResultContent(intent: Intent): String {
-            return intent.getStringExtra(EXTRA_OUT_CONTENT)
+            return intent.getStringExtra(EXTRA_OUT_CONTENT)!!
         }
     }
 }

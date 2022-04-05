@@ -99,7 +99,7 @@ abstract class AbstractWidgetActivity : VectorAppCompatActivity() {
 
         initWebView()
 
-        mRoom = mSession!!.dataHandler.getRoom(intent.getStringExtra(EXTRA_ROOM_ID))
+        mRoom = mSession!!.dataHandler.getRoom(intent.getStringExtra(EXTRA_ROOM_ID)!!)
 
         widgetManager = matrix.getWidgetManagerProvider(mSession)?.getWidgetManager(this) ?: run {
             finish()

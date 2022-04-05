@@ -36,7 +36,7 @@ class ReviewTermsActivity : SimpleFragmentActivity() {
         }
 
         val viewModel = ViewModelProviders.of(this).get(AcceptTermsViewModel::class.java)
-        viewModel.termsArgs = intent.getParcelableExtra(EXTRA_INFO)
+        viewModel.termsArgs = intent.getParcelableExtra(EXTRA_INFO)!!
 
         mSession = getSession(intent)
 

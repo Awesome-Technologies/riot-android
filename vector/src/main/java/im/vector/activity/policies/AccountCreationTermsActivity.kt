@@ -60,7 +60,7 @@ class AccountCreationTermsActivity : VectorAppCompatActivity(),
         val list = ArrayList<LocalizedFlowDataLoginTermsChecked>()
 
         intent.getParcelableArrayListExtra<LocalizedFlowDataLoginTerms>(DATA)
-                .forEach {
+                ?.forEach {
                     list.add(LocalizedFlowDataLoginTermsChecked(it))
                 }
 

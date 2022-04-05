@@ -90,9 +90,9 @@ class CallService : VectorService() {
             val notification = NotificationUtils.buildIncomingCallNotification(
                     this,
                     intent.getBooleanExtra(EXTRA_IS_VIDEO, false),
-                    intent.getStringExtra(EXTRA_ROOM_NAME),
-                    intent.getStringExtra(EXTRA_MATRIX_ID),
-                    callId)
+                    intent.getStringExtra(EXTRA_ROOM_NAME)!!,
+                    intent.getStringExtra(EXTRA_MATRIX_ID)!!,
+                    callId!!)
             startForeground(NOTIFICATION_ID, notification)
 
             mIncomingCallId = callId
@@ -124,10 +124,10 @@ class CallService : VectorService() {
 
         val notification = NotificationUtils.buildPendingCallNotification(applicationContext,
                 intent.getBooleanExtra(EXTRA_IS_VIDEO, false),
-                intent.getStringExtra(EXTRA_ROOM_NAME),
-                intent.getStringExtra(EXTRA_ROOM_ID),
-                intent.getStringExtra(EXTRA_MATRIX_ID),
-                callId)
+                intent.getStringExtra(EXTRA_ROOM_NAME)!!,
+                intent.getStringExtra(EXTRA_ROOM_ID)!!,
+                intent.getStringExtra(EXTRA_MATRIX_ID)!!,
+                callId!!)
 
         startForeground(NOTIFICATION_ID, notification)
 

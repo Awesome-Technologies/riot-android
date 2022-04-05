@@ -93,7 +93,7 @@ class VectorWebViewActivity : VectorAppCompatActivity() {
                 }
             }
         }
-        webView.loadUrl(url)
+        webView.loadUrl(url!!)
     }
 
     /* ==========================================================================================

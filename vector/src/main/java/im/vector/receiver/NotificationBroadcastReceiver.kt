@@ -87,7 +87,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         }
         val matrixId = intent.getStringExtra(EXTRA_MATRIX_ID)
         Matrix.getInstance(context)?.getSession(matrixId)?.let { session ->
-            session.dataHandler?.getRoom(roomId)?.let { room ->
+            session.dataHandler?.getRoom(roomId!!)?.let { room ->
                 sendMatrixEvent(message!!, session, roomId!!, room, context)
             }
         }
