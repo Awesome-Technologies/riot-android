@@ -156,7 +156,8 @@
         <!-- activities list starts here -->
         <activity
             android:name=".activity.VectorLauncherActivity"
-            android:theme="@style/AppTheme.Launcher">
+            android:theme="@style/AppTheme.Launcher"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -367,7 +368,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.VectorUniversalLinkActivity">
+        <activity android:name=".activity.VectorUniversalLinkActivity"
+            android:exported="true">
             <!--            <intent-filter>-->
             <!--                <action android:name="android.intent.action.VIEW" />-->
 
@@ -535,7 +537,8 @@
                 <data android:pathPrefix="/_matrix/" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.VectorBootReceiver">
+        <receiver android:name=".receiver.VectorBootReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -560,7 +563,8 @@
         <!-- Shared items -->
         <activity
             android:name=".activity.VectorSharedFilesActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -584,7 +588,15 @@
         <service
             android:name=".services.CallService"
             android:exported="false" />
-    
+
+        <service
+            android:name="org.jitsi.meet.sdk.ConnectionService"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
