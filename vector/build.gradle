@@ -118,11 +118,6 @@ android {
         }
     }
 
-    dexOptions {
-        jumboMode true
-        javaMaxHeapSize "2g"
-    }
-
     buildTypes {
         debug {
 
@@ -216,6 +211,7 @@ android {
             includeAndroidResources = true
         }
     }
+    namespace 'im.vector'
 }
 
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
