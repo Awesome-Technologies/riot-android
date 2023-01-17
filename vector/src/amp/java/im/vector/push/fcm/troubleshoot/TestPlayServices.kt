@@ -29,7 +29,7 @@ class TestPlayServices(val fragment: Fragment) : TroubleshootTest(R.string.setti
 
     override fun perform() {
         val apiAvailability = GoogleApiAvailability.getInstance()
-        val resultCode = apiAvailability.isGooglePlayServicesAvailable(fragment.context)
+        val resultCode = apiAvailability.isGooglePlayServicesAvailable(fragment.requireContext())
         if (resultCode == ConnectionResult.SUCCESS) {
             quickFix = null
             description = fragment.getString(R.string.settings_troubleshoot_test_play_services_success)
@@ -39,7 +39,8 @@ class TestPlayServices(val fragment: Fragment) : TroubleshootTest(R.string.setti
                 quickFix = object : TroubleshootQuickFix(R.string.settings_troubleshoot_test_play_services_quickfix) {
                     override fun doFix() {
                         fragment.activity?.let {
-                            apiAvailability.getErrorDialog(it, resultCode, 9000 /*hey does the magic number*/).show()
+                            apiAvailability.getErrorDialog(it, resultCode, 9000 /*hey does the magic number*/)
+                                ?.show()
                         }
                     }
                 }

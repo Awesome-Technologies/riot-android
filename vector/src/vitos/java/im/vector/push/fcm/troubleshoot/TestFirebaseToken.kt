@@ -34,7 +34,7 @@ class TestFirebaseToken(val fragment: Fragment) : TroubleshootTest(R.string.sett
         if (activity != null) {
             try {
                 FirebaseInstallations.getInstance().getToken(true)
-                        .addOnCompleteListener(activity) { task ->
+                    .addOnCompleteListener(activity) { task ->
                             if (!task.isSuccessful) {
                                 val errorMsg = if (task.exception == null) "Unknown" else task.exception!!.localizedMessage
                                 //Can't find where this constant is (not documented -or deprecated in docs- and all obfuscated)

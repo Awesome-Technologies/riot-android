@@ -146,6 +146,7 @@ class KeysBackupSettingsRecyclerViewAdapter(val context: Context) : RecyclerView
 
                 isBackupAlreadySetup = true
             }
+            null -> TODO()
         }
 
         itemSummary?.let {

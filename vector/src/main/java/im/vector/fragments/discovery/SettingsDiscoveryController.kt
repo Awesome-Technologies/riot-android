@@ -21,6 +21,7 @@ import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import im.vector.R
 
@@ -51,6 +52,7 @@ class SettingsDiscoveryController(private val context: Context,
                     buildPhoneNumberSection(data)
                 }
             }
+            Uninitialized -> TODO()
         }
     }
 
@@ -120,6 +122,7 @@ class SettingsDiscoveryController(private val context: Context,
                                         buttonType(SettingsTextButtonItem.ButtonType.NORMAL)
                                         buttonTitle("")
                                     }
+                                    null -> TODO()
                                 }
                             }
                         }
@@ -143,6 +146,7 @@ class SettingsDiscoveryController(private val context: Context,
                     }
                 }
             }
+            else -> {}
         }
     }
 
@@ -210,12 +214,15 @@ class SettingsDiscoveryController(private val context: Context,
                                             interactionListener.checkEmailVerification(piState.value, bind)
                                         })
                                     }
+                                    null -> TODO()
                                 }
+                                Uninitialized -> TODO()
                             }
                         }
                     }
                 }
             }
+            else -> {}
         }
     }
 

@@ -89,7 +89,7 @@ class BugReportActivity : MXCActionBarActivity() {
                     && !mMaskView.isVisible
 
             it.isEnabled = isValid
-            it.icon.alpha = if (isValid) 255 else 100
+            it.icon?.alpha = if (isValid) 255 else 100
         }
 
         return super.onPrepareOptionsMenu(menu)

@@ -37,8 +37,8 @@ class PaintOnImageView @JvmOverloads constructor(
     private var mOriginalUri: Uri? = null
     private var mBitmapPaint = Paint(Paint.FILTER_BITMAP_FLAG)
 
-    private var mColorPaths = mutableMapOf<@ColorInt Int, Path>()
-    private var mCachedPaints = mutableMapOf<@ColorInt Int, Paint>()
+    private var mColorPaths = mutableMapOf<Int, Path>()
+    private var mCachedPaints = mutableMapOf<Int, Paint>()
     private var mCurrentColor = -1
 
     private var mCanvasSize = RectF()

@@ -131,9 +131,9 @@ class VectorFirebaseMessagingService : FirebaseMessagingService() {
             try {
                 val sessions = Matrix.getInstance(applicationContext).sessions
 
-                if (null != sessions && !sessions.isEmpty()) {
+                if (null != sessions && sessions.isNotEmpty()) {
                     for (session in sessions) {
-                        if (session.dataHandler?.store?.isReady == true) {
+                        if (session.dataHandler.store?.isReady == true) {
                             session.dataHandler.store?.getEvent(eventId, roomId)?.let {
                                 Log.e(LOG_TAG, "## isEventAlreadyKnown() : ignore the event " + eventId
                                         + " in room " + roomId + " because it is already known")
@@ -192,12 +192,12 @@ class VectorFirebaseMessagingService : FirebaseMessagingService() {
                 return
             } else {
 
-                var notifiableEvent = notifiableEventResolver.resolveEvent(event, null, session.fulfillRule(event), session)
+                val notifiableEvent = notifiableEventResolver.resolveEvent(event, null, session.fulfillRule(event), session)
 
                 if (notifiableEvent == null) {
-                    Log.e(LOG_TAG, "Unsupported notifiable event ${eventId}")
+                    Log.e(LOG_TAG, "Unsupported notifiable event $eventId")
                     if (BuildConfig.LOW_PRIVACY_LOG_ENABLE) {
-                        Log.e(LOG_TAG, "--> ${event}")
+                        Log.e(LOG_TAG, "--> $event")
                     }
                 } else {
 
@@ -227,7 +227,7 @@ class VectorFirebaseMessagingService : FirebaseMessagingService() {
             // Try to get the room name from our store
             if (session?.dataHandler?.store?.isReady == true) {
                 val room = session.dataHandler.getRoom(roomId)
-                roomName = room?.getRoomDisplayName(this)
+                roomName = room.getRoomDisplayName(this)
             }
         }
         return roomName
@@ -254,7 +254,7 @@ class VectorFirebaseMessagingService : FirebaseMessagingService() {
             event.originServerTs = System.currentTimeMillis()
 
             if (data.containsKey("content")) {
-                event.updateContent(JsonParser().parse(data["content"]).asJsonObject)
+                event.updateContent(JsonParser.parseString(data["content"]).asJsonObject)
             }
 
             return event

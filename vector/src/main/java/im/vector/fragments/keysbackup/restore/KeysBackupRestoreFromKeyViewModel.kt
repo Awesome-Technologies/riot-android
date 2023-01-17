@@ -81,6 +81,7 @@ class KeysBackupRestoreFromKeyViewModel : ViewModel() {
                                                 step.total)
                                     }
                                 }
+                                is StepProgressListener.Step.ComputingKey -> TODO()
                             }
                         }
                     },

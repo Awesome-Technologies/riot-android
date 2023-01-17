@@ -125,6 +125,10 @@ class KeysBackupBanner @JvmOverloads constructor(
             is State.Recover -> {
                 delegate?.recoverKeysBackup()
             }
+            State.BackingUp -> TODO()
+            State.Hidden -> TODO()
+            State.Initial -> TODO()
+            is State.Update -> TODO()
         }
     }
 

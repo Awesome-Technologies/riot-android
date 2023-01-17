@@ -175,8 +175,8 @@ abstract class VectorAppCompatActivity : BaseMvRxActivity() {
         return false
     }
 
-    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
-        super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
+    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode)
 
         Log.w(LOG_TAG, "onMultiWindowModeChanged. isInMultiWindowMode: $isInMultiWindowMode")
         BugReporter.setMultiWindowMode(isInMultiWindowMode)

@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -286,8 +287,11 @@ public class CommonActivityUtils {
             if (invalidatedCredentials) {
                 loginIntent.putExtra(LoginActivity.EXTRA_RESTART_FROM_INVALID_CREDENTIALS, true);
             }
+            final int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
+                    PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                    : PendingIntent.FLAG_CANCEL_CURRENT;
             PendingIntent mPendingIntent =
-                    PendingIntent.getActivity(activity, 314159, loginIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.getActivity(activity, 314159, loginIntent, flags);
 
             // so restart the application after 100ms
             AlarmManager mgr = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);

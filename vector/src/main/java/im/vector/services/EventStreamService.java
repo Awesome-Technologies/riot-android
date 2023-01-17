@@ -450,11 +450,15 @@ public class EventStreamService extends Service {
         Intent restartServiceIntent = new Intent(getApplicationContext(), getClass());
         restartServiceIntent.setPackage(getPackageName());
         restartServiceIntent.putExtra(EXTRA_AUTO_RESTART_ACTION, EXTRA_AUTO_RESTART_ACTION);
+        final int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
+                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE
+                : PendingIntent.FLAG_ONE_SHOT;
         PendingIntent restartPendingIntent = PendingIntent.getService(
                 getApplicationContext(),
                 1,
                 restartServiceIntent,
-                PendingIntent.FLAG_ONE_SHOT);
+                flags
+        );
 
         AlarmManager myAlarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         myAlarmService.set(

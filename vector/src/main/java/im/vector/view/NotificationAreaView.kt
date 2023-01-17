@@ -137,6 +137,7 @@ class NotificationAreaView @JvmOverloads constructor(
             is State.UnreadPreview -> renderUnreadPreview()
             is State.ScrollToBottom -> renderScrollToBottom(newState)
             is State.UnsentEvents -> renderUnsent(newState)
+            State.Initial -> TODO()
         }
     }
 
