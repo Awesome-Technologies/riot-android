@@ -189,7 +189,9 @@ object NotificationUtils {
         // build the pending intent go to the home screen if this is clicked.
         val i = Intent(context, VectorHomeActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val pi = PendingIntent.getActivity(context, 0, i, 0)
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            PendingIntent.FLAG_IMMUTABLE else 0
+        val pi = PendingIntent.getActivity(context, 0, i, flags)
 
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
 
@@ -374,7 +376,7 @@ object NotificationUtils {
                                       roomInfo: RoomEventGroupInfo,
                                       largeIcon: Bitmap?,
                                       lastMessageTimestamp: Long,
-                                      senderDisplayNameForReplyCompat: String?): Notification? {
+                                      senderDisplayNameForReplyCompat: String?): Notification {
 
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
@@ -455,7 +457,7 @@ object NotificationUtils {
                             NotificationCompat.Action.Builder(R.drawable.vector_notification_quick_reply,
                                     context.getString(R.string.action_quick_reply), replyPendingIntent)
                                     .addRemoteInput(remoteInput)
-                                    .build()?.let {
+                                    .build().let {
                                         addAction(it)
                                     }
                         }
@@ -481,7 +483,7 @@ object NotificationUtils {
     }
 
 
-    fun buildSimpleEventNotification(context: Context, simpleNotifiableEvent: NotifiableEvent, largeIcon: Bitmap?, matrixId: String): Notification? {
+    fun buildSimpleEventNotification(context: Context, simpleNotifiableEvent: NotifiableEvent, largeIcon: Bitmap?, matrixId: String): Notification {
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
         val smallIcon = if (simpleNotifiableEvent.noisy) R.drawable.icon_notif_important else R.drawable.logo_transparent
@@ -504,10 +506,12 @@ object NotificationUtils {
                         // the action must be unique else the parameters are ignored
                         rejectIntent.action = REJECT_ACTION
                         rejectIntent.data = Uri.parse("foobar://$roomId&$matrixId")
+                        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            PendingIntent.FLAG_IMMUTABLE else 0
                         addAction(
                                 R.drawable.vector_notification_reject_invitation,
                                 context.getString(R.string.reject),
-                                PendingIntent.getActivity(context, System.currentTimeMillis().toInt(), rejectIntent, 0))
+                                PendingIntent.getActivity(context, System.currentTimeMillis().toInt(), rejectIntent, flags))
 
                         // offer to type a quick accept button
                         val joinIntent = JoinRoomActivity.getJoinRoomIntent(context, roomId, matrixId)
@@ -518,7 +522,7 @@ object NotificationUtils {
                         addAction(
                                 R.drawable.vector_notification_accept_invitation,
                                 context.getString(R.string.join),
-                                PendingIntent.getActivity(context, 0, joinIntent, 0))
+                                PendingIntent.getActivity(context, 0, joinIntent, flags))
 
                     } else {
                         setAutoCancel(true)
@@ -528,7 +532,9 @@ object NotificationUtils {
                     contentIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     //pending intent get reused by system, this will mess up the extra params, so put unique info to avoid that
                     contentIntent.data = Uri.parse("foobar://" + simpleNotifiableEvent.eventId)
-                    setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, 0))
+                    val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        PendingIntent.FLAG_IMMUTABLE else 0
+                    setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, flags))
 
                     if (largeIcon != null) {
                         setLargeIcon(largeIcon)
@@ -568,7 +574,9 @@ object NotificationUtils {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         intent.putExtra(VectorHomeActivity.EXTRA_CLEAR_EXISTING_NOTIFICATION, true)
         intent.data = Uri.parse("foobar://tapSummary")
-        return PendingIntent.getActivity(context, Random().nextInt(1000), intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+        return PendingIntent.getActivity(context, Random().nextInt(1000), intent, flags)
     }
 
     /*
@@ -585,8 +593,10 @@ object NotificationUtils {
             intent.action = SMART_REPLY_ACTION
             intent.data = Uri.parse("foobar://$roomId")
             intent.putExtra(NotificationBroadcastReceiver.KEY_ROOM_ID, roomId)
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
             return PendingIntent.getBroadcast(context, System.currentTimeMillis().toInt(), intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT)
+                    flags)
         } else {
             if (!LockScreenActivity.isDisplayingALockScreenActivity()) {
                 // start your activity for Android M and below
@@ -597,7 +607,9 @@ object NotificationUtils {
                 // the action must be unique else the parameters are ignored
                 quickReplyIntent.action = QUICK_LAUNCH_ACTION
                 quickReplyIntent.data = Uri.parse("foobar://$roomId")
-                return PendingIntent.getActivity(context, 0, quickReplyIntent, 0)
+                val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    PendingIntent.FLAG_IMMUTABLE else 0
+                return PendingIntent.getActivity(context, 0, quickReplyIntent, flags)
             }
         }
         return null
@@ -611,7 +623,7 @@ object NotificationUtils {
                                      style: NotificationCompat.Style,
                                      compatSummary: String,
                                      noisy: Boolean,
-                                     lastMessageTimestamp: Long): Notification? {
+                                     lastMessageTimestamp: Long): Notification {
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
         val smallIcon = if (noisy) R.drawable.icon_notif_important else R.drawable.logo_transparent
 
@@ -651,8 +663,10 @@ object NotificationUtils {
         val intent = Intent(context, NotificationBroadcastReceiver::class.java)
         intent.action = DISMISS_SUMMARY_ACTION
         intent.data = Uri.parse("foobar://deleteSummary")
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
         return PendingIntent.getBroadcast(context.applicationContext,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                0, intent, flags)
     }
 
     fun showNotificationMessage(context: Context, tag: String?, id: Int, notification: Notification) {
