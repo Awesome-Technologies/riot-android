@@ -562,11 +562,14 @@ object NotificationUtils {
         //pending intent get reused by system, this will mess up the extra params, so put unique info to avoid that
         roomIntentTap.data = Uri.parse("foobar://openRoom?$roomId")
 
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+
         // Recreate the back stack
         return TaskStackBuilder.create(context)
                 .addNextIntentWithParentStack(Intent(context, VectorHomeActivity::class.java))
                 .addNextIntent(roomIntentTap)
-                .getPendingIntent(System.currentTimeMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
+                .getPendingIntent(System.currentTimeMillis().toInt(), flags)
     }
 
     private fun buildOpenHomePendingIntentForSummary(context: Context): PendingIntent {
