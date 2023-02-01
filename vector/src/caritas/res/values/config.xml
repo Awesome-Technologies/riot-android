@@ -8,6 +8,7 @@
     <bool name="allow_direct_chat">true</bool>
     <bool name="show_consent">false</bool>
     <bool name="support_group_calls">false</bool>
+    <bool name="send_message_permission_enabled">true</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>
@@ -19,8 +20,8 @@
     <string name="matomo_tracker_name" translatable="false">Caritas Messenger Android</string>
     <string name="bug_report_url" translatable="false">https://caritas.amp.chat/bugreports/submit</string>
     <string name="default_stun_server" translatable="false">turn.matrix.org</string>
-    <string name="login_intent_hostname">caritas.amp.chat</string>
-    <string name="jitsi_server_url">https://jitsi.caritas.amp.chat/</string>
+    <string name="login_intent_hostname" translatable="false">caritas.amp.chat</string>
+    <string name="jitsi_server_url" translatable="false">https://jitsi.caritas.amp.chat/</string>
 
     <!-- Widget urls -->
     <string name="integrations_ui_url" translatable="false">"https://dimension.caritas.amp.chat/riot"</string>
@@ -35,7 +36,7 @@
         <item>caritas.amp.chat</item>
     </string-array>
 
-    <string name="privacy_url">https://caritas.amp.chat/privacy</string>
-    <string name="terms_and_conditions_url">file:///android_asset/terms_and_conditions.html</string>
+    <string name="privacy_url" translatable="false">https://caritas.amp.chat/privacy</string>
+    <string name="terms_and_conditions_url" translatable="false">file:///android_asset/terms_and_conditions.html</string>
 
 </resources>

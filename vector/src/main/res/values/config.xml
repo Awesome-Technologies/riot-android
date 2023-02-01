@@ -12,6 +12,7 @@
     <bool name="support_group_calls">false</bool>
     <bool name="show_terms_and_conditions">true</bool>
     <bool name="disable_screenshots">true</bool>
+    <bool name="send_message_permission_enabled">false</bool>
 
     <!-- server urls -->
     <string name="vector_im_server_url" translatable="false">https://vector.im</string>

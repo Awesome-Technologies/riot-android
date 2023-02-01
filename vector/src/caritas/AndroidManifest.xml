@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <permission
+        android:name="chat.amp.messenger.permission.SEND_MESSAGE"
+        android:enabled="@bool/send_message_permission_enabled"
+        android:label="@string/send_message_permission_label"
+        android:description="@string/send_message_permission_desc"
+        android:protectionLevel="normal" />
 
     <application
         android:icon="@mipmap/ic_caritas"
         android:logo="@mipmap/ic_caritas"
         android:roundIcon="@mipmap/ic_caritas_round"
         tools:replace="icon,logo,roundIcon">
+
+        <activity android:name=".activity.AMPSendMessageActivity"
+            android:enabled="@bool/send_message_permission_enabled"
+            android:permission="chat.amp.messenger.permission.SEND_MESSAGE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="chat.amp.messenger.SEND_MESSAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".receiver.AMPSendMessageReceiver"
+            android:enabled="@bool/send_message_permission_enabled"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="im.vector.receiver.AMP_SEND_MESSAGE" />
+            </intent-filter>
+        </receiver>
 
         <!-- Firebase components -->
         <meta-data
