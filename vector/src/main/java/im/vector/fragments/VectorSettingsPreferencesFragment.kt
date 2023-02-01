@@ -490,9 +490,10 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         mCryptographyManageCategory.isVisible = true
 
         // permission manage
-        mSendMessagePermissionManageCategory.isVisible = true
-        mSendMessagePermissionManageCategoryDivider.isVisible = true
-        mSendMessageManagePermissions.isVisible = true
+        val sendMessageExtensionEnabled = resources.getBoolean(R.bool.send_message_permission_enabled)
+        mSendMessagePermissionManageCategory.isVisible = sendMessageExtensionEnabled
+        mSendMessagePermissionManageCategoryDivider.isVisible = sendMessageExtensionEnabled
+        mSendMessageManagePermissions.isVisible = sendMessageExtensionEnabled
 
         // Analytics
         findPreference(PreferencesManager.SETTINGS_ANALYTICS_DIVIDER_PREFERENCE_KEY).isVisible = false
