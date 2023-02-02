@@ -150,6 +150,7 @@ import im.vector.widgets.model.JitsiWidgetProperties;
 import kotlin.Unit;
 
 import static org.matrix.androidsdk.rest.model.message.Message.MSGTYPE_AUDIO;
+import static im.vector.activity.VectorMediaPickerActivity.EXTRA_DID_TAKE_VIDEO;
 
 /**
  * Displays a single room with messages.
@@ -1333,8 +1334,10 @@ public class VectorRoomActivity extends MXCActionBarActivity implements
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_IMAGE_REQUEST_CODE:
-                    openPaintImageActivity(data);
-                    break;
+                    if (!data.getBooleanExtra(EXTRA_DID_TAKE_VIDEO, false)) {
+                        openPaintImageActivity(data);
+                        break;
+                    }
                 case PAINT_IMAGE_REQUEST_CODE:
                 case REQUEST_FILES_REQUEST_CODE:
                 case RECORD_AUDIO_REQUEST_CODE:

@@ -115,6 +115,7 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
 
     // boolean, tell if the video recording is supported
     public static final String EXTRA_GALLERY_MODE = "EXTRA_GALLERY_MODE";
+    public static final String EXTRA_DID_TAKE_VIDEO = "EXTRA_DID_TAKE_VIDEO";
 
     // internal keys
     private static final String KEY_EXTRA_IS_TAKEN_IMAGE_DISPLAYED = "IS_TAKEN_IMAGE_DISPLAYED";
@@ -385,6 +386,7 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
         // do nothing
         // the user has to long press again on the focus button
         //}
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -1733,6 +1735,7 @@ public class VectorMediaPickerActivity extends MXCActionBarActivity implements T
         Bundle conData = new Bundle();
         Intent intent = new Intent();
         intent.setData(mVideoUri);
+        conData.putBoolean(EXTRA_DID_TAKE_VIDEO, true);
         intent.putExtras(conData);
         setResult(RESULT_OK, intent);
         finish();
