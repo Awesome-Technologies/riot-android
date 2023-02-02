@@ -189,8 +189,8 @@ object NotificationUtils {
         // build the pending intent go to the home screen if this is clicked.
         val i = Intent(context, VectorHomeActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            PendingIntent.FLAG_IMMUTABLE else 0
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            PendingIntent.FLAG_MUTABLE else 0
         val pi = PendingIntent.getActivity(context, 0, i, flags)
 
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
@@ -289,8 +289,8 @@ object NotificationUtils {
         // android 4.3 issue
         // use a generator for the private requestCode.
         // When using 0, the intent is not created/launched when the user taps on the notification.
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
         val pendingIntent = stackBuilder.getPendingIntent(Random().nextInt(1000), flags)
 
         builder.setContentIntent(pendingIntent)
@@ -348,8 +348,8 @@ object NotificationUtils {
         // android 4.3 issue
         // use a generator for the private requestCode.
         // When using 0, the intent is not created/launched when the user taps on the notification.
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
         val pendingIntent = stackBuilder.getPendingIntent(Random().nextInt(1000), flags)
 
         builder.setContentIntent(pendingIntent)
@@ -439,8 +439,8 @@ object NotificationUtils {
                     markRoomReadIntent.action = MARK_ROOM_READ_ACTION
                     markRoomReadIntent.data = Uri.parse("foobar://${roomInfo.roomId}")
                     markRoomReadIntent.putExtra(NotificationBroadcastReceiver.KEY_ROOM_ID, roomInfo.roomId)
-                    val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+                    val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
                     val markRoomReadPendingIntent = PendingIntent.getBroadcast(context, System.currentTimeMillis().toInt(), markRoomReadIntent, flags)
 
                     addAction(NotificationCompat.Action(
@@ -475,8 +475,8 @@ object NotificationUtils {
                     intent.putExtra(NotificationBroadcastReceiver.KEY_ROOM_ID, roomInfo.roomId)
                     intent.action = DISMISS_ROOM_NOTIF_ACTION
                     val pendingIntent = PendingIntent.getBroadcast(context.applicationContext,
-                            System.currentTimeMillis().toInt(), intent, if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT)
+                            System.currentTimeMillis().toInt(), intent, if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT)
                     setDeleteIntent(pendingIntent)
                 }
                 .build()
@@ -506,8 +506,8 @@ object NotificationUtils {
                         // the action must be unique else the parameters are ignored
                         rejectIntent.action = REJECT_ACTION
                         rejectIntent.data = Uri.parse("foobar://$roomId&$matrixId")
-                        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                            PendingIntent.FLAG_IMMUTABLE else 0
+                        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                            PendingIntent.FLAG_MUTABLE else 0
                         addAction(
                                 R.drawable.vector_notification_reject_invitation,
                                 context.getString(R.string.reject),
@@ -532,8 +532,8 @@ object NotificationUtils {
                     contentIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     //pending intent get reused by system, this will mess up the extra params, so put unique info to avoid that
                     contentIntent.data = Uri.parse("foobar://" + simpleNotifiableEvent.eventId)
-                    val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_IMMUTABLE else 0
+                    val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                        PendingIntent.FLAG_MUTABLE else 0
                     setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, flags))
 
                     if (largeIcon != null) {
@@ -562,8 +562,8 @@ object NotificationUtils {
         //pending intent get reused by system, this will mess up the extra params, so put unique info to avoid that
         roomIntentTap.data = Uri.parse("foobar://openRoom?$roomId")
 
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
 
         // Recreate the back stack
         return TaskStackBuilder.create(context)
@@ -577,8 +577,8 @@ object NotificationUtils {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         intent.putExtra(VectorHomeActivity.EXTRA_CLEAR_EXISTING_NOTIFICATION, true)
         intent.data = Uri.parse("foobar://tapSummary")
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
         return PendingIntent.getActivity(context, Random().nextInt(1000), intent, flags)
     }
 
@@ -596,8 +596,8 @@ object NotificationUtils {
             intent.action = SMART_REPLY_ACTION
             intent.data = Uri.parse("foobar://$roomId")
             intent.putExtra(NotificationBroadcastReceiver.KEY_ROOM_ID, roomId)
-            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
             return PendingIntent.getBroadcast(context, System.currentTimeMillis().toInt(), intent,
                     flags)
         } else {
@@ -610,8 +610,8 @@ object NotificationUtils {
                 // the action must be unique else the parameters are ignored
                 quickReplyIntent.action = QUICK_LAUNCH_ACTION
                 quickReplyIntent.data = Uri.parse("foobar://$roomId")
-                val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    PendingIntent.FLAG_IMMUTABLE else 0
+                val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                    PendingIntent.FLAG_MUTABLE else 0
                 return PendingIntent.getActivity(context, 0, quickReplyIntent, flags)
             }
         }
@@ -666,8 +666,8 @@ object NotificationUtils {
         val intent = Intent(context, NotificationBroadcastReceiver::class.java)
         intent.action = DISMISS_SUMMARY_ACTION
         intent.data = Uri.parse("foobar://deleteSummary")
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
         return PendingIntent.getBroadcast(context.applicationContext,
                 0, intent, flags)
     }
