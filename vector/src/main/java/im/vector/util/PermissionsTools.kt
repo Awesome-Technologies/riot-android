@@ -43,11 +43,13 @@ private const val PERMISSION_BYPASSED = 0x0
 const val PERMISSION_CAMERA = 0x1
 private const val PERMISSION_WRITE_EXTERNAL_STORAGE = 0x1 shl 1
 private const val PERMISSION_RECORD_AUDIO = 0x1 shl 2
+private const val PERMISSION_READ_PHONE_STATE = 0x1 shl 3
 
 // Permissions sets
 const val PERMISSIONS_FOR_AUDIO_IP_CALL = PERMISSION_RECORD_AUDIO
 const val PERMISSIONS_FOR_VIDEO_IP_CALL = PERMISSION_CAMERA or PERMISSION_RECORD_AUDIO
 const val PERMISSIONS_FOR_TAKING_PHOTO = PERMISSION_CAMERA or PERMISSION_WRITE_EXTERNAL_STORAGE
+const val PERMISSIONS_FOR_READ_PHONE_STATE = PERMISSION_READ_PHONE_STATE
 const val PERMISSIONS_FOR_VOICE_MESSAGE = PERMISSION_RECORD_AUDIO
 const val PERMISSIONS_FOR_ROOM_AVATAR = PERMISSION_CAMERA
 const val PERMISSIONS_FOR_VIDEO_RECORDING = PERMISSION_CAMERA or PERMISSION_RECORD_AUDIO
@@ -67,6 +69,7 @@ const val PERMISSION_REQUEST_CODE_EXPORT_KEYS = 573
 const val PERMISSION_REQUEST_CODE_CHANGE_AVATAR = 574
 const val PERMISSION_REQUEST_CODE_VOICE_MESSAGE = 575
 const val PERMISSION_REQUEST_CODE_QR_CODE_LOGIN = 600
+const val PERMISSION_REQUEST_CODE_READ_PHONE_STATE = 600
 
 /**
  * Log the used permissions statuses.
@@ -182,6 +185,12 @@ private fun checkPermissions(permissionsToBeGrantedBitMap: Int,
                     updatePermissionsToBeGranted(activity, permissionListAlreadyDenied, permissionsListToBeGranted, permissionType)
         }
 
+        if (PERMISSION_READ_PHONE_STATE == permissionsToBeGrantedBitMap and PERMISSION_READ_PHONE_STATE) {
+            val permissionType = Manifest.permission.READ_PHONE_STATE
+            isRequestPermissionRequired = isRequestPermissionRequired or
+                    updatePermissionsToBeGranted(activity, permissionListAlreadyDenied, permissionsListToBeGranted, permissionType)
+        }
+
         // if some permissions were already denied: display a dialog to the user before asking again.
         if (!permissionListAlreadyDenied.isEmpty()) {
             if (permissionsToBeGrantedBitMap == PERMISSIONS_FOR_VIDEO_IP_CALL || permissionsToBeGrantedBitMap == PERMISSIONS_FOR_AUDIO_IP_CALL) {
@@ -203,6 +212,9 @@ private fun checkPermissions(permissionsToBeGrantedBitMap: Int,
                     // Camera missing
                     explanationMessage += activity.getString(R.string.permissions_rationale_msg_camera)
                     explanationMessage += activity.getString(R.string.permissions_rationale_msg_camera_explanation)
+                } else if (permissionListAlreadyDenied.contains(Manifest.permission.READ_PHONE_STATE)) {
+                    explanationMessage += activity.getString(R.string.permissions_rationale_msg_read_phone_state)
+                    explanationMessage += activity.getString(R.string.permissions_rationale_msg_read_phone_state_explanation)
                 }
             } else {
                 permissionListAlreadyDenied.forEach {

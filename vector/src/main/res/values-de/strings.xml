@@ -281,6 +281,10 @@ Bitte erlaube den Zugriff im nächsten Dialog, um die Sprachnachricht aufzunehme
     <string name="permissions_rationale_msg_qr_code_login">Riot benötigt die Berechtigung, auf deine Kamera zugreifen zu können, um mit einem QR Code einzuloggen.</string>
     <string name="permissions_rationale_msg_qr_code_login_explanation">\n\nBitte erlaube den Zugriff im nächsten Dialog, um einen QR Code zu scannen.</string>
 
+    <string name="permissions_rationale_msg_read_phone_state_explanation">
+
+Bitte erlaube den Zugriff im nächsten Dialog, um Anrufe annehmen zu können.</string>
+
     <!-- medias slider string -->
     <string name="media_slider_saved">Gespeichert</string>
     <string name="media_slider_saved_message">In Downloads speichern?</string>

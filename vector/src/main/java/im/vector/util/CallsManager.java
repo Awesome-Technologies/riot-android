@@ -17,10 +17,13 @@
 
 package im.vector.util;
 
+import static im.vector.util.PermissionsToolsKt.checkPermissions;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.telephony.TelephonyManager;
@@ -377,7 +380,15 @@ public class CallsManager {
                     TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
                     if (null != telephonyManager && telephonyManager.getSimState() == TelephonyManager.SIM_STATE_READY) {
-                        currentCallState = telephonyManager.getCallState();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                        {
+                            Activity activity = VectorHomeActivity.getInstance();
+                            if (activity != null && checkPermissions(PermissionsToolsKt.PERMISSIONS_FOR_READ_PHONE_STATE, activity, PermissionsToolsKt.PERMISSION_REQUEST_CODE_READ_PHONE_STATE)) {
+                                currentCallState = telephonyManager.getCallStateForSubscription();
+                            }
+                        } else {
+                            currentCallState = telephonyManager.getCallState();
+                        }
                     }
 
                     Log.d(LOG_TAG, "## onIncomingCall () : currentCallState(GSM) = " + currentCallState);
