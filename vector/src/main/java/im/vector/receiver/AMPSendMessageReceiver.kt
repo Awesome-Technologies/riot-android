@@ -20,6 +20,7 @@ import org.matrix.androidsdk.core.Log
 import org.matrix.androidsdk.core.callback.ApiCallback
 import org.matrix.androidsdk.core.callback.SimpleApiCallback
 import org.matrix.androidsdk.core.model.MatrixError
+import org.matrix.androidsdk.crypto.MXCRYPTO_ALGORITHM_MEGOLM
 import org.matrix.androidsdk.data.Room
 import org.matrix.androidsdk.data.store.IMXStore
 import org.matrix.androidsdk.features.identityserver.IdentityServerNotConfiguredException
@@ -77,7 +78,7 @@ class AMPSendMessageReceiver: BroadcastReceiver() {
     lateinit var mContext: Context
 
     override fun onReceive(context: Context?, aIntent: Intent?) {
-        Log.d(LOG_TAG, "## onReceive() action = chat.amp.messenger.SEND_MESSAGE")
+        Log.d(LOG_TAG, "## onReceive() action = " + aIntent?.action)
 
         if (aIntent == null || context == null) {
             return
@@ -156,7 +157,7 @@ class AMPSendMessageReceiver: BroadcastReceiver() {
         doesDirectChatRoomAlreadyExist(messageData.recipient, object : SimpleApiCallback<String>() {
             override fun onSuccess(roomId: String?) {
                 if (roomId == null) {
-                    createRoom(listOf(mSession!!.credentials.userId, messageData.recipient), messageData)
+                    createRoom(messageData.recipient, messageData)
                 } else {
                     startChatActivity(aContext, roomId, messageData)
                 }
@@ -254,20 +255,11 @@ class AMPSendMessageReceiver: BroadcastReceiver() {
      *
      * @param participants the list of participant
      */
-    private fun createRoom(participants: List<String>, messageData: SendMessageModel) {
+    private fun createRoom(participant: String, messageData: SendMessageModel) {
         val params = CreateRoomParams()
 
-        // First participant is self, so remove
-        val participantsWithoutMe = participants.subList(1, participants.size)
-        val ids: MutableList<String> = ArrayList()
-        for (item in participantsWithoutMe) {
-            ids.add(item)
-        }
         try {
-            val (first, second) = mSession!!.identityServerManager.getInvite3pid(mSession!!.homeServerConfig.credentials.userId, ids)
-            params.invite3pids = first
-            params.invitedUserIds = second
-            mSession!!.createRoom(params, object : ApiCallback<String?> {
+            mSession!!.createDirectMessageRoom(participant, MXCRYPTO_ALGORITHM_MEGOLM, object : ApiCallback<String?> {
                 override fun onSuccess(roomId: String?) {
                     if (roomId != null) {
                         startChatActivity(mContext, roomId, messageData)
