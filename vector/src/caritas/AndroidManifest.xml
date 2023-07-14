@@ -6,7 +6,7 @@
         android:enabled="@bool/send_message_permission_enabled"
         android:label="@string/send_message_permission_label"
         android:description="@string/send_message_permission_desc"
-        android:protectionLevel="normal" />
+        android:protectionLevel="dangerous" />
 
     <application
         android:icon="@mipmap/ic_caritas"
