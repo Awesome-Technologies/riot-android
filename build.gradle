@@ -33,9 +33,12 @@ ext {
 
 allprojects {
     ext.support_lib_version = '28.0.0'
-    ext.gson_version = '2.8.9'
-    ext.okhttp_version = '3.12.3'
-    ext.work_version = '2.7.1'
+    ext.epoxy_version = '3.11.0'
+    ext.firebase_messaging_version = '23.2.1'
+    ext.glide_version = '4.16.0'
+    ext.gson_version = '2.10.1'
+    ext.okhttp_version = '3.14.9'
+    ext.work_version = '2.8.1'
 
     repositories {
         // For Matrix Android SDK.

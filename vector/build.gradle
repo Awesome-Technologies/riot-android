@@ -244,7 +244,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
 
     // Kotlin coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation "org.jetbrains.anko:anko-commons:0.10.8"
 
     // Note: do not upgrade to 1.0.3 because it lead to crashes at startup on Android 16
@@ -252,10 +252,10 @@ dependencies {
 
     implementation 'me.leolin:ShortcutBadger:1.1.2@aar'
 
-    implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.1'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
     implementation 'com.jakewharton:butterknife:10.2.3'
@@ -278,9 +278,9 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
 
     // Epoxy
-    implementation 'com.airbnb.android:epoxy:3.7.0'
+    implementation "com.airbnb.android:epoxy:$epoxy_version"
     implementation 'com.airbnb.android:mvrx:1.0.1'
-    kapt 'com.airbnb.android:epoxy-processor:3.7.0'
+    kapt "com.airbnb.android:epoxy-processor:$epoxy_version"
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -291,16 +291,16 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation 'com.facebook.stetho:stetho:1.6.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.6.0'
-    implementation 'com.squareup.okio:okio:3.0.0-alpha.10'
+    implementation 'com.squareup.okio:okio:3.4.0'
 
     // Use Glide library to display image (Gif supported)
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     // Passphrase strength helper
-    implementation 'com.nulab-inc:zxcvbn:1.5.2'
+    implementation 'com.nulab-inc:zxcvbn:1.8.2'
 
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.31'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.19'
 
     // QR code scanner
     implementation 'com.google.android.gms:play-services-vision:20.1.3'
@@ -328,7 +328,7 @@ dependencies {
     /************* flavors management **************/
 
     // app flavor only
-    appImplementation('com.google.firebase:firebase-messaging:23.1.1') {
+    appImplementation("com.google.firebase:firebase-messaging:$firebase_messaging_version") {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -337,21 +337,21 @@ dependencies {
     // appfdroid flavor only
 
     // amp flavor only
-    ampImplementation('com.google.firebase:firebase-messaging:23.1.1') {
+    ampImplementation("com.google.firebase:firebase-messaging:$firebase_messaging_version") {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
 
     // caritas flavor only
-    caritasImplementation('com.google.firebase:firebase-messaging:23.1.1') {
+    caritasImplementation("com.google.firebase:firebase-messaging:$firebase_messaging_version") {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
 
     // vitos flavor only
-    vitosImplementation('com.google.firebase:firebase-messaging:23.1.1') {
+    vitosImplementation("com.google.firebase:firebase-messaging:$firebase_messaging_version") {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -361,11 +361,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2' // Test
     testImplementation 'androidx.test:runner:1.5.2'
     testImplementation 'androidx.test:rules:1.5.0'
-    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testImplementation 'org.apache.maven:maven-ant-tasks:2.1.3' // fixes issue on linux/mac
-    testImplementation 'org.robolectric:robolectric:4.6.1'
+    testImplementation 'org.robolectric:robolectric:4.10.3'
 
     // Robolectric
     androidTestImplementation 'junit:junit:4.13.2'
