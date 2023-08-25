@@ -1,7 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.7.20'
+    // Upgrade to 1.8.0+ is not possible, since the 'kotlin-android-extensions' Gradle plugin is no
+    // longer supported.
+    ext.kotlin_version = '1.7.21'
 
     repositories {
         google()
