@@ -59,9 +59,9 @@ class VectorSettingsNotificationsTroubleshootFragment : VectorBaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val appContext = activity!!.applicationContext
+        val appContext = requireActivity().applicationContext
         // retrieve the arguments
-        mSession = Matrix.getInstance(appContext).getSession(arguments!!.getString(MXCActionBarActivity.EXTRA_MATRIX_ID))
+        mSession = Matrix.getInstance(appContext).getSession(requireArguments().getString(MXCActionBarActivity.EXTRA_MATRIX_ID))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

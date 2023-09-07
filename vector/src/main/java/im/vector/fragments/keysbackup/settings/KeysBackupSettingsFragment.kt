@@ -51,7 +51,7 @@ class KeysBackupSettingsFragment : VectorBaseFragment(),
         val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
-        recyclerViewAdapter = KeysBackupSettingsRecyclerViewAdapter(activity!!)
+        recyclerViewAdapter = KeysBackupSettingsRecyclerViewAdapter(requireActivity())
         recyclerView.adapter = recyclerViewAdapter
         recyclerViewAdapter?.adapterListener = this
 
@@ -69,7 +69,7 @@ class KeysBackupSettingsFragment : VectorBaseFragment(),
                 when (keysBackupState) {
                     KeysBackupStateManager.KeysBackupState.Unknown,
                     KeysBackupStateManager.KeysBackupState.CheckingBackUpOnHomeserver -> {
-                        viewModel.loadingEvent.value = WaitingViewData(context!!.getString(R.string.keys_backup_settings_checking_backup_state))
+                        viewModel.loadingEvent.value = WaitingViewData(requireContext().getString(R.string.keys_backup_settings_checking_backup_state))
                     }
                     else -> {
                         viewModel.loadingEvent.value = null

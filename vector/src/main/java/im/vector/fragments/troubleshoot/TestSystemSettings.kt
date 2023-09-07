@@ -26,7 +26,7 @@ import im.vector.util.startNotificationSettingsIntent
 class TestSystemSettings(val fragment: Fragment) : TroubleshootTest(R.string.settings_troubleshoot_test_system_settings_title) {
 
     override fun perform() {
-        if (NotificationManagerCompat.from(fragment.context!!).areNotificationsEnabled()) {
+        if (NotificationManagerCompat.from(fragment.requireContext()).areNotificationsEnabled()) {
             description = fragment.getString(R.string.settings_troubleshoot_test_system_settings_success)
             quickFix = null
             status = TestStatus.SUCCESS

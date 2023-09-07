@@ -104,7 +104,7 @@ class KeysBackupSetupStep3Fragment : VectorBaseFragment() {
 
     @OnClick(R.id.keys_backup_setup_step3_copy_button)
     fun onCopyButtonClicked() {
-        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(activity!!)
+        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(requireActivity())
         dialog.setContentView(R.layout.bottom_sheet_save_recovery_key)
         dialog.setCanceledOnTouchOutside(true)
         val recoveryKey = viewModel.recoveryKey.value!!
@@ -148,7 +148,7 @@ class KeysBackupSetupStep3Fragment : VectorBaseFragment() {
         viewModel.recoveryKey.value?.let {
             viewModel.copyHasBeenMade = true
 
-            copyToClipboard(activity!!, it)
+            copyToClipboard(requireActivity(), it)
         }
     }
 

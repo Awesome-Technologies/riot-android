@@ -188,7 +188,7 @@ class KeysBackupSetupStep2Fragment : VectorBaseFragment() {
                 val session = (activity as? MXCActionBarActivity)?.session
                         ?: Matrix.getInstance(context)?.getSession(null)
 
-                viewModel.prepareRecoveryKey(activity!!, session, viewModel.passphrase.value)
+                viewModel.prepareRecoveryKey(requireActivity(), session, viewModel.passphrase.value)
             }
         }
     }
@@ -203,7 +203,7 @@ class KeysBackupSetupStep2Fragment : VectorBaseFragment() {
                 val session = (activity as? MXCActionBarActivity)?.session
                         ?: Matrix.getInstance(context)?.getSession(null)
 
-                viewModel.prepareRecoveryKey(activity!!, session, null)
+                viewModel.prepareRecoveryKey(requireActivity(), session, null)
             }
             else -> {
                 // User has entered a passphrase but want to skip this step.

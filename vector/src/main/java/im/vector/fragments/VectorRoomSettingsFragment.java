@@ -77,6 +77,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import im.vector.Matrix;
 import im.vector.R;
@@ -368,18 +369,25 @@ public class VectorRoomSettingsFragment extends PreferenceFragmentCompat impleme
         mRoomAccessRulesListPreference.setVisible(false);
         mFlairSettingsCategory.setVisible(false);
         mRoomHistoryReadabilityRulesListPreference.setVisible(!mRoom.isDirect());
-        findPreference(PREF_KEY_ACCESS_VISIBILITY).setVisible(!mRoom.isDirect());
+        ((Preference)Objects.requireNonNull(findPreference(PREF_KEY_ACCESS_VISIBILITY)))
+                .setVisible(!mRoom.isDirect());
 
-        findPreference(PREF_KEY_ADVANCED_DIVIDER).setVisible(false);
-        findPreference(PREF_KEY_ACCESS_VISIBILITY_DIVIDER).setVisible(!mRoom.isDirect());
-        findPreference(PREF_KEY_ADDRESSES_DIVIDER).setVisible(false);
-        findPreference(PREF_KEY_FLAIR_DIVIDER).setVisible(false);
+        ((Preference)Objects.requireNonNull(findPreference(PREF_KEY_ADVANCED_DIVIDER)))
+                .setVisible(false);
+        ((Preference)Objects.requireNonNull(findPreference(PREF_KEY_ACCESS_VISIBILITY_DIVIDER)))
+                .setVisible(!mRoom.isDirect());
+        ((Preference)Objects.requireNonNull(findPreference(PREF_KEY_ADDRESSES_DIVIDER)))
+                .setVisible(false);
+        ((Preference)Objects.requireNonNull(findPreference(PREF_KEY_FLAIR_DIVIDER)))
+                .setVisible(false);
 
         // display the room Id.
-        findPreference(PREF_KEY_ROOM_INTERNAL_ID).setVisible(false);
+        ((Preference)Objects.requireNonNull(findPreference(PREF_KEY_ROOM_INTERNAL_ID)))
+                .setVisible(false);
 
         // leave room
-        findPreference(PREF_KEY_ROOM_LEAVE).setVisible(!mRoom.isDirect());
+        ((Preference)Objects.requireNonNull(findPreference(PREF_KEY_ROOM_LEAVE)))
+                .setVisible(!mRoom.isDirect());
 
         // init the room avatar: session and room
         mRoomPhotoAvatar.setConfiguration(mSession, mRoom);
