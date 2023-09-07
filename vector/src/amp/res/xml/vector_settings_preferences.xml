@@ -83,7 +83,7 @@
             android:entries="@array/theme_entries"
             android:entryValues="@array/theme_values"
             android:key="APPLICATION_THEME_KEY"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/settings_theme"
             app:iconSpaceReserved="false" />
 
@@ -152,7 +152,7 @@
             android:entries="@array/show_info_area_entries"
             android:entryValues="@array/show_info_area_values"
             android:key="SETTINGS_SHOW_INFO_AREA_KEY"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/settings_info_area_show" />
 
     </im.vector.preference.VectorPreferenceCategory>
@@ -292,7 +292,7 @@
             android:entries="@array/compression_levels"
             android:entryValues="@array/compression_level_values"
             android:key="SETTINGS_DEFAULT_MEDIA_COMPRESSION_KEY"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/settings_default_compression" />
 
         <im.vector.preference.VectorListPreference
@@ -300,7 +300,7 @@
             android:entries="@array/media_sources"
             android:entryValues="@array/media_source_values"
             android:key="SETTINGS_DEFAULT_MEDIA_SOURCE_KEY"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/settings_default_media_source" />
 
     </im.vector.preference.VectorPreferenceCategory>

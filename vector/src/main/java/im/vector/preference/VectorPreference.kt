@@ -152,7 +152,7 @@ open class VectorPreference : Preference {
         view.setOnClickListener {
             // call only the click listener
             if (onPreferenceClickListener != null) {
-                onPreferenceClickListener.onPreferenceClick(this@VectorPreference)
+                onPreferenceClickListener?.onPreferenceClick(this@VectorPreference)
             }
         }
     }

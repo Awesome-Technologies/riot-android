@@ -59,8 +59,12 @@ import im.vector.extensions.showPassword
 import im.vector.extensions.withArgs
 import im.vector.preference.ProgressBarPreference
 import im.vector.preference.UserAvatarPreference
+import im.vector.preference.VectorEditTextPreference
 import im.vector.preference.VectorGroupPreference
+import im.vector.preference.VectorListPreference
 import im.vector.preference.VectorPreference
+import im.vector.preference.VectorPreferenceCategory
+import im.vector.preference.VectorPreferenceDivider
 import im.vector.settings.FontScale
 import im.vector.settings.VectorLocale
 import im.vector.ui.themes.ThemeUtils
@@ -127,7 +131,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
         override fun onAccountDataUpdated(accountDataElement: AccountDataElement) {
             if (accountDataElement.type == AccountDataElement.ACCOUNT_DATA_TYPE_IDENTITY_SERVER) {
-                (findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY) as VectorPreference).let {
+                (findPreference<VectorPreference>(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY)!!).let {
                     updateIdentityServerPref()
                 }
             }
@@ -168,142 +172,139 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
      * ========================================================================================== */
 
     private val mUserSettingsCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_USER_SETTINGS_PREFERENCE_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_USER_SETTINGS_PREFERENCE_KEY)!!
     }
     private val mUserAvatarPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_PROFILE_PICTURE_PREFERENCE_KEY) as UserAvatarPreference
+        findPreference<UserAvatarPreference>(PreferencesManager.SETTINGS_PROFILE_PICTURE_PREFERENCE_KEY)!!
     }
     private val mDisplayNamePreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_DISPLAY_NAME_PREFERENCE_KEY) as EditTextPreference
+        findPreference<EditTextPreference>(PreferencesManager.SETTINGS_DISPLAY_NAME_PREFERENCE_KEY)!!
     }
     private val mPasswordPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY)!!
     }
 
     // Local contacts
     private val mContactSettingsCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_CONTACT_PREFERENCE_KEYS) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_CONTACT_PREFERENCE_KEYS)!!
     }
 
     private val mContactPhonebookCountryPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_CONTACTS_PHONEBOOK_COUNTRY_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_CONTACTS_PHONEBOOK_COUNTRY_PREFERENCE_KEY)!!
     }
 
     // Group Flairs
     private val mGroupsFlairCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_GROUPS_FLAIR_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_GROUPS_FLAIR_KEY)!!
     }
 
     // cryptography
     private val mCryptographyCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_PREFERENCE_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_CRYPTOGRAPHY_PREFERENCE_KEY)!!
     }
     private val mCryptographyCategoryDivider by lazy {
-        findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY)
+        findPreference<VectorPreferenceCategory>(PreferencesManager.SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY)!!
     }
     // cryptography manage
     private val mCryptographyManageCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_MANAGE_PREFERENCE_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_CRYPTOGRAPHY_MANAGE_PREFERENCE_KEY)!!
     }
     private val mCryptographyManageCategoryDivider by lazy {
-        findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY)
+        findPreference<VectorPreferenceDivider>(PreferencesManager.SETTINGS_CRYPTOGRAPHY_MANAGE_DIVIDER_PREFERENCE_KEY)!!
     }
     // send message permission manage
     private val mSendMessagePermissionManageCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSION_MANAGE_PREFERENCE_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSION_MANAGE_PREFERENCE_KEY)!!
     }
     private val mSendMessagePermissionManageCategoryDivider by lazy {
-        findPreference(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSION_MANAGE_DIVIDER_PREFERENCE_KEY)
+        findPreference<VectorPreferenceDivider>(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSION_MANAGE_DIVIDER_PREFERENCE_KEY)!!
     }
     private val mSendMessageManagePermissions by lazy {
-        findPreference(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSIONS_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_SEND_MESSAGE_PERMISSIONS_PREFERENCE_KEY)!!
     }
     // displayed pushers
     private val mPushersSettingsDivider by lazy {
-        findPreference(PreferencesManager.SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY)
+        findPreference<VectorPreferenceDivider>(PreferencesManager.SETTINGS_NOTIFICATIONS_TARGET_DIVIDER_PREFERENCE_KEY)!!
     }
     private val mPushersSettingsCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_NOTIFICATIONS_TARGETS_PREFERENCE_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_NOTIFICATIONS_TARGETS_PREFERENCE_KEY)!!
     }
     private val mDevicesListSettingsCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_DEVICES_LIST_PREFERENCE_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_DEVICES_LIST_PREFERENCE_KEY)!!
     }
     private val mDevicesListSettingsCategoryDivider by lazy {
-        findPreference(PreferencesManager.SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY)
+        findPreference<VectorPreferenceDivider>(PreferencesManager.SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY)!!
     }
     // displayed the ignored users list
     private val mIgnoredUserSettingsCategoryDivider by lazy {
-        findPreference(PreferencesManager.SETTINGS_IGNORE_USERS_DIVIDER_PREFERENCE_KEY)
+        findPreference<VectorPreferenceDivider>(PreferencesManager.SETTINGS_IGNORE_USERS_DIVIDER_PREFERENCE_KEY)!!
     }
     private val mIgnoredUserSettingsCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_IGNORED_USERS_PREFERENCE_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_IGNORED_USERS_PREFERENCE_KEY)!!
     }
     // background sync category
     private val mSyncRequestTimeoutPreference by lazy {
-        // ? Cause it can be removed
-        findPreference(PreferencesManager.SETTINGS_SET_SYNC_TIMEOUT_PREFERENCE_KEY) as EditTextPreference?
+        findPreference<EditTextPreference>(PreferencesManager.SETTINGS_SET_SYNC_TIMEOUT_PREFERENCE_KEY)
     }
     private val mSyncRequestDelayPreference by lazy {
-        // ? Cause it can be removed
-        findPreference(PreferencesManager.SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY) as EditTextPreference?
+        findPreference<EditTextPreference>(PreferencesManager.SETTINGS_SET_SYNC_DELAY_PREFERENCE_KEY)
     }
 
     private val mWorkManagerRequestDelayPreference by lazy {
-        // ? Cause it can be removed
-        findPreference(PreferencesManager.SETTINGS_WORK_MANAGER_DELAY_PREFERENCE_KEY) as EditTextPreference?
+        findPreference<EditTextPreference>(PreferencesManager.SETTINGS_WORK_MANAGER_DELAY_PREFERENCE_KEY)
     }
 
 
     private val mLabsCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_LABS_PREFERENCE_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_LABS_PREFERENCE_KEY)!!
     }
     private val backgroundSyncCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_BACKGROUND_SYNC_PREFERENCE_KEY)
+        findPreference<VectorPreferenceCategory>(PreferencesManager.SETTINGS_BACKGROUND_SYNC_PREFERENCE_KEY)!!
     }
     private val backgroundSyncDivider by lazy {
-        findPreference(PreferencesManager.SETTINGS_BACKGROUND_SYNC_DIVIDER_PREFERENCE_KEY)
+        findPreference<VectorPreferenceDivider>(PreferencesManager.SETTINGS_BACKGROUND_SYNC_DIVIDER_PREFERENCE_KEY)!!
     }
 //    private val backgroundSyncPreference by lazy {
 //        findPreference(PreferencesManager.SETTINGS_ENABLE_BACKGROUND_SYNC_PREFERENCE_KEY) as SwitchPreference
 //    }
 
     private val mUseRiotCallRingtonePreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY) as SwitchPreference
+        findPreference<SwitchPreference>(PreferencesManager.SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY)!!
     }
     private val mUseDefaultStunPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_CALL_USE_DEFAULT_STUN_PREFERENCE_KEY) as SwitchPreference
+        findPreference<SwitchPreference>(PreferencesManager.SETTINGS_CALL_USE_DEFAULT_STUN_PREFERENCE_KEY)!!
     }
     private val mCallRingtonePreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY)!!
     }
     private val notificationsSettingsCategory by lazy {
-        findPreference(PreferencesManager.SETTINGS_NOTIFICATIONS_KEY) as PreferenceCategory
+        findPreference<PreferenceCategory>(PreferencesManager.SETTINGS_NOTIFICATIONS_KEY)!!
     }
     private val mNotificationPrivacyPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_NOTIFICATION_PRIVACY_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_NOTIFICATION_PRIVACY_PREFERENCE_KEY)!!
     }
     private val selectedLanguagePreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_INTERFACE_LANGUAGE_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_INTERFACE_LANGUAGE_PREFERENCE_KEY)!!
     }
     private val textSizePreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_INTERFACE_TEXT_SIZE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_INTERFACE_TEXT_SIZE_KEY)!!
     }
     private val cryptoInfoDeviceNamePreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_NAME_PREFERENCE_KEY) as VectorPreference
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_NAME_PREFERENCE_KEY)!!
     }
     private val cryptoInfoDeviceIdPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_ID_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_ID_PREFERENCE_KEY)!!
     }
 
     private val cryptoInfoTextPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_KEY_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_KEY_PREFERENCE_KEY)!!
     }
     // encrypt to unverified devices
     private val sendToUnverifiedDevicesPref by lazy {
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_NEVER_SENT_TO_PREFERENCE_KEY) as SwitchPreference
+        findPreference<SwitchPreference>(PreferencesManager.SETTINGS_ENCRYPTION_NEVER_SENT_TO_PREFERENCE_KEY)!!
     }
     private val identityServerPreference by lazy {
-        findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY) as VectorPreference
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY)!!
     }
 
     /* ==========================================================================================
@@ -353,49 +354,63 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
         // Hide display name and password based on configuration
         val profileInfoEditable = resources.getBoolean(R.bool.profile_info_editable)
-        findPreference(PreferencesManager.SETTINGS_DISPLAY_NAME_PREFERENCE_KEY).isVisible = profileInfoEditable
-        findPreference(PreferencesManager.SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY).isVisible = profileInfoEditable
+        findPreference<Preference>(PreferencesManager.SETTINGS_DISPLAY_NAME_PREFERENCE_KEY)!!.isVisible = profileInfoEditable
+        findPreference<Preference>(PreferencesManager.SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY)!!.isVisible = profileInfoEditable
 
         // Add Email
-        findPreference(ADD_EMAIL_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(ADD_EMAIL_PREFERENCE_KEY)!!.isVisible = false
 
         // Add phone number
-        findPreference(ADD_PHONE_NUMBER_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(ADD_PHONE_NUMBER_PREFERENCE_KEY)!!.isVisible = false
 
         // Discovery settings
-        findPreference(PreferencesManager.SETTINGS_DISCOVERY_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_DISCOVERY_PREFERENCE_KEY)!!.isVisible = false
 
         // Contacts
         mContactSettingsCategory.isVisible = false
         mContactPhonebookCountryPreference.isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CONTACT_BOOK_ACCESS_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_CONTACT_BOOK_ACCESS_KEY)!!.isVisible = false
 
         // user interface preferences
         setUserInterfacePreferences()
-        findPreference(PreferencesManager.SETTINGS_SHOW_JOIN_LEAVE_MESSAGES_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_SHOW_AVATAR_DISPLAY_NAME_CHANGES_MESSAGES_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ENABLE_MARKDOWN_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_12_24_TIMESTAMPS_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ALWAYS_SHOW_TIMESTAMPS_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_VIBRATE_ON_MENTION_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_SEND_MESSAGE_WITH_ENTER).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_SHOW_INFO_AREA_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_SHOW_JOIN_LEAVE_MESSAGES_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_SHOW_AVATAR_DISPLAY_NAME_CHANGES_MESSAGES_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENABLE_MARKDOWN_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_12_24_TIMESTAMPS_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ALWAYS_SHOW_TIMESTAMPS_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_VIBRATE_ON_MENTION_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_SEND_MESSAGE_WITH_ENTER)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_SHOW_INFO_AREA_KEY)!!
+            .isVisible = false
 
         // Home
-        findPreference(PreferencesManager.SETTINGS_HOME_DISPLAY_DIVIDER_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_HOME_DISPLAY_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_PIN_MISSED_NOTIFICATIONS_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_PIN_UNREAD_MESSAGES_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_HOME_DISPLAY_DIVIDER_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_HOME_DISPLAY_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_PIN_MISSED_NOTIFICATIONS_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_PIN_UNREAD_MESSAGES_PREFERENCE_KEY)!!
+            .isVisible = false
 
         // Flair
-        findPreference(PreferencesManager.SETTINGS_GROUPS_FLAIR_DIVIDER_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_GROUPS_FLAIR_DIVIDER_KEY)!!
+            .isVisible = false
         mGroupsFlairCategory.isVisible = false
 
         // Url preview
-        findPreference(PreferencesManager.SETTINGS_SHOW_URL_PREVIEW_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_SHOW_URL_PREVIEW_KEY)!!
+            .isVisible = false
 
         // Themes
-        findPreference(ThemeUtils.APPLICATION_THEME_KEY)
+        findPreference<VectorListPreference>(ThemeUtils.APPLICATION_THEME_KEY)!!
                 .onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue is String) {
                 VectorApp.updateApplicationTheme(newValue)
@@ -414,22 +429,27 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         // Notification privacy
         refreshNotificationPrivacy()
         mNotificationPrivacyPreference.isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ENABLE_THIS_DEVICE_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENABLE_ALL_NOTIF_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENABLE_THIS_DEVICE_PREFERENCE_KEY)!!
+            .isVisible = false
 
         for (preferenceKey in mPrefKeyToBingRuleId.keys) {
-            val preference = findPreference(preferenceKey)
+            try {
+                val preference = findPreference<SwitchPreference>(preferenceKey)
 
-            if (null != preference) {
-                if (preference is SwitchPreference) {
-                    preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValueAsVoid ->
-                        // on some old android APIs,
-                        // the callback is called even if there is no user interaction
-                        // so the value will be checked to ensure there is really no update.
-                        onPushRuleClick(preference.key, newValueAsVoid as Boolean)
-                        true
-                    }
+                if (null != preference) {
+                    preference.onPreferenceChangeListener =
+                        Preference.OnPreferenceChangeListener { _, newValueAsVoid ->
+                            // on some old android APIs,
+                            // the callback is called even if there is no user interaction
+                            // so the value will be checked to ensure there is really no update.
+                            onPushRuleClick(preference.key, newValueAsVoid as Boolean)
+                            true
+                        }
                 }
+            } catch (e:ClassCastException){
+                Log.i(this.javaClass.simpleName, e.toString())
             }
         }
 
@@ -439,51 +459,82 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         refreshPushersList()
 
         // Media
-        findPreference(PreferencesManager.SETTINGS_MEDIA_DIVIDER_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_MEDIA_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_MEDIA_DIVIDER_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_MEDIA_KEY)!!
+            .isVisible = false
 
         // Calls
-        findPreference(PreferencesManager.SETTINGS_CALL_DIVIDER_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CALL_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_CALL_DIVIDER_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_CALL_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_CALL_RINGTONE_USE_RIOT_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_CALL_RINGTONE_URI_PREFERENCE_KEY)!!
+            .isVisible = false
 
         // Ignore users
         refreshIgnoredUsersList()
 
         // Lab
-        findPreference(PreferencesManager.SETTINGS_LABS_DIVIDER_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_LABS_DIVIDER_PREFERENCE_KEY)!!
+            .isVisible = false
         mLabsCategory.isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_WARNING_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_IS_ACTIVE_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_LAZY_LOADING_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_DATA_SAVE_MODE_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_USE_JITSI_CONF_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ENABLE_SEND_VOICE_FEATURE_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_WARNING_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_IS_ACTIVE_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ROOM_SETTINGS_LABS_END_TO_END_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_LAZY_LOADING_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_DATA_SAVE_MODE_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_USE_JITSI_CONF_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENABLE_SEND_VOICE_FEATURE_PREFERENCE_KEY)!!
+            .isVisible = false
 
         // Device list
-        findPreference(PreferencesManager.SETTINGS_DEVICES_LIST_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_DEVICES_LIST_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_DEVICES_DIVIDER_PREFERENCE_KEY)!!
+            .isVisible = false
 
         // Advanced
-        findPreference(PreferencesManager.SETTINGS_ADVANCED_DIVIDER_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ADVANCED_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_LOGGED_IN_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_HOME_SERVER_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ADVANCED_DIVIDER_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ADVANCED_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_LOGGED_IN_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_HOME_SERVER_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY)!!
+            .isVisible = false
 
         // crypto
-        findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CRYPTOGRAPHY_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_IMPORT_E2E_ROOM_KEYS_PREFERENCE_KEY).isVisible = true
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_ID_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_KEY_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_NAME_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_NEVER_SENT_TO_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY).isVisible = true
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_EXPORT_E2E_ROOM_KEYS_PREFERENCE_KEY).isVisible = true
+        findPreference<Preference>(PreferencesManager.SETTINGS_CRYPTOGRAPHY_DIVIDER_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_CRYPTOGRAPHY_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENCRYPTION_IMPORT_E2E_ROOM_KEYS_PREFERENCE_KEY)!!
+            .isVisible = true
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_ID_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_KEY_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENCRYPTION_INFORMATION_DEVICE_NAME_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENCRYPTION_NEVER_SENT_TO_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_IDENTITY_SERVER_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY)!!
+            .isVisible = true
+        findPreference<Preference>(PreferencesManager.SETTINGS_ENCRYPTION_EXPORT_E2E_ROOM_KEYS_PREFERENCE_KEY)!!
+            .isVisible = true
 
         // crypto manage
         mCryptographyManageCategoryDivider.isVisible = true
@@ -496,13 +547,17 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         mSendMessageManagePermissions.isVisible = sendMessageExtensionEnabled
 
         // Analytics
-        findPreference(PreferencesManager.SETTINGS_ANALYTICS_DIVIDER_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_ANALYTICS_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_USE_ANALYTICS_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_USE_RAGE_SHAKE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ANALYTICS_DIVIDER_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_ANALYTICS_PREFERENCE_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_USE_ANALYTICS_KEY)!!
+            .isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_USE_RAGE_SHAKE_KEY)!!
+            .isVisible = false
 
         // Analytics tracking management
-        (findPreference(PreferencesManager.SETTINGS_USE_ANALYTICS_KEY) as SwitchPreference).let {
+        (findPreference<SwitchPreference>(PreferencesManager.SETTINGS_USE_ANALYTICS_KEY)!!).let {
             if (resources.getString(R.string.matomo_site_id) == "-1") {
                 it.isVisible = false
             } else {
@@ -517,7 +572,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         }
 
         // Rageshake Management
-        (findPreference(PreferencesManager.SETTINGS_USE_RAGE_SHAKE_KEY) as SwitchPreference).let {
+        (findPreference<SwitchPreference>(PreferencesManager.SETTINGS_USE_RAGE_SHAKE_KEY)!!).let {
             it.isChecked = PreferencesManager.useRageshake(appContext)
 
             it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
@@ -527,7 +582,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         }
 
         // preference to start the App info screen, to facilitate App permissions access
-        findPreference(APP_INFO_LINK_PREFERENCE_KEY)
+        findPreference<VectorPreference>(APP_INFO_LINK_PREFERENCE_KEY)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
             activity?.let {
@@ -546,7 +601,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         }
 
         // application version
-        (findPreference(PreferencesManager.SETTINGS_VERSION_PREFERENCE_KEY)).let {
+        (findPreference<VectorPreference>(PreferencesManager.SETTINGS_VERSION_PREFERENCE_KEY))!!.let {
             it.summary = VectorUtils.getApplicationVersion(appContext)
 
             it.setOnPreferenceClickListener {
@@ -558,17 +613,18 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         }
 
         // olm version
-        findPreference(PreferencesManager.SETTINGS_OLM_VERSION_PREFERENCE_KEY).isVisible = false
+        findPreference<Preference>(PreferencesManager.SETTINGS_OLM_VERSION_PREFERENCE_KEY)!!
+            .isVisible = false
 
         // copyright
-        findPreference(PreferencesManager.SETTINGS_COPYRIGHT_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_COPYRIGHT_PREFERENCE_KEY)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             VectorUtils.displayAppCopyright()
             false
         }
 
         // terms & conditions
-        val termsPreference = findPreference(PreferencesManager.SETTINGS_APP_TERM_CONDITIONS_PREFERENCE_KEY)
+        val termsPreference = findPreference<VectorPreference>(PreferencesManager.SETTINGS_APP_TERM_CONDITIONS_PREFERENCE_KEY)!!
         termsPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             VectorUtils.displayAppTac()
             false
@@ -576,28 +632,28 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         termsPreference.isVisible = resources.getBoolean(R.bool.show_terms_and_conditions)
 
         // privacy policy
-        findPreference(PreferencesManager.SETTINGS_PRIVACY_POLICY_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_PRIVACY_POLICY_PREFERENCE_KEY)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             VectorUtils.displayAppPrivacyPolicy()
             false
         }
 
         // third party notice
-        findPreference(PreferencesManager.SETTINGS_THIRD_PARTY_NOTICES_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_THIRD_PARTY_NOTICES_PREFERENCE_KEY)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             VectorUtils.displayThirdPartyLicenses()
             false
         }
 
         // consent
-        findPreference(PreferencesManager.SETTINGS_CONSENT_PREFERENCE_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_CONSENT_PREFERENCE_KEY)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             VectorUtils.displayConsent()
             false
         }
 
         // update keep medias period
-        findPreference(PreferencesManager.SETTINGS_MEDIA_SAVING_PERIOD_KEY).let {
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_MEDIA_SAVING_PERIOD_KEY)!!.let {
             it.summary = PreferencesManager.getSelectedMediasSavingPeriodString(activity)
 
             it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -618,7 +674,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         }
 
         // clear medias cache
-        findPreference(PreferencesManager.SETTINGS_CLEAR_MEDIA_CACHE_PREFERENCE_KEY).let {
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_CLEAR_MEDIA_CACHE_PREFERENCE_KEY)!!.let {
             MXMediaCache.getCachesSize(activity, object : SimpleApiCallback<Long>() {
                 override fun onSuccess(size: Long) {
                     if (null != activity) {
@@ -690,7 +746,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         }
 
         // clear cache
-        findPreference(PreferencesManager.SETTINGS_CLEAR_CACHE_PREFERENCE_KEY).let {
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_CLEAR_CACHE_PREFERENCE_KEY)!!.let {
             MXSession.getApplicationSizeCaches(activity, object : SimpleApiCallback<Long>() {
                 override fun onSuccess(size: Long) {
                     if (null != activity) {
@@ -709,7 +765,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         // Deactivate account section
 
         // deactivate account
-        findPreference(PreferencesManager.SETTINGS_DEACTIVATE_ACCOUNT_KEY)
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_DEACTIVATE_ACCOUNT_KEY)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             activity?.let { startActivity(DeactivateAccountActivity.getIntent(it)) }
 
@@ -722,7 +778,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
     private fun refreshIntegrationManagerSettings() {
         val integrationAllowed = mSession.integrationManager.integrationAllowed
-        (findPreference(PreferencesManager.SETTINGS_INTEGRATION_ALLOW) as SwitchPreference).let {
+        (findPreference<SwitchPreference>(PreferencesManager.SETTINGS_INTEGRATION_ALLOW)!!).let {
             val savedListener = it.onPreferenceChangeListener
             it.onPreferenceChangeListener = null
             it.isChecked = integrationAllowed
@@ -730,7 +786,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             it.onPreferenceChangeListener = savedListener
         }
 
-        findPreference(PreferencesManager.SETTINGS_INTEGRATION_MANAGER_UI_URL).let {
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_INTEGRATION_MANAGER_UI_URL)!!.let {
             if (integrationAllowed) {
                 it.summary = Matrix.getWidgetManager(context)?.uiUrl ?: getString(R.string.none)
                 it.isVisible = true
@@ -758,10 +814,10 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                 ?: getString(R.string.identity_server_not_defined)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        view?.apply {
+        view.apply {
             val listView = findViewById<View>(android.R.id.list)
             listView?.setPadding(0, 0, 0, 0)
         }
@@ -792,7 +848,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         mLoadingView = activity?.findViewById(R.id.vector_settings_spinner_views)
 
         if (mSession.isAlive) {
-            val context = activity?.applicationContext
+            val context = requireActivity().applicationContext
 
             mSession.dataHandler.addListener(mEventsListener)
 
@@ -831,7 +887,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
 
         interactionListener?.requestedKeyToHighlight()?.let { key ->
             interactionListener?.requestHighlightPreferenceKeyOnResume(null)
-            val preference = findPreference(key)
+            val preference = findPreference<Preference>(key)
             (preference as? VectorPreference)?.isHighlighted = true
         }
     }
@@ -839,7 +895,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     override fun onPause() {
         super.onPause()
 
-        val context = activity?.applicationContext
+        val context = requireActivity().applicationContext
 
         if (mSession.isAlive) {
             mSession.dataHandler.removeListener(mEventsListener)
@@ -908,7 +964,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     private fun refreshDisplay() {
         // If Matrix instance is null, then connection can't be there
         val isConnected = Matrix.getInstance(activity)?.isConnected ?: false
-        val appContext = activity?.applicationContext
+        val appContext = requireActivity().applicationContext
 
         val preferenceManager = preferenceManager
 
@@ -932,27 +988,28 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
         val pushManager = Matrix.getInstance(appContext)?.pushManager
 
         for (preferenceKey in mPrefKeyToBingRuleId.keys) {
-            val preference = preferenceManager.findPreference(preferenceKey)
-
-            if (null != preference) {
-
-                if (preference is SwitchPreference) {
+            try {
+                val preference = preferenceManager.findPreference<SwitchPreference>(preferenceKey)
+                if (null != preference) {
                     when (preferenceKey) {
                         PreferencesManager.SETTINGS_ENABLE_THIS_DEVICE_PREFERENCE_KEY ->
                             preference.isChecked = pushManager?.areDeviceNotificationsAllowed()
-                                    ?: true
+                                ?: true
 
-                        PreferencesManager.SETTINGS_TURN_SCREEN_ON_PREFERENCE_KEY     -> {
+                        PreferencesManager.SETTINGS_TURN_SCREEN_ON_PREFERENCE_KEY -> {
                             preference.isChecked = pushManager?.isScreenTurnedOn ?: false
                             preference.isEnabled = pushManager?.areDeviceNotificationsAllowed()
-                                    ?: true
+                                ?: true
                         }
-                        else                                                          -> {
+
+                        else -> {
                             preference.isEnabled = null != rules && isConnected
                             preference.isChecked = preferences.getBoolean(preferenceKey, false)
                         }
                     }
                 }
+            }catch (e:ClassCastException){
+                Log.i(this.javaClass.simpleName, e.toString())
             }
         }
 
@@ -1246,7 +1303,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             mSession.myUser.updateDisplayName(value, object : ApiCallback<Void> {
                 override fun onSuccess(info: Void?) {
                     // refresh the settings value
-                    PreferenceManager.getDefaultSharedPreferences(activity).edit {
+                    PreferenceManager.getDefaultSharedPreferences(requireActivity().applicationContext).edit {
                         putString(PreferencesManager.SETTINGS_DISPLAY_NAME_PREFERENCE_KEY, value)
                     }
 
@@ -1398,39 +1455,57 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
      * Refresh the known information about the account
      */
     private fun refreshPreferences() {
-        PreferenceManager.getDefaultSharedPreferences(activity).edit {
+        PreferenceManager.getDefaultSharedPreferences(requireActivity().applicationContext).edit {
             putString(PreferencesManager.SETTINGS_DISPLAY_NAME_PREFERENCE_KEY, mSession.myUser.displayname)
             putString(PreferencesManager.SETTINGS_VERSION_PREFERENCE_KEY, VectorUtils.getApplicationVersion(activity))
 
             mSession.dataHandler.pushRules()?.let {
                 for (preferenceKey in mPrefKeyToBingRuleId.keys) {
-                    val preference = findPreference(preferenceKey)
+                    try {
+                        val preference = findPreference<SwitchPreference>(preferenceKey)
 
-                    if (null != preference && preference is SwitchPreference) {
-                        val ruleId = mPrefKeyToBingRuleId[preferenceKey]
+                        if (null != preference) {
+                            val ruleId = mPrefKeyToBingRuleId[preferenceKey]
 
-                        val rule = it.findDefaultRule(ruleId)
-                        var isEnabled = null != rule && rule.isEnabled
+                            val rule = it.findDefaultRule(ruleId)
+                            var isEnabled = null != rule && rule.isEnabled
 
-                        if (TextUtils.equals(ruleId, BingRule.RULE_ID_DISABLE_ALL) || TextUtils.equals(ruleId, BingRule.RULE_ID_SUPPRESS_BOTS_NOTIFICATIONS)) {
-                            isEnabled = !isEnabled
-                        } else if (isEnabled) {
-                            val actions = rule?.actions
+                            if (TextUtils.equals(
+                                    ruleId,
+                                    BingRule.RULE_ID_DISABLE_ALL
+                                ) || TextUtils.equals(
+                                    ruleId,
+                                    BingRule.RULE_ID_SUPPRESS_BOTS_NOTIFICATIONS
+                                )
+                            ) {
+                                isEnabled = !isEnabled
+                            } else if (isEnabled) {
+                                val actions = rule?.actions
 
-                            // no action -> noting will be done
-                            if (null == actions || actions.isEmpty()) {
-                                isEnabled = false
-                            } else if (1 == actions.size) {
-                                try {
-                                    isEnabled = !TextUtils.equals(actions[0] as String, BingRule.ACTION_DONT_NOTIFY)
-                                } catch (e: Exception) {
-                                    Log.e(LOG_TAG, "## refreshPreferences failed " + e.message, e)
+                                // no action -> noting will be done
+                                if (null == actions || actions.isEmpty()) {
+                                    isEnabled = false
+                                } else if (1 == actions.size) {
+                                    try {
+                                        isEnabled = !TextUtils.equals(
+                                            actions[0] as String,
+                                            BingRule.ACTION_DONT_NOTIFY
+                                        )
+                                    } catch (e: Exception) {
+                                        Log.e(
+                                            LOG_TAG,
+                                            "## refreshPreferences failed " + e.message,
+                                            e
+                                        )
+                                    }
+
                                 }
+                            }// check if the rule is only defined by don't notify
 
-                            }
-                        }// check if the rule is only defined by don't notify
-
-                        putBoolean(preferenceKey, isEnabled)
+                            putBoolean(preferenceKey, isEnabled)
+                        }
+                    } catch (e:ClassCastException){
+                        Log.i(this.javaClass.simpleName, e.toString())
                     }
                 }
             }
@@ -1506,7 +1581,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             preferenceScreen.addPreference(mIgnoredUserSettingsCategory)
 
             for (userId in ignoredUsersList) {
-                val preference = Preference(activity)
+                val preference = Preference(requireActivity().applicationContext)
 
                 preference.title = userId
                 preference.key = IGNORED_USER_KEY_BASE + userId
@@ -1666,7 +1741,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                         run {
                             var index = 0
                             while (true) {
-                                val preference = mUserSettingsCategory.findPreference(EMAIL_PREFERENCE_KEY_BASE + index)
+                                val preference = mUserSettingsCategory.findPreference<Preference>(EMAIL_PREFERENCE_KEY_BASE + index)
 
                                 if (null != preference) {
                                     mUserSettingsCategory.removePreference(preference)
@@ -1676,7 +1751,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                                 index++
                             }
                         }
-                        mUserSettingsCategory.findPreference(ADD_EMAIL_PREFERENCE_KEY)?.let {
+                        mUserSettingsCategory.findPreference<Preference>(ADD_EMAIL_PREFERENCE_KEY)?.let {
                             it.isVisible = false
                         }
                     }
@@ -1718,7 +1793,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             run {
                 var index = 0
                 while (true) {
-                    val preference = mUserSettingsCategory.findPreference(EMAIL_PREFERENCE_KEY_BASE + index)
+                    val preference = mUserSettingsCategory.findPreference<Preference>(EMAIL_PREFERENCE_KEY_BASE + index)
 
                     if (null != preference) {
                         mUserSettingsCategory.removePreference(preference)
@@ -1732,13 +1807,13 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             // add new emails list
             mDisplayedEmails = newEmailsList
 
-            val addEmailBtn = mUserSettingsCategory.findPreference(ADD_EMAIL_PREFERENCE_KEY)
+            val addEmailBtn = mUserSettingsCategory.findPreference<VectorEditTextPreference>(ADD_EMAIL_PREFERENCE_KEY)
                     ?: return
 
             var order = addEmailBtn.order
 
             for ((index, email3PID) in currentEmail3PID.withIndex()) {
-                val preference = VectorPreference(activity!!)
+                val preference = VectorPreference(requireActivity())
 
                 preference.title = getString(R.string.settings_email_address)
                 preference.summary = email3PID.address
@@ -1746,7 +1821,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                 preference.order = order
 
                 preference.onPreferenceClickListener = Preference.OnPreferenceClickListener { pref ->
-                    displayDelete3PIDConfirmationDialog(email3PID, pref.summary)
+                    pref.summary?.let { displayDelete3PIDConfirmationDialog(email3PID, it) }
                     true
                 }
 
@@ -1981,7 +2056,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                         run {
                             var index = 0
                             while (true) {
-                                val preference = mUserSettingsCategory.findPreference(PHONE_NUMBER_PREFERENCE_KEY_BASE + index)
+                                val preference = mUserSettingsCategory.findPreference<Preference>(PHONE_NUMBER_PREFERENCE_KEY_BASE + index)
 
                                 if (null != preference) {
                                     mUserSettingsCategory.removePreference(preference)
@@ -1991,7 +2066,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                                 index++
                             }
                         }
-                        mUserSettingsCategory.findPreference(ADD_PHONE_NUMBER_PREFERENCE_KEY)?.let {
+                        mUserSettingsCategory.findPreference<Preference>(ADD_PHONE_NUMBER_PREFERENCE_KEY)?.let {
                             it.isVisible = false
                         }
                     } else {
@@ -2034,7 +2109,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             run {
                 var index = 0
                 while (true) {
-                    val preference = mUserSettingsCategory.findPreference(PHONE_NUMBER_PREFERENCE_KEY_BASE + index)
+                    val preference = mUserSettingsCategory.findPreference<Preference>(PHONE_NUMBER_PREFERENCE_KEY_BASE + index)
 
                     if (null != preference) {
                         mUserSettingsCategory.removePreference(preference)
@@ -2048,13 +2123,13 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             // add new phone number list
             mDisplayedPhoneNumber = phoneNumberList
 
-            val addPhoneBtn = mUserSettingsCategory.findPreference(ADD_PHONE_NUMBER_PREFERENCE_KEY)
+            val addPhoneBtn = mUserSettingsCategory.findPreference<VectorPreference>(ADD_PHONE_NUMBER_PREFERENCE_KEY)
                     ?: return
 
             var order = addPhoneBtn.order
 
             for ((index, phoneNumber3PID) in currentPhoneNumber3PID.withIndex()) {
-                val preference = VectorPreference(activity!!)
+                val preference = VectorPreference(requireActivity())
 
                 preference.title = getString(R.string.settings_phone_number)
                 var phoneNumberFormatted = phoneNumber3PID.address
@@ -2071,7 +2146,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                 preference.order = order
 
                 preference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                    displayDelete3PIDConfirmationDialog(phoneNumber3PID, preference.summary)
+                    preference.summary?.let {displayDelete3PIDConfirmationDialog(phoneNumber3PID, preference.summary!!)}
                     true
                 }
 
@@ -2366,7 +2441,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
     private fun refreshKeysManagementSection() {
         //If crypto is not enabled parent section will be removed
         //TODO notice that this will not work when no network
-        findPreference(PreferencesManager.SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY)?.let {
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_SECURE_MESSAGE_RECOVERY_PREFERENCE_KEY)?.let {
             it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 context?.let {
                     startActivity(KeysBackupManageActivity.intent(it, mSession.myUserId))
@@ -2375,14 +2450,14 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             }
         }
 
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_EXPORT_E2E_ROOM_KEYS_PREFERENCE_KEY)?.let {
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_ENCRYPTION_EXPORT_E2E_ROOM_KEYS_PREFERENCE_KEY)?.let {
             it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 exportKeys()
                 true
             }
         }
 
-        findPreference(PreferencesManager.SETTINGS_ENCRYPTION_IMPORT_E2E_ROOM_KEYS_PREFERENCE_KEY)?.let {
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_ENCRYPTION_IMPORT_E2E_ROOM_KEYS_PREFERENCE_KEY)?.let {
             it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 importKeys()
                 true
@@ -2484,7 +2559,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                 }
 
                 // add the edit text preference
-                preference = VectorPreference(activity!!).apply {
+                preference = VectorPreference(requireActivity()).apply {
                     mTypeface = typeFaceHighlight
                 }
 
@@ -2906,7 +2981,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
                 mGroupsFlairCategory.removeAll()
 
                 if (publicisedGroups.isEmpty()) {
-                    val vectorGroupPreference = Preference(activity)
+                    val vectorGroupPreference = Preference(requireActivity().applicationContext)
                     vectorGroupPreference.title = resources.getString(R.string.settings_without_flair)
                     mGroupsFlairCategory.addPreference(vectorGroupPreference)
                 } else {
@@ -2949,7 +3024,7 @@ class VectorSettingsPreferencesFragment : PreferenceFragmentCompat(), SharedPref
             mPublicisedGroups = publicisedGroups.toMutableSet()
 
             for ((prefIndex, group) in joinedGroups.withIndex()) {
-                val vectorGroupPreference = VectorGroupPreference(activity!!)
+                val vectorGroupPreference = VectorGroupPreference(requireActivity())
                 vectorGroupPreference.key = DEVICES_PREFERENCE_KEY_BASE + prefIndex
 
                 vectorGroupPreference.setGroup(group, mSession)

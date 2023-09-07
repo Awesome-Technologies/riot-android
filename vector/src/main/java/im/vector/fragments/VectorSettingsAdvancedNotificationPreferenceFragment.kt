@@ -35,6 +35,7 @@ import im.vector.extensions.withArgs
 import im.vector.notifications.NotificationUtils
 import im.vector.notifications.supportNotificationChannels
 import im.vector.preference.BingRulePreference
+import im.vector.preference.VectorPreference
 import im.vector.util.PreferencesManager
 import org.jetbrains.anko.toast
 import org.matrix.androidsdk.MXSession
@@ -58,14 +59,14 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        val appContext = activity!!.applicationContext
+        val appContext = requireActivity().applicationContext
 
         // retrieve the arguments
-        val sessionArg = Matrix.getInstance(appContext).getSession(arguments!!.getString(MXCActionBarActivity.EXTRA_MATRIX_ID))
+        val sessionArg = Matrix.getInstance(appContext).getSession(requireArguments().getString(MXCActionBarActivity.EXTRA_MATRIX_ID))
 
         // sanity checks
         if (null == sessionArg || !sessionArg.isAlive) {
-            activity!!.finish()
+            requireActivity().finish()
             return
         }
 
@@ -74,7 +75,7 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
         // define the layout
         addPreferencesFromResource(R.xml.vector_settings_notification_advanced_preferences)
 
-        val callNotificationsSystemOptions = findPreference(PreferencesManager.SETTINGS_SYSTEM_CALL_NOTIFICATION_PREFERENCE_KEY)
+        val callNotificationsSystemOptions = findPreference<VectorPreference>(PreferencesManager.SETTINGS_SYSTEM_CALL_NOTIFICATION_PREFERENCE_KEY)!!
         if (supportNotificationChannels()) {
             callNotificationsSystemOptions.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 NotificationUtils.openSystemSettingsForCallCategory(this)
@@ -84,7 +85,7 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
             callNotificationsSystemOptions.isVisible = false
         }
 
-        val noisyNotificationsSystemOptions = findPreference(PreferencesManager.SETTINGS_SYSTEM_NOISY_NOTIFICATION_PREFERENCE_KEY)
+        val noisyNotificationsSystemOptions = findPreference<VectorPreference>(PreferencesManager.SETTINGS_SYSTEM_NOISY_NOTIFICATION_PREFERENCE_KEY)!!
         if (supportNotificationChannels()) {
             noisyNotificationsSystemOptions.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 NotificationUtils.openSystemSettingsForNoisyCategory(this)
@@ -94,7 +95,7 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
             noisyNotificationsSystemOptions.isVisible = false
         }
 
-        val silentNotificationsSystemOptions = findPreference(PreferencesManager.SETTINGS_SYSTEM_SILENT_NOTIFICATION_PREFERENCE_KEY)
+        val silentNotificationsSystemOptions = findPreference<VectorPreference>(PreferencesManager.SETTINGS_SYSTEM_SILENT_NOTIFICATION_PREFERENCE_KEY)!!
         if (supportNotificationChannels()) {
             silentNotificationsSystemOptions.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 NotificationUtils.openSystemSettingsForSilentCategory(this)
@@ -106,7 +107,7 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
 
 
         // Ringtone
-        val ringtonePreference = findPreference(PreferencesManager.SETTINGS_NOTIFICATION_RINGTONE_SELECTION_PREFERENCE_KEY)
+        val ringtonePreference = findPreference<VectorPreference>(PreferencesManager.SETTINGS_NOTIFICATION_RINGTONE_SELECTION_PREFERENCE_KEY)!!
 
         if (supportNotificationChannels()) {
             ringtonePreference.isVisible = false
@@ -126,7 +127,7 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
         }
 
         for (preferenceKey in mPrefKeyToBingRuleId.keys) {
-            val preference = findPreference(preferenceKey)
+            val preference = findPreference<VectorPreference>(preferenceKey)
             if (null != preference) {
                 if (preference is BingRulePreference) {
                     //preference.isEnabled = null != rules && isConnected && pushManager.areDeviceNotificationsAllowed()
@@ -168,9 +169,9 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
         }
 
         // Hide settings
-        findPreference(PreferencesManager.SETTINGS_CONTAINING_MY_USER_NAME_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_CALL_INVITATIONS_PREFERENCE_KEY).isVisible = false
-        findPreference(PreferencesManager.SETTINGS_MESSAGES_SENT_BY_BOT_PREFERENCE_KEY).isVisible = false
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_CONTAINING_MY_USER_NAME_PREFERENCE_KEY)!!.isVisible = false
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_CALL_INVITATIONS_PREFERENCE_KEY)!!.isVisible = false
+        findPreference<VectorPreference>(PreferencesManager.SETTINGS_MESSAGES_SENT_BY_BOT_PREFERENCE_KEY)!!.isVisible = false
         callNotificationsSystemOptions.isVisible = false
     }
 
@@ -190,7 +191,7 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
                     val notificationRingToneName = PreferencesManager.getNotificationRingToneName(activity)
                     if (null != notificationRingToneName) {
                         PreferencesManager.setNotificationRingTone(activity, PreferencesManager.getNotificationRingTone(activity))
-                        findPreference(PreferencesManager.SETTINGS_NOTIFICATION_RINGTONE_SELECTION_PREFERENCE_KEY).summary = notificationRingToneName
+                        findPreference<VectorPreference>(PreferencesManager.SETTINGS_NOTIFICATION_RINGTONE_SELECTION_PREFERENCE_KEY)!!.summary = notificationRingToneName
                     }
                 }
             }
@@ -201,7 +202,7 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
         super.onResume()
         (activity as? MXCActionBarActivity)?.supportActionBar?.setTitle(R.string.settings_notification_advanced)
         // find the view from parent activity
-        mLoadingView = activity!!.findViewById(R.id.vector_settings_spinner_views)
+        mLoadingView = requireActivity().findViewById(R.id.vector_settings_spinner_views)
 
 
         if (mSession.isAlive) {
@@ -225,12 +226,12 @@ class VectorSettingsAdvancedNotificationPreferenceFragment : PreferenceFragmentC
      * Refresh the known information about the account
      */
     private fun refreshPreferences() {
-        PreferenceManager.getDefaultSharedPreferences(activity).edit {
+        PreferenceManager.getDefaultSharedPreferences(requireActivity()).edit {
             mSession.dataHandler.pushRules()?.let {
                 for (prefKey in mPrefKeyToBingRuleId.keys) {
-                    val preference = findPreference(prefKey)
+                    val preference = findPreference<SwitchPreference>(prefKey)
 
-                    if (null != preference && preference is SwitchPreference) {
+                    if (null != preference) {
                         val ruleId = mPrefKeyToBingRuleId[prefKey]
 
                         val rule = it.findDefaultRule(ruleId)
