@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import org.jetbrains.anko.ToastsKt;
 import org.matrix.androidsdk.core.Log;
+import org.matrix.androidsdk.core.PermalinkUtils;
 import org.matrix.androidsdk.core.callback.ApiCallback;
 import org.matrix.androidsdk.core.callback.SimpleApiCallback;
 import org.matrix.androidsdk.core.model.MatrixError;
@@ -69,6 +70,8 @@ public class VectorRoomCreationActivity extends MXCActionBarActivity {
 
     // the search is displayed at first call
     private boolean mIsFirstResume = true;
+
+    private String matrixIdFromLink;
 
     // direct message
     private final ApiCallback<String> mCreateDirectMessageCallBack = new ApiCallback<String>() {
@@ -170,6 +173,14 @@ public class VectorRoomCreationActivity extends MXCActionBarActivity {
             finish();
             return;
         }
+        //This block obtains the matrixId from link to identify the chat room
+        matrixIdFromLink = intent.getStringExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY);
+
+        // Opens or creates a direct chat room using the provided matrix ID if it's not null.
+        if(matrixIdFromLink != null){
+            openOrCreateDirectChatRoom(matrixIdFromLink);
+        }
+
 
         // get the UI items
         setWaitingView(findViewById(R.id.room_creation_spinner_views));
@@ -221,7 +232,8 @@ public class VectorRoomCreationActivity extends MXCActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        if (mIsFirstResume) {
+        // Triggers search activity on the first resume only if there's no linked matrix ID
+        if (matrixIdFromLink == null && mIsFirstResume) {
             mIsFirstResume = false;
             launchSearchActivity();
         }

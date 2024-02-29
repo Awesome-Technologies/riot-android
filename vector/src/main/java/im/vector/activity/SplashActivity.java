@@ -18,6 +18,7 @@
 package im.vector.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -28,6 +29,7 @@ import androidx.preference.PreferenceManager;
 
 import org.matrix.androidsdk.MXSession;
 import org.matrix.androidsdk.core.Log;
+import org.matrix.androidsdk.core.PermalinkUtils;
 import org.matrix.androidsdk.core.callback.ApiCallback;
 import org.matrix.androidsdk.core.model.MatrixError;
 import org.matrix.androidsdk.listeners.IMXEventListener;
@@ -70,6 +72,7 @@ public class SplashActivity extends MXCActionBarActivity {
 
     private static final String NEED_TO_CLEAR_CACHE_BEFORE_81200 = "NEED_TO_CLEAR_CACHE_BEFORE_81200";
 
+
     /* ==========================================================================================
      * UI
      * ========================================================================================== */
@@ -101,6 +104,8 @@ public class SplashActivity extends MXCActionBarActivity {
         final long duration = finishTime - mLaunchTime;
         final TrackingEvent event = new TrackingEvent.LaunchScreen(duration);
         VectorApp.getInstance().getAnalytics().trackEvent(event);
+
+        String matrixIdFromLink = getMatrixIdFromPrefs();
 
         if (!hasCorruptedStore()) {
             // Go to the home page
@@ -138,6 +143,13 @@ public class SplashActivity extends MXCActionBarActivity {
                 intent.putExtra(VectorHomeActivity.EXTRA_JUMP_TO_ROOM_PARAMS, (HashMap) params);
             }
 
+            // Redirects to room creation if matrixIdFromLink is present, otherwise continues with default intent
+            if (matrixIdFromLink != null) {
+                intent.setClass(this, VectorRoomCreationActivity.class);
+                intent.putExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY, matrixIdFromLink);
+                clearMatrixIdFromPrefs();
+            }
+
             startActivity(intent);
             finish();
         } else {
@@ -158,6 +170,12 @@ public class SplashActivity extends MXCActionBarActivity {
             Log.e(LOG_TAG, "onCreate no Sessions");
             finish();
             return;
+        }
+
+        // Saves the matrixIdFromLink from the intent to shared preferences to ensure it persists across activity restarts initiated by reloadSessions.
+        String matrixIdFromLink = getIntent().getStringExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY);
+        if (matrixIdFromLink != null) {
+            saveMatrixIdToPrefs(matrixIdFromLink);
         }
 
         // Check if store is corrupted, due to change of type of some maps from HashMap to Map in Serialized objects
@@ -342,6 +360,22 @@ public class SplashActivity extends MXCActionBarActivity {
             Log.e(LOG_TAG, "nothing to do");
             onFinish();
         }
+    }
+
+    private SharedPreferences getPreferences() {
+        return getSharedPreferences("MyPrefs", MODE_PRIVATE);
+    }
+
+    private void saveMatrixIdToPrefs(String matrixId) {
+        getPreferences().edit().putString("ULINK_MATRIX_USER_ID_KEY", matrixId).apply();
+    }
+
+    private String getMatrixIdFromPrefs() {
+        return getPreferences().getString("ULINK_MATRIX_USER_ID_KEY", null);
+    }
+
+    private void clearMatrixIdFromPrefs() {
+        getPreferences().edit().remove("ULINK_MATRIX_USER_ID_KEY").apply();
     }
 
     @Override

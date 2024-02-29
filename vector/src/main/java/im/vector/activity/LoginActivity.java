@@ -57,6 +57,7 @@ import org.matrix.androidsdk.MXSession;
 import org.matrix.androidsdk.core.JsonUtils;
 import org.matrix.androidsdk.core.Log;
 import org.matrix.androidsdk.core.MXPatterns;
+import org.matrix.androidsdk.core.PermalinkUtils;
 import org.matrix.androidsdk.core.callback.ApiCallback;
 import org.matrix.androidsdk.core.callback.SimpleApiCallback;
 import org.matrix.androidsdk.core.model.HttpException;
@@ -353,6 +354,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
     // use to reset the password when the user click on the email validation
     private ThreePidCredentials mForgotPid = null;
 
+    private String matrixIdFromLink;
+
     // network state notification
     private final BroadcastReceiver mNetworkReceiver = new BroadcastReceiver() {
         @Override
@@ -460,6 +463,8 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         FcmHelper.ensureFcmTokenIsRetrieved(this);
 
         Intent intent = getIntent();
+
+        matrixIdFromLink = intent.getStringExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY);
 
         // already registered
         if (hasCredentials()) {
@@ -1144,6 +1149,10 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
         Log.d(LOG_TAG, "## gotoSplash(): Go to splash.");
 
         Intent intent = new Intent(this, SplashActivity.class);
+
+        if (null != matrixIdFromLink)  {
+            intent.putExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY, matrixIdFromLink);
+        }
         if (null != mUniversalLinkUri) {
             intent.putExtra(VectorUniversalLinkReceiver.EXTRA_UNIVERSAL_LINK_URI, mUniversalLinkUri);
         } else if (null != mSendMessageData) {

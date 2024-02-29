@@ -46,12 +46,14 @@ import java.util.TimerTask;
 import im.vector.Matrix;
 import im.vector.R;
 import im.vector.VectorApp;
+import im.vector.activity.BarcodeLoginActivity;
 import im.vector.activity.CommonActivityUtils;
 import im.vector.activity.LoginActivity;
 import im.vector.activity.VectorGroupDetailsActivity;
 import im.vector.activity.VectorHomeActivity;
 import im.vector.activity.VectorMemberDetailsActivity;
 import im.vector.activity.VectorRoomActivity;
+import im.vector.activity.VectorRoomCreationActivity;
 
 /**
  * An universal link receiver.
@@ -104,19 +106,25 @@ public class VectorUniversalLinkReceiver extends BroadcastReceiver {
             return;
         }
 
+        boolean isFirstCreation = aIntent.getBooleanExtra("isFirstCreation", false);
+        String matrixIdFromLink = aIntent.getStringExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY);
+
         // get session
         mSession = Matrix.getInstance(aContext).getDefaultSession();
 
-        // user is not yet logged in
-        if (null == mSession) {
-            Log.e(LOG_TAG, "## onReceive() Warning - Unable to proceed URL link: Session is null");
+        // If it's the first creation of the activity, redirecting to the BarcodeLoginActivity
+        if (isFirstCreation) {
 
-            // No user is logged => no session. Just forward request to the login activity
-            Intent intent = new Intent(aContext, LoginActivity.class);
+            Intent intent = new Intent(aContext, BarcodeLoginActivity.class);
+            intent.putExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY, matrixIdFromLink);
             intent.putExtra(EXTRA_UNIVERSAL_LINK_URI, aIntent.getData());
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             aContext.startActivity(intent);
             return;
+        } else {
+            Intent intent = new Intent(aContext, VectorRoomCreationActivity.class);
+            intent.putExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY, matrixIdFromLink);
+            aContext.startActivity(intent);
         }
 
         action = aIntent.getAction();

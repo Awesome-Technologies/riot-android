@@ -39,6 +39,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import org.jetbrains.annotations.Contract;
 import org.matrix.androidsdk.HomeServerConnectionConfig;
 import org.matrix.androidsdk.MXSession;
+import org.matrix.androidsdk.core.PermalinkUtils;
 import org.matrix.androidsdk.core.callback.SimpleApiCallback;
 import org.matrix.androidsdk.core.model.MatrixError;
 import org.matrix.androidsdk.rest.model.login.PasswordLoginParams;
@@ -81,6 +82,8 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
     public static final String OBFUSCATION_KEY = "wo9k5tep252qxsa5yde7366kugy6c01w7oeeya9hrmpf0t7ii7";
     private SendMessageModel mSendMessageData;
 
+    private String matrixIdFromLink;
+
     @Override
     public int getLayoutRes() { return R.layout.activity_barcode_login; }
 
@@ -104,6 +107,8 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
                 Log.d(LOG_TAG, "## onCreate() Login activity started by send message action");
             }
         }
+
+        matrixIdFromLink = intent.getStringExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY);
 
         if (hasCredentials()) {
             Log.d(LOG_TAG, "## onCreate(): goToSplash because the credentials are already provided.");
@@ -139,6 +144,10 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
 
         // go to login page
         Intent intent = new Intent(this, LoginActivity.class);
+
+        if (matrixIdFromLink != null) {
+            intent.putExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY, matrixIdFromLink);
+        }
         intent.putExtras(getIntent());
         startActivity(intent);
     }
@@ -298,7 +307,7 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
     }
 
     @Contract(pure = true)
-    private byte[] xorWithKey(byte[] a, byte[] key) {
+    static byte[] xorWithKey(byte[] a, byte[] key) {
         byte[] out = new byte[a.length];
         for (int i = 0; i < a.length; i++) {
             out[i] = (byte) (a[i] ^ key[i % key.length]);
@@ -381,9 +390,14 @@ public final class BarcodeLoginActivity extends MXCActionBarActivity implements 
         Log.d(LOG_TAG, "## gotoSplash(): Go to splash.");
 
         Intent intent = new Intent(this, SplashActivity.class);
-        if (null != mSendMessageData) {
+
+        if (matrixIdFromLink != null) {
+            intent.putExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY, matrixIdFromLink);
+        }
+        if (mSendMessageData != null) {
             intent.putExtra(AMPSendMessageReceiver.EXTRA_MESSAGE_DATA, mSendMessageData);
         }
+
         startActivity(intent);
     }
 }

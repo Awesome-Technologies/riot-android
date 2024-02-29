@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -31,10 +32,12 @@ import androidx.appcompat.app.AlertDialog;
 import org.matrix.androidsdk.HomeServerConnectionConfig;
 import org.matrix.androidsdk.MXSession;
 import org.matrix.androidsdk.core.Log;
+import org.matrix.androidsdk.core.PermalinkUtils;
 import org.matrix.androidsdk.core.callback.ApiCallback;
 import org.matrix.androidsdk.core.callback.SimpleApiCallback;
 import org.matrix.androidsdk.core.model.MatrixError;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +57,8 @@ public class VectorUniversalLinkActivity extends VectorAppCompatActivity {
 
     private static final String SUPPORTED_PATH_CONFIG = "/config/config";
 
+    private String matrixIdFromLink;
+
     @Override
     public int getLayoutRes() {
         // display a spinner while binding the email
@@ -67,11 +72,11 @@ public class VectorUniversalLinkActivity extends VectorAppCompatActivity {
         String intentAction = VectorUniversalLinkReceiver.BROADCAST_ACTION_UNIVERSAL_LINK;
 
         try {
+            Uri intentUri = getIntent().getData();
+
             // dispatch on the right receiver
             if (VectorRegistrationReceiver.SUPPORTED_PATH_ACCOUNT_EMAIL_VALIDATION.equals(getIntent().getData().getPath())) {
-
                 // We consider here an email validation
-                Uri intentUri = getIntent().getData();
 
                 Map<String, String> mailRegParams = VectorRegistrationReceiver.parseMailRegistrationLink(intentUri);
 
@@ -117,7 +122,11 @@ public class VectorUniversalLinkActivity extends VectorAppCompatActivity {
                     return;
                 }
             } else {
-                intentAction = VectorUniversalLinkReceiver.BROADCAST_ACTION_UNIVERSAL_LINK;
+                if (intentUri != null && isInvitationUri(intentUri)) {
+                    handleInvitationUri(intentUri);
+                } else {
+                    intentAction = VectorUniversalLinkReceiver.BROADCAST_ACTION_UNIVERSAL_LINK;
+                }
             }
         } catch (Exception ex) {
             Log.e(LOG_TAG, "## onCreate(): Exception - Msg=" + ex.getMessage(), ex);
@@ -132,8 +141,9 @@ public class VectorUniversalLinkActivity extends VectorAppCompatActivity {
 
             myBroadcastIntent.setAction(intentAction);
             myBroadcastIntent.setData(getIntent().getData());
+            myBroadcastIntent.putExtra(PermalinkUtils.ULINK_MATRIX_USER_ID_KEY, matrixIdFromLink);
+            myBroadcastIntent.putExtra("isFirstCreation", isFirstCreation());
             sendBroadcast(myBroadcastIntent);
-            finish();
         }
     }
 
@@ -263,4 +273,37 @@ public class VectorUniversalLinkActivity extends VectorAppCompatActivity {
                     }
                 });
     }
+
+    private boolean isInvitationUri(Uri uri) {
+        if (uri.getFragment() == null || uri.getFragment().isEmpty()) {
+            Log.e(LOG_TAG, "Matrix ID could not be extracted from the URI.");
+            return false;
+        }
+        return true;
+    }
+
+    private void handleInvitationUri(Uri uri) {
+        String encodedData = uri.getFragment();
+        try {
+            byte[] base64Decoded = Base64.decode(encodedData, Base64.DEFAULT);
+            byte[] xorDecoded = BarcodeLoginActivity.xorWithKey(base64Decoded, BarcodeLoginActivity.OBFUSCATION_KEY.getBytes(StandardCharsets.UTF_8));
+            String decodedString = new String(xorDecoded, StandardCharsets.UTF_8);
+
+            if (!decodedString.startsWith("type=invite")) {
+                Log.e(LOG_TAG, "Not an invitation link.");
+                return;
+            }
+
+            String[] parts = decodedString.split("&user=");
+            if (parts.length > 1) {
+                matrixIdFromLink = parts[1];
+            } else {
+                Log.e(LOG_TAG, "User part is missing in the invitation link.");
+            }
+
+        } catch (IllegalArgumentException e) {
+            Log.e(LOG_TAG, "Decoding error: " + e.getMessage());
+        }
+    }
+
 }
