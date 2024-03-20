@@ -37,6 +37,6 @@
     </string-array>
 
     <string name="privacy_url" translatable="false">https://caritas.amp.chat/privacy</string>
-    <string name="terms_and_conditions_url" translatable="false">file:///android_asset/terms_and_conditions.html</string>
+    <string name="terms_and_conditions_url" translatable="false">https://caritas.amp.chat/agb</string>
 
 </resources>

@@ -36,6 +36,6 @@
     </string-array>
 
     <string name="privacy_url">https://amp.chat/privacy</string>
-    <string name="terms_and_conditions_url">file:///android_asset/terms_and_conditions.html</string>
+    <string name="terms_and_conditions_url">https://amp.chat/agb</string>
 
 </resources>
