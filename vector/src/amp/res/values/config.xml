@@ -19,7 +19,7 @@
     <string name="matomo_tracker_name" translatable="false">AMPchat Android</string>
     <string name="bug_report_url" translatable="false">https://caritas.amp.chat/bugreports/submit</string>
     <string name="default_stun_server" translatable="false">turn.amp.chat</string>
-    <string name="login_intent_hostname">test.amp.chat</string>
+    <string name="login_intent_hostname" translatable="false">*.amp.chat</string>
     <string name="jitsi_server_url">https://jitsi.amp.chat/</string>
 
     <!-- Widget urls -->
