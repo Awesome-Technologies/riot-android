@@ -26,8 +26,8 @@ buildscript {
 // global properties used in sub modules
 ext {
     versionBuild = System.getenv("BUILD_NUMBER") as Integer ?: 0
-    versionCodeProp = 202404000 + versionBuild
-    versionNameProp = "2024.04.$versionBuild"
+    versionCodeProp = 202405000 + versionBuild
+    versionNameProp = "2024.05.$versionBuild"
     buildNumberProp = "${versionBuild}"
 }
 
