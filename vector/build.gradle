@@ -51,7 +51,7 @@ android {
 
     defaultConfig {
         applicationId "im.vector"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 33
         // use the version code
         versionCode rootProject.ext.versionCodeProp
