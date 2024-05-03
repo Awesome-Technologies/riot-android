@@ -355,39 +355,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activity.VectorUniversalLinkActivity"
             android:exported="true">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.VIEW" />-->
 
-            <!--                <category android:name="android.intent.category.DEFAULT" />-->
-            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
-
-            <!--                <data android:scheme="http" />-->
-            <!--                <data android:scheme="https" />-->
-            <!--                <data android:host="vector.im" />-->
-            <!--                <data android:pathPrefix="/app/" />-->
-            <!--                <data android:pathPrefix="/beta/" />-->
-            <!--                <data android:pathPrefix="/develop/" />-->
-            <!--                <data android:pathPrefix="/staging/" />-->
-            <!--                &lt;!&ndash; mail validation &ndash;&gt;-->
-            <!--                <data android:pathPrefix="/_matrix/" />-->
-            <!--            </intent-filter>-->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:host="riot.im" />
-                <data android:pathPrefix="/app/" />
-                <data android:pathPrefix="/beta/" />
-                <data android:pathPrefix="/develop/" />
-                <data android:pathPrefix="/staging/" />
-                <data android:pathPrefix="/config/" />
-                <!-- mail validation -->
-                <data android:pathPrefix="/_matrix/" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -474,29 +442,11 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="vector.im" />
+                <data android:host="@string/login_intent_hostname" />
                 <data android:pathPrefix="/app/" />
                 <data android:pathPrefix="/beta/" />
                 <data android:pathPrefix="/develop/" />
                 <data android:pathPrefix="/staging/" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="im.vector.receiver.UNIVERSAL_LINK" />
-
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:host="riot.im" />
-                <data android:pathPrefix="/app/" />
-                <data android:pathPrefix="/beta/" />
-                <data android:pathPrefix="/develop/" />
-                <data android:pathPrefix="/staging/" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="im.vector.receiver.UNIVERSAL_LINK" />
-
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:host="matrix.to" />
             </intent-filter>
             <intent-filter>
                 <action android:name="im.vector.receiver.UNIVERSAL_LINK_RESUME" />
@@ -510,7 +460,7 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="vector.im" />
+                <data android:host="@string/login_intent_hostname" />
                 <!-- mail validation -->
                 <data android:pathPrefix="/_matrix/" />
             </intent-filter>
