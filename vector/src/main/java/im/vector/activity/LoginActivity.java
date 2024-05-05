@@ -1899,7 +1899,6 @@ public class LoginActivity extends MXCActionBarActivity implements RegistrationM
             if (getResources().getBoolean(R.bool.custom_homeserver)) {
                 mRegistrationManager.reset();
                 mHomeserverConnectionConfig = null;
-                mHomeServerText.setText(ServerUrlsRepository.INSTANCE.getDefaultHomeServerUrl(this));
             }
 
             refreshDisplay(true);
